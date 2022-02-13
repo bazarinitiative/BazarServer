@@ -1,0 +1,916 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BazarServer.Entity</name>
+    </assembly>
+    <members>
+        <member name="T:BazarServer.Entity.Commands.ChannelCmd">
+            <summary>
+            group of users. like channel in telegram or list in twitter. 
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.ChannelCmd.channelID">
+            <summary>
+            uniqueID of this Channel
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.ChannelCmd.description">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.Commands.ChannelMemberCmd">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.ChannelMemberCmd.channelID">
+            <summary>
+            uniqueID of this Channel
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.Commands.DeleteCmd">
+            <summary>
+            This is asking every related server to delete UGC, physically or logically.
+            No one can ensure a deletion once published, including centralized platform, because third party would snapshot or record.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.DeleteCmd.deleteType">
+            <summary>
+            Post, Repost, Like, Following, etc
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.DeleteCmd.targetID">
+            <summary>
+            modelID of target
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.Commands.FollowingCmd">
+            <summary>
+            userID+targetID is unique.
+            targetType is a describe info of targetID.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.FollowingCmd.targetType">
+            <summary>
+            "User" or "Channel"
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.Commands.LikeCmd">
+            <summary>
+            userID+postID is unique
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.LikeCmd.postID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.PostCmd.postID">
+            <summary>
+            unique ID of a post. reply/repost are also post. 
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.PostCmd.threadID">
+            <summary>
+            postID of the original post
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.PostCmd.replyTo">
+            <summary>
+            postID of which we reply to. we can reply to an original post or a reply
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.PostCmd.isRepost">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.PostCmd.content">
+            <summary>
+            content of a post. RTF 1.7 standard.
+            Word between '#' and first non-letter-nor-digit char will be treat as a tag declaration.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.PostCmd.contentLang">
+            <summary>
+            content language like 'en-US', 'de', 'ja', 'zh-CN'. as a reference value to help language auto detect.
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.Commands.UserInfoCmd">
+            <summary>
+            one bazar user
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.UserInfoCmd.publicKey">
+            <summary>
+            publicKey that everyone can see
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.UserInfoCmd.userName">
+            <summary>
+            user can set a name to display
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.UserInfoCmd.biography">
+            <summary>
+            biography of this user
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.UserInfoCmd.location">
+            <summary>
+            location
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.UserInfoCmd.website">
+            <summary>
+            website
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.Commands.UserPicCmd">
+            <summary>
+            user avatar pic
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.UserPicCmd.pic">
+            <summary>
+            base64 encoded user picture. string length 50KB at most.
+            </summary>
+        </member>
+        <member name="M:BazarServer.Entity.PeerServers.IPeerManager.GetServerCount">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.PeerServers.IPeerManager.GetAllServers(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="topNReputation">top N servers of highest Reputation</param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.PeerServers.IPeerManager.RegisterAsync(System.String)">
+            <summary>
+            some remote ask to register a new peer
+            </summary>
+            <param name="baseUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="P:BazarServer.Entity.PeerServers.PeerServer.BaseUrl">
+            <summary>
+            such as https://api.yourdoman.com/bazar/
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.PeerServers.PeerServer.Reputation">
+            <summary>
+            1 is max
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.PeerServers.PeerServer.ReceiveCount">
+            <summary>
+            receive command count from peer. include dup and error
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.PeerServers.PeerServer.ReceiveDupCount">
+            <summary>
+            already received from user or other peer
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.PeerServers.PeerServer.ReceiveErrorCount">
+            <summary>
+            fail deserialize, no user, signature fail, spam fail, etc
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.PeerServers.PeerServer.ReceiveOkCount">
+            <summary>
+            receive command count from peer. effective ones only.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.PeerServers.PeerServer.lastReceiveOffset">
+            <summary>
+            offset of ReceiveTime for this peer
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.PeerServers.PeerServer.nextRetrieveTime">
+            <summary>
+            Time of next retrieve. Every OK-msg will postpon this time, to prevent too much effective msg.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.SeedWork.ApiResponse`1.success">
+            <summary>
+            success or not
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.SeedWork.ApiResponse`1.msg">
+            <summary>
+            variant message may change later.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.SeedWork.ApiResponse`1.data">
+            <summary>
+            response data, maybe null on failure.
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.SeedWork.ICommandContent">
+            <summary>
+            Indicate this is a UserCommand, need signature, serialize and storage.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.SeedWork.ICommandContent.userID">
+            <summary>
+            who send out the commandID. who own the data.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.SeedWork.ICommandContent.commandID">
+            <summary>
+            uniqueID of a userCommand. randstring(30)
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.SeedWork.ICommandContent.commandTime">
+            <summary>
+            in milli seconds. user declare commandTime may not be true
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.SeedWork.IStoreData">
+            <summary>
+            Indicate this is a model class for storage. Usually for MongoDB.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.FailureCommand.commandID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.FailureCommand.command">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.FailureCommand.failTime">
+            <summary>
+            timeMillis
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.FailureCommand.errMsg">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.ICommandRepository.GetCommandAsync_WithCache(System.String,System.Int32)">
+            <summary>
+            with cache. null will not cache.
+            </summary>
+            <param name="commandID"></param>
+            <param name="cacheMilli"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.ICommandRepository.GetCommandAsync(System.String)">
+            <summary>
+            no memcache
+            </summary>
+            <param name="commandID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.ICommandRepository.SaveCommandAsync(BazarServer.Entity.Storage.UserCommand)">
+            <summary>
+            save command to mongodb
+            </summary>
+            <param name="cmd"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.ICommandRepository.Batch(System.Int64,System.Int32)">
+            <summary>
+            return those command.receiveOffset > lastOffset, max count forwardCount
+            result will not include lastOffset.
+            </summary>
+            <param name="lastOffset"></param>
+            <param name="forwardCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.ICommandRepository.GetNextReceiveOffset">
+            <summary>
+            every command will be assigned a increasing receiveOffset
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.ICommandRepository.SaveFailure(BazarServer.Entity.Storage.UserCommand,System.String)">
+            <summary>
+            on error, save command to failure table
+            </summary>
+            <param name="cmd"></param>
+            <param name="errMsg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.ICommandRepository.GetLastReceiveOffset">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:BazarServer.Entity.Storage.UserCommand">
+            <summary>
+            event of users action
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserCommand.commandID">
+            <summary>
+            uniqueID of this command
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserCommand.commandTime">
+            <summary>
+            seconds since EPOCH. peer declared sending time. may not be true.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserCommand.userID">
+            <summary>
+            who initiative this action
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserCommand.commandType">
+            <summary>
+            Post, Following, Repost, Like, Delete, etc...
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserCommand.commandContent">
+            <summary>
+            origin user request body string
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserCommand.signature">
+            <summary>
+            signature of commandContent.
+            signed by user with privateKey. can be verified by user publicKey.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserCommand.receiveTime">
+            <summary>
+            when this server receive this command, timemilli
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserCommand.receiveOffset">
+            <summary>
+            offset of this command in this server
+            </summary>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.AddAsync(`0)">
+            <summary>
+            beware! use Upsert instead!
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.FirstOrDefaultAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            return first document that satisfy filter, or default value.
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.RemoveAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            remove all documents that satisfy filter.
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.UpdateAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},`0)">
+            <summary>
+            update
+            </summary>
+            <param name="filter"></param>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.UpsertAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},`0)">
+            <summary>
+            update or insert
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.GetQueryable">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.InAsync``1(System.String,System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            mongodb.linq do not support List.Contains, so we implement one.
+            </summary>
+            <typeparam name="TField"></typeparam>
+            <param name="fieldName"></param>
+            <param name="fieldValues"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.InFilterAsync``1(System.String,System.Collections.Generic.IEnumerable{``0},System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            
+            </summary>
+            <typeparam name="TField"></typeparam>
+            <param name="fieldName"></param>
+            <param name="fieldValues"></param>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.PageAsync``1(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{`0,``0}},System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            paging, you know
+            </summary>
+            <typeparam name="TField"></typeparam>
+            <param name="filter"></param>
+            <param name="orderby"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <param name="descending"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.GetAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            get list by filter
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.CountAsync(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            count by filter
+            </summary>
+            <param name="filter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.Random(System.Int32)">
+            <summary>
+            get random documents from db.
+            </summary>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.Search(System.Collections.Generic.List{System.String},System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="ay"></param>
+            <param name="maxCount"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BazarServer.Entity.Storage.IMongoContext">
+            <summary>
+            will read config and construct MongoClient.
+            </summary>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IMongoContext.BuildIndex``1(System.String)">
+            <summary>
+            We don't use uniqueKey because of CosmosDB partition.
+            We tolerate duplicate data for better performance and better capacity.
+            We don't use transaction for the same reason.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="field"></param>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.GetPostsByUserAsync(System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            get posts of one user. latest at top.
+            </summary>
+            <param name="userID"></param>
+            <param name="onlyOriginalPost"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.GetPostStatisticAsync(System.String)">
+            <summary>
+            return null if not found
+            </summary>
+            <param name="postID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.TimelineAsync(System.Int32,System.Int32)">
+            <summary>
+            timeline of all known posts. latest at top.
+            </summary>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.SaveAsync(BazarServer.Entity.Storage.Post)">
+            <summary>
+            upsert
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.UpsertPostStatisticAsync(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            update or insert
+            </summary>
+            <param name="postID"></param>
+            <param name="addReplyCount"></param>
+            <param name="addRepostCount"></param>
+            <param name="addLikeCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.UpsertPostMeta(BazarServer.Entity.Storage.PostMeta)">
+            <summary>
+            update or insert
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.Search(System.Collections.Generic.List{System.String},System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="ay"></param>
+            <param name="maxCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.GetPostMeta(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="postID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.IsExistPostAsync(System.String)">
+            <summary>
+            deleted post is also exist.
+            </summary>
+            <param name="postID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.GetPostLikeAsync(System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            return if user had liked these posts.
+            </summary>
+            <param name="userID"></param>
+            <param name="postIDs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.GetPostLikeAsync(System.String,System.String)">
+            <summary>
+            return likeID or ""
+            </summary>
+            <param name="userID"></param>
+            <param name="postID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.GetRepliesAsync(System.String,System.Int32,System.Int32)">
+            <summary>
+            get direct replies for the post
+            </summary>
+            <param name="postID"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.GetPostsAsync(System.Collections.Generic.List{System.String})">
+            <summary>
+            
+            </summary>
+            <param name="postIDs"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.GetRandomPost(System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BazarServer.Entity.Storage.Like">
+            <summary>
+            userID+postID is unique
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.Like.postID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.Post.postID">
+            <summary>
+            unique ID of a post. reply/repost are also post. 
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.Post.threadID">
+            <summary>
+            postID of the original post
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.Post.replyTo">
+            <summary>
+            postID of which we reply to. we can reply to an original post or a reply
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.Post.isRepost">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.Post.content">
+            <summary>
+            content of a post. RTF 1.7 standard.
+            Word between '#' and first non-letter-nor-digit char will be treat as a tag declaration.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.Post.contentLang">
+            <summary>
+            content language like 'en-US', 'de', 'ja', 'zh-CN'. as a reference value to help language auto detect.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.Post.foldingText">
+            <summary>
+            if this field is not empty, keep content/media be folded until user click 'expand'
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.Post.mediaType">
+            <summary>
+            image, video, gif, etc...
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.Post.mediaUrls">
+            <summary>
+            1 video/gif or at most 4 images. split by char \x001
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.Post.deleted">
+            <summary>
+            deleted posts need to stay in system, for display purpose.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.PostMeta.receiveCreate">
+            <summary>
+            when create-command is received.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.PostMeta.createFrom">
+            <summary>
+            server BaseUrl or client IP, where this create-command receive from.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.PostMeta.receiveDelete">
+            <summary>
+            when delete-command is received
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.PostMeta.deleteFrom">
+            <summary>
+            server BaseUrl or client IP, where this delete-command receive from.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.PostMeta.inheritPosts">
+            <summary>
+            parent postID, grand-parent postID, etc. separated by ',' end without ','
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.Storage.PostStatistic">
+            <summary>
+            statistic of post
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.PostStatistic.postID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.PostStatistic.replyCount">
+            <summary>
+            count of replies
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.PostStatistic.repostCount">
+            <summary>
+            count of reposts
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.PostStatistic.likeCount">
+            <summary>
+            count of likes
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.Storage.Channel">
+            <summary>
+            group of users. like channel in telegram or list in twitter. 
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.Channel.channelID">
+            <summary>
+            uniqueID of this Channel
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.Channel.description">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.Storage.ChannelMember">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.ChannelMember.channelID">
+            <summary>
+            uniqueID of this Channel
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.Storage.Following">
+            <summary>
+            userID+targetID is unique.
+            targetType is a describe info of targetID.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.Following.targetType">
+            <summary>
+            "User" or "Channel"
+            </summary>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IUserRepository.GetUserInfoAsync_WithCache(System.String,System.Int32)">
+            <summary>
+            null will not cache
+            </summary>
+            <param name="userID"></param>
+            <param name="cacheMilli"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IUserRepository.GetUserFollowers(System.String,System.Int32,System.Int32)">
+            <summary>
+            get the list of followers
+            </summary>
+            <param name="userID"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IUserRepository.GetUserFollowees(System.String,System.Int32,System.Int32)">
+            <summary>
+            get the list of followees
+            </summary>
+            <param name="userID"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IUserRepository.Search(System.Collections.Generic.List{System.String},System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="ay"></param>
+            <param name="maxCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IUserRepository.GetUserFollowing(System.String,System.String)">
+            <summary>
+            get the record of one following
+            </summary>
+            <param name="userID"></param>
+            <param name="targetID">userID or channelID</param>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IUserRepository.AddUserNotify(BazarServer.Entity.Storage.NotifyMessage)">
+            <summary>
+            
+            </summary>
+            <param name="notifyMessage"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IUserRepository.GetUserNotify(System.String,System.Int64,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="userID"></param>
+            <param name="startTime">startTime (include) of backwards</param>
+            <param name="backwardCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IUserRepository.TryUpdateNotifyGetTime(System.String,System.Int64)">
+            <summary>
+            update NotifyGetTime if bigger
+            </summary>
+            <param name="userID"></param>
+            <param name="getTime"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Entity.Storage.IUserRepository.GetNewNotifyCount(System.String)">
+            <summary>
+            get notify count since last NotifyGetTime
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.NotifyGetTime.userID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.NotifyGetTime.getTime">
+            <summary>
+            timeMillis
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.NotifyMessage.notifyID">
+            <summary>
+            uniqueID of this notification.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.NotifyMessage.userID">
+            <summary>
+            who will receive this notify
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.NotifyMessage.notifyTime">
+            <summary>
+            in milli seconds
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.NotifyMessage.notifyType">
+            <summary>
+            including "Like", "Mention", "Follow", "AddList", etc
+            like is from user to post.
+            mention is from current post, to related inherit post or empty
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.NotifyMessage.fromWho">
+            <summary>
+            whose action cause this notification
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.NotifyMessage.fromWhere">
+            <summary>
+            postID if type = 'Mention'
+            empty if type = 'Like'
+            empty if type = 'Follow'
+            listID if type = 'AddList'
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.Storage.UserInfo">
+            <summary>
+            one bazar user
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserInfo.publicKey">
+            <summary>
+            publicKey that everyone can see
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserInfo.userName">
+            <summary>
+            user can set a name to display
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserInfo.biography">
+            <summary>
+            biography of this user
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserInfo.location">
+            <summary>
+            location
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserInfo.website">
+            <summary>
+            website
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.Storage.UserPic">
+            <summary>
+            user avatar pic
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserPic.pic">
+            <summary>
+            base64 encoded user picture. string length 50KB at most.
+            </summary>
+        </member>
+        <member name="T:BazarServer.Entity.Storage.UserStatistic">
+            <summary>
+            statistic of user
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserStatistic.userID">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserStatistic.postCount">
+            <summary>
+            count of posts
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserStatistic.likedCount">
+            <summary>
+            count of liked (of posts)
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserStatistic.followingCount">
+            <summary>
+            count of following
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.UserStatistic.followedCount">
+            <summary>
+            count of be followed
+            </summary>
+        </member>
+    </members>
+</doc>

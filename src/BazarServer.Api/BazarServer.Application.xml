@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BazarServer.Application</name>
+    </assembly>
+    <members>
+        <member name="M:BazarServer.Application.Commands.ICommandManager.SaveAndDispatch(BazarServer.Entity.Storage.UserCommand,System.String)">
+            <summary>
+            after command level verfication, save command and dispatch command to different processor
+            </summary>
+            <param name="cmd"></param>
+            <param name="commandFrom">where is this command from, server BaseUrl or client IP</param>
+            <returns></returns>
+        </member>
+        <member name="T:BazarServer.Application.Commands.MdtRequest`1">
+            <summary>
+            official process entrance of all ICommandContent, include DeleteCmd.
+            ICommandContent may come from webapi controller, may come from peer server.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:BazarServer.Application.Commands.MdtRequest`1.commandTime">
+            <summary>
+            milli seconds since epoch
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.MdtRequest`1.commandFrom">
+            <summary>
+            where is this command from, server BaseUrl or client IP
+            </summary>
+        </member>
+        <member name="M:BazarServer.Application.Commands.MdtRequest`1.FromCommand``1(BazarServer.Entity.Storage.UserCommand,System.String)">
+            <summary>
+            will validate MdtRequest for commandID, commandTime, userID.
+            will validate req.content model.
+            </summary>
+            <typeparam name="T2"></typeparam>
+            <param name="req"></param>
+            <param name="commandFrom">where is this command from, server BaseUrl or client IP</param>
+            <returns></returns>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRequestModel.commandID">
+            <summary>
+            uniqueID of this command
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRequestModel.commandTime">
+            <summary>
+            seconds since EPOCH
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRequestModel.userID">
+            <summary>
+            who initiative this action
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRequestModel.commandType">
+            <summary>
+            Post, Following, Repost, Like, Delete, etc...
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRequestModel.commandContent">
+            <summary>
+            a json string of this command detail content
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRequestModel.signature">
+            <summary>
+            signature of commandContent
+            signed by user with privateKey. can be verified by user publicKey.
+            </summary>
+        </member>
+        <member name="T:BazarServer.Application.Commands.UserCommandRespDto">
+            <summary>
+            response data for a command. usually lack of data. client should upload the necessary data and retry
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRespDto.lackUserInfo">
+            <summary>
+            need some extra UserInfo to execute a user command such as 'Following', 'Like', 'Repost', etc.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRespDto.lackPost">
+            <summary>
+            need some extra Post to execute a user command.
+            </summary>
+        </member>
+        <member name="M:BazarServer.Application.Posts.PostQueryFacade.GetPostDto(BazarServer.Entity.Storage.IPostRepository,System.String,System.Collections.Generic.List{BazarServer.Entity.Storage.Post})">
+            <summary>
+            get PostDto based on Post. batch for better performance
+            </summary>
+            <param name="postRepository"></param>
+            <param name="userID"></param>
+            <param name="ay"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Application.Posts.PostQueryFacade.GetUserLatestPosts_withCache(BazarServer.Entity.Storage.IPostRepository,System.String)">
+            <summary>
+            get latest 1000 posts of user
+            </summary>
+            <param name="postRepository"></param>
+            <param name="userID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Application.Posts.PostQueryFacade.RemoveUserLatestPostsCache(System.String)">
+            <summary>
+            remove cache when mongodb has 'Post' change event
+            </summary>
+            <param name="userID"></param>
+        </member>
+        <member name="M:BazarServer.Application.Posts.PostQueryFacade.GetPostsByUsers(BazarServer.Entity.Storage.IPostRepository,System.Collections.Generic.List{System.String},System.Int32,System.Int32)">
+            <summary>
+            return the posts of users. latest at top.
+            </summary>
+            <param name="postRepository"></param>
+            <param name="userIDs"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="P:BazarServer.Application.Posts.PostDetailDto.parent">
+            <summary>
+            maybe null if current is topmost
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Posts.PostDetailDto.thread">
+            <summary>
+            maybe null if current is topmost or parrent is topmost
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Posts.PostDetailDto.replies">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Posts.PostDto.liked">
+            <summary>
+            empty means not liked
+            </summary>
+        </member>
+        <member name="M:BazarServer.Application.Users.UserQueryFacade.CheckQuery(BazarServer.Entity.Storage.IUserRepository,System.String,System.Int64,System.String)">
+            <summary>
+            for some heavy or private query, we want to make sure the qurey comes from specific user
+            </summary>
+            <param name="userRepository"></param>
+            <param name="userID"></param>
+            <param name="queryTimestamp">time milli</param>
+            <param name="queryToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Application.Users.UserQueryFacade.GetUserDto_WithCache(BazarServer.Entity.Storage.IUserRepository,System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="userRepository"></param>
+            <param name="userID"></param>
+            <param name="cacheMilli">millseconds that result will cache</param>
+            <returns></returns>
+        </member>
+        <member name="T:BazarServer.Application.Users.UserDto">
+            <summary>
+            we don't return userPic directly for bandwidth consideration, there should be client side cache.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Users.UserDto.userInfo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Users.UserDto.userStatistic">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:BazarServer.Application.PeerServers.PeerManager.dicServerStats">
+            <summary>
+            server baseUrl as key
+            </summary>
+        </member>
+        <member name="M:BazarServer.Application.PeerServers.PeerManager.RefreshCommandAsync(BazarServer.Application.PeerServers.PeerServerStat)">
+            <summary>
+            retrieve commands from remote and update local
+            </summary>
+            <param name="pss"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Application.PeerServers.PeerManager.RegisterToRemoteAsync(BazarServer.Entity.PeerServers.PeerServer,System.String)">
+            <summary>
+            register baseUrl to a remote server
+            </summary>
+            <param name="server"></param>
+            <param name="selfBaseUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Application.PeerServers.PeerManager.GetPeerListAsync(BazarServer.Entity.PeerServers.PeerServer)">
+            <summary>
+            get peerList from one remote server
+            </summary>
+            <param name="server"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Application.PeerServers.PeerManager.RandomRate(System.Double)">
+            <summary>
+            0.6 means 60% true
+            </summary>
+            <param name="publishRateNew"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Application.PeerServers.PeerManager.Peer_OnMessage(BazarServer.Application.PeerServers.PeerServerStat,BazarServer.Entity.Storage.UserCommand)">
+            <summary>
+            this function may be called in multi-thread
+            </summary>
+            <param name="stat"></param>
+            <param name="cmd"></param>
+            <returns></returns>
+        </member>
+        <member name="P:BazarServer.Application.PeerServers.PeerServerDto.baseUrl">
+            <summary>
+            each peerServer need an unique baseUrl like "https://www.yourEntity.com/bazarserver/" or something
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.PeerServers.PeerServerDto.Reputation">
+            <summary>
+            1 is max
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.PeerServers.PeerServerDto.ReceiveCount">
+            <summary>
+            receive command count from peer. include dup and error
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.PeerServers.PeerServerDto.ReceiveDupCount">
+            <summary>
+            already received from user or other peer
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.PeerServers.PeerServerDto.ReceiveErrorCount">
+            <summary>
+            fail deserialize, no user, signature fail, spam fail, etc
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.PeerServers.PeerServerDto.ReceiveOkCount">
+            <summary>
+            receive command count from peer. effective ones only.
+            </summary>
+        </member>
+    </members>
+</doc>

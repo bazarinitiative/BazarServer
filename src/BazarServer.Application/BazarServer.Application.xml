@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BazarServer.Application</name>
+    </assembly>
+    <members>
+        <member name="T:BazarServer.Application.Commands.Delete">
+            <summary>
+            This is asking every related server to delete UGC, physically or logically.
+            No one can ensure a deletion once published, including centralized platform, because third party would snapshot or record.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.Delete.deleteType">
+            <summary>
+            Post, Repost, Like, Following, etc
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.Delete.targetID">
+            <summary>
+            modelID of target
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRequestModel.commandID">
+            <summary>
+            uniqueID of this command
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRequestModel.commandTime">
+            <summary>
+            seconds since EPOCH
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRequestModel.userID">
+            <summary>
+            who initiative this action
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRequestModel.commandType">
+            <summary>
+            Post, Following, Repost, Like, Delete, etc...
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRequestModel.commandContent">
+            <summary>
+            a json string of this command detail content
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRequestModel.signature">
+            <summary>
+            signature of commandContent
+            signed by user with privateKey. can be verified by user publicKey.
+            </summary>
+        </member>
+        <member name="M:BazarServer.Application.Commands.UserCommandRequestModel.ConvertMediat``1(BazarServer.Application.Commands.UserCommandRequestModel)">
+            <summary>
+            will validate MdtRequest for commandID, commandTime, userID
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BazarServer.Application.Commands.UserCommandRespDto">
+            <summary>
+            response data for a command. usually lack of data. client should upload the necessary data and retry
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRespDto.lackUserInfo">
+            <summary>
+            need some extra UserInfo to execute a user command such as 'Following', 'Like', 'Repost', etc.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRespDto.lackPost">
+            <summary>
+            need some extra Post to execute a user command.
+            </summary>
+        </member>
+        <member name="F:BazarServer.Application.PeerServers.PeerManager.publishRateNew">
+            <summary>
+            between 0-1, 1 means always
+            </summary>
+        </member>
+        <member name="F:BazarServer.Application.PeerServers.PeerManager.publishRateOld">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:BazarServer.Application.PeerServers.PeerManager.servers">
+            <summary>
+            server baseUrl as key
+            </summary>
+        </member>
+        <member name="M:BazarServer.Application.PeerServers.PeerManager.RandomRate(System.Double)">
+            <summary>
+            0.6 means 60% true
+            </summary>
+            <param name="publishRateNew"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

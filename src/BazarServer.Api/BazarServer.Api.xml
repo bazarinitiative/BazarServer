@@ -1,0 +1,297 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BazarServer.Api</name>
+    </assembly>
+    <members>
+        <member name="T:BazarServer.Controllers.BubbleController">
+            <summary>
+            for those search and recommendation
+            </summary>
+        </member>
+        <member name="M:BazarServer.Controllers.BubbleController.Search(System.String,System.Int64,System.String,System.String)">
+            <summary>
+            return personal search result
+            </summary>
+            <param name="userID"></param>
+            <param name="queryTime"></param>
+            <param name="token"></param>
+            <param name="keys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.BubbleController.PublicSearch(System.String)">
+            <summary>
+            public search
+            </summary>
+            <param name="keys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.BubbleController.MightLike(System.String,System.Int64,System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="userID"></param>
+            <param name="queryTime">timeMillis</param>
+            <param name="token"></param>
+            <param name="count">max 100</param>
+            <returns></returns>
+        </member>
+        <member name="P:BazarServer.Controllers.BubbleController.TrendUnit.key">
+            <summary>
+            the key word of this trend. usually for search
+            </summary>
+        </member>
+        <member name="P:BazarServer.Controllers.BubbleController.TrendUnit.catalog">
+            <summary>
+            catalog of this trending. Politics, Sports, Gaming, etc. or empty.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Controllers.BubbleController.TrendUnit.describe">
+            <summary>
+            describe why trending. "1152 posts", "from recommend engine", "from partner" etc.
+            </summary>
+        </member>
+        <member name="M:BazarServer.Controllers.BubbleController.Trending(System.String,System.Int64,System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="userID"></param>
+            <param name="queryTime"></param>
+            <param name="token"></param>
+            <param name="count">max 100</param>
+            <returns></returns>
+        </member>
+        <member name="T:BazarServer.Controllers.EmailController">
+            <summary>
+            Send email for verification, backup, etc.
+            </summary>
+        </member>
+        <member name="M:BazarServer.Controllers.EmailController.SendInternal(System.String,System.String,System.String)">
+            <summary>
+            send email with antiSpam, rateLimit
+            </summary>
+            <param name="targetEmailAddr"></param>
+            <param name="title"></param>
+            <param name="content"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.EmailController.SendCode(BazarServer.Controllers.EmailController.SendCodeReq)">
+            <summary>
+            send a verification code through email
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.EmailController.BackupAccount(BazarServer.Controllers.EmailController.BackupAccountReq)">
+            <summary>
+            backup user account data through email.
+            
+            see also https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-certificate-in-code
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:BazarServer.Controllers.PeerController">
+            <summary>
+            sync data with peer servers.
+            </summary>
+        </member>
+        <member name="M:BazarServer.Controllers.PeerController.RegisterPeer(System.String)">
+            <summary>
+            register a BazarServer to this instance
+            </summary>
+            <param name="baseUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.PeerController.RetrieveCommandBatch(System.Int64,System.Int32)">
+            <summary>
+            query user command based on receiveOffset. result will not include lastOffset.
+            this function will have internal cache and therefore possible delay.
+            </summary>
+            <param name="lastOffset"></param>
+            <param name="forwardCount">max 1000</param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.PeerController.GetPeerList(System.Int32)">
+            <summary>
+            get all known peers
+            </summary>
+            <param name="topN">top N servers of highest Reputation</param>
+            <returns></returns>
+        </member>
+        <member name="T:BazarServer.Controllers.UserCommandController">
+            <summary>
+            Execute command from user. Such as post, follow, like, channel, etc.
+            </summary>
+        </member>
+        <member name="M:BazarServer.Controllers.UserCommandController.ModelShow">
+            <summary>
+            this is an empty function, just to show how commandContent model should be.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserCommandController.CommandAsync(BazarServer.Application.Commands.UserCommandRequestModel)">
+            <summary>
+            execute a user command
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserCommandController.Preprocess(BazarServer.Application.Commands.UserCommandRequestModel)">
+            <summary>
+            command level verification
+            </summary>
+            <param name="req"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BazarServer.Controllers.UserQueryController">
+            <summary>
+            provide different kind of queries
+            </summary>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetUserInfoAsync(System.String)">
+            <summary>
+            get basic info of one user.
+            </summary>
+            <param name="userID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetUserPicAsync(System.String)">
+            <summary>
+            get avatar pic of one user
+            </summary>
+            <param name="userID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.PublicTimeline(System.String,System.Int32,System.Int32)">
+            <summary>
+            timeline data for public.
+            
+            this is just a demo result. real data should combine with recommendation and moderation.
+            </summary>
+            <param name="userID"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.HomeLine(System.String,System.Int64,System.String,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="userID"></param>
+            <param name="queryTime"></param>
+            <param name="token"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetFollowing(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="userID"></param>
+            <param name="targetID"></param>
+            <returns>will return empty data if not following</returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetFollowees(System.String,System.Int32,System.Int32)">
+            <summary>
+            get userID follow whom
+            </summary>
+            <param name="userID"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetFollowers(System.String,System.Int32,System.Int32)">
+            <summary>
+            get who follow userID
+            </summary>
+            <param name="userID"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetPostsAsync(System.String,System.Boolean,System.Int32,System.Int32)">
+            <summary>
+            get posts of one user. latest at top.
+            </summary>
+            <param name="userID"></param>
+            <param name="onlyOriginalPost">without reply and repost</param>
+            <param name="page">start from 0</param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetPostSimple(System.String,System.String)">
+            <summary>
+            get data of this exact post.
+            </summary>
+            <param name="postID"></param>
+            <param name="userID">input to get if this user had liked the post</param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetPostDetail(System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            related detail data of one post. include current, parentPost, threadPost, replies.
+            parentPost and threadPost may be null, if not exist or same with current.
+            
+            this is just a simple demo page. real data should combine with recommendation and moderation.
+            </summary>
+            <param name="postID"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <param name="userID">input to get if this user had liked the related posts</param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetProfileAsync(System.String)">
+            <summary>
+            get profile of one user
+            </summary>
+            <param name="userID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetCommand(System.String)">
+            <summary>
+            get a command. client need this to upload data to another server by UserInfo or Post function.
+            peer server can use this retrieve some data.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetNotifies(System.String,System.Int64,System.String,System.Int64,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="userID"></param>
+            <param name="queryTime">time of query. for check. in milli</param>
+            <param name="token">should be signature of queryTime.ToString()</param>
+            <param name="startTime">startTime (include) of backwards. 0 means now.</param>
+            <param name="maxCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetNewNotifyCount(System.String,System.Int64,System.String)">
+            <summary>
+            get new notify count, since last query notify
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:BazarServer.Controllers.UserQueryFilterAttribute">
+            <summary>
+            antiSpam, rateLimit
+            </summary>
+        </member>
+        <member name="M:BazarServer.AspNetExtention.GetFullUrl(Microsoft.AspNetCore.Http.HttpRequest)">
+            <summary>
+            get full url like: https://www.bing.com/search?q=bazar
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BazarServer.MyMiddleware">
+            <summary>
+            request rate limit, reqest info log, etc.
+            </summary>
+        </member>
+        <member name="T:BazarServer.Services.UserQueryService">
+            <summary>
+            background service for user query related logic
+            </summary>
+        </member>
+    </members>
+</doc>
