@@ -22,28 +22,13 @@ A server for decentralized micro-blog
 - Every server kept limited userdata.
 - Every client can upload any command of anyone to a server, as long as the command itself can be verified by publicKey.
 
-## Content-Server
+## BazarServer
 
 - Will forward all userEvents to every know server.
 - Every server will choose what data to storage. Usually active user only.
 - Every server can try retrieve data from another server.
 - Any one can throw any message to any server at any time. Server is designed to survive in such chaos battlefield.
 
-## BazarModerationService (optional, commercial)
-
-- We will provide a simple opensource demo here. You may need a private commercial implementation for commercial condition.
-
-## BazarRealIDService (optional, commercial)
-
-- BazarRealIDService will announce that one key-pair refers to Michael Jackson. Client can believe or not.
-- Any Bazar-Server will NOT keep user privateKey, so it would be trouble if user lost his privateKey.
-- BazarRealIDService will announce that someone had change his key-pair from A to B.
-- Bazar-Server can choose which BazarRealIDService to believe.
-
-## BazarRecommendationService (optional, commercial)
-
-- Bazar-Server will carry basic Recommendation functionalities for search, user recommend, post recommend, etc 
-- BazarRecommendationService will provide complex recommendation for user and UGC
 
 # Developer
 
@@ -57,7 +42,7 @@ A server for decentralized micro-blog
 
 - Because changestream has various limitation, we will not use changestream.
 
-## Bazar-Server Should only run one instance
+## BazarServer Should only run one instance
 
 - Because we need to maintain `receiveOffset` for this instance, while MongoDB do not support auto-increment id.
 - We will separate reader to dedicate module for better performance. Reader can run multiple instances. receiveOffset will help reader work better.
@@ -69,4 +54,4 @@ A server for decentralized micro-blog
 
 # Thanks
 
-Inspired by Twitter, Signal and Mastodon
+Inspired by Twitter, Telegram, Signal and Mastodon

@@ -190,8 +190,8 @@ Content
 echo ====================BazarServer========================
 cd ~/work/BazarServer
 git pull
-killall dotnet
 sh build.sh
+killall dotnet
 nohup sh run.sh &
 sleep 1
 
