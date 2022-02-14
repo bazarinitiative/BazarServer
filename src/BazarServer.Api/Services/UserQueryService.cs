@@ -37,14 +37,9 @@ namespace BazarServer.Services
 				var list = await commandRepository.Batch(lastReceiveOffset, 1000);
 				foreach (var cmd in list)
 				{
-					if (cmd.commandType == "Post")
+					if (cmd.commandType == "Post" || cmd.commandType == "Delete")
 					{
-						Post? post = Json.Deserialize<Post>(cmd.commandContent);
-						if (post == null)
-						{
-							continue;
-						}
-						PostQueryFacade.RemoveUserLatestPostsCache(post.userID);
+						PostQueryFacade.RemoveUserLatestPostsCache(cmd.userID);
 					}
 					if (cmd.receiveOffset > lastReceiveOffset)
 					{
