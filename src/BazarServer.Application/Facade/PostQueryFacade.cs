@@ -44,7 +44,7 @@ namespace BazarServer.Application.Posts
 		/// <returns></returns>
 		private static async Task<List<Post>> GetUserLatestPosts_withCache(IPostRepository postRepository, string userID)
 		{
-			var cacheMilli = 60 * 1000 + MyRandom.Random(0, 1000);
+			var cacheMilli = 1000;
 			var key = GetUserLatestPostsKey(userID);
 			var list = await CacheHelper.WithCacheAsync<List<Post>>(key, async () => {
 				var ret = await postRepository.GetPostsByUserAsync(userID, false, 0, 1000);

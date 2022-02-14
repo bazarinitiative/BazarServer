@@ -46,7 +46,7 @@ namespace BazarServer.Services
 						lastReceiveOffset = cmd.receiveOffset;
 					}
 				}
-				await Task.Delay(1000);
+				await Task.Delay(10);
 			}
 		}
 
