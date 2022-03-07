@@ -13,12 +13,12 @@ namespace BazarServer.Application.Commands
 		public string commandID { get; set; } = "";
 
 		/// <summary>
-		/// seconds since EPOCH
+		/// milliseconds since EPOCH
 		/// </summary>
 		public long commandTime { get; set; }
 
 		/// <summary>
-		/// who initiative this action
+		/// who initiative this command
 		/// </summary>
 		[StringLength(30, MinimumLength = 30)]
 		public string userID { get; set; } = "";
@@ -36,7 +36,7 @@ namespace BazarServer.Application.Commands
 		public string commandContent { get; set; } = "";
 
 		/// <summary>
-		/// signature of commandContent
+		/// signature of commandContent.
 		/// signed by user with privateKey. can be verified by user publicKey.
 		/// </summary>
 		[StringLength(200)]

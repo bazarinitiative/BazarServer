@@ -117,6 +117,13 @@
             <param name="topN">top N servers of highest Reputation</param>
             <returns></returns>
         </member>
+        <member name="M:BazarServer.Controllers.PeerController.GetCommand(System.String)">
+            <summary>
+            get a command. client need this to upload data to another server by UserInfo or Post function.
+            peer server can use this retrieve some data.
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:BazarServer.Controllers.UserCommandController">
             <summary>
             Execute command from user. Such as post, follow, like, channel, etc.

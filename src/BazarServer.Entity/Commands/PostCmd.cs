@@ -34,7 +34,7 @@ namespace BazarServer.Entity.Commands
 
 		/// <summary>
 		/// content of a post. RTF 1.7 standard.
-		/// Word between '#' and first non-letter-nor-digit char will be treat as a tag declaration.
+		/// Word between '#' and first non-letter-nor-digit char will be treat as a hashtag declaration.
 		/// </summary>
 		[StringLength(300)]
 		public string content { get; set; } = "";

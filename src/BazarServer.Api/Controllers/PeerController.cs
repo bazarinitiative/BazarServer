@@ -108,4 +108,23 @@ public partial class PeerController : BazarControllerBase
 		await Task.CompletedTask;
 		return Success(ret);
 	}
+
+	/// <summary>
+	/// get a command. client need this to upload data to another server by UserInfo or Post function.
+	/// peer server can use this retrieve some data.
+	/// </summary>
+	/// <returns></returns>
+	[HttpGet]
+	public async Task<ApiResponse<UserCommand>> GetCommand(string commandID)
+	{
+		var ret = await commandRepository.GetCommandAsync(commandID);
+		if (ret == null)
+		{
+			return Error("not found", ret);
+		}
+		else
+		{
+			return Success(ret);
+		}
+	}
 }

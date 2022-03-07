@@ -24,7 +24,7 @@ A server for decentralized micro-blog
 
 ## BazarServer
 
-- Will forward all userEvents to every know server.
+- Will forward all userCommands to every know server.
 - Every server will choose what data to storage. Usually active user only.
 - Every server can try retrieve data from another server.
 - Any one can throw any message to any server at any time. Server is designed to survive in such chaos battlefield.
