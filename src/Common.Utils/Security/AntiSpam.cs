@@ -7,6 +7,11 @@ namespace Common.Utils
 	{
 		ConcurrentDictionary<string, ConcurrentDictionary<string, FrequencyControl>> dic = new ConcurrentDictionary<string, ConcurrentDictionary<string, FrequencyControl>>();
 
+		/// <summary>
+		/// RandomRate of Trim when Check
+		/// </summary>
+		public int TrimRate { get; set; } = 10000;
+
 		public AntiSpam(IConfiguration configuration)
 		{
 			var anti = configuration.GetSection("AntiSpam");
@@ -47,6 +52,11 @@ namespace Common.Utils
 				{
 					var limit = fc.GetLimit();
 					return (false, $"exceed {limit.maxAllowQuantity} in {limit.seconds} seconds");
+				}
+
+				if (MyRandom.RandomRate(this.TrimRate))
+				{
+					fc.Trim();
 				}
 			}
 			return (true, "");

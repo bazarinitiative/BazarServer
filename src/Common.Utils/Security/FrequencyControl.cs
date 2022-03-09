@@ -108,5 +108,23 @@ namespace Common.Utils
 		{
 			return (maxAllowQuantity, seconds);
 		}
+
+		/// <summary>
+		/// try remove empty KeyUnit to save memory
+		/// </summary>
+		public void Trim()
+		{
+			var keys = allKeys.Keys.ToList();
+			foreach (var key in keys)
+			{
+				if (allKeys.TryGetValue(key, out var unit))
+				{
+					if (unit.GetCurrentCount() == 0)
+					{
+						allKeys.TryRemove(key, out _);
+					}
+				}
+			}
+		}
 	}
 }
