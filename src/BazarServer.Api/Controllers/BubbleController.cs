@@ -139,6 +139,14 @@ public class BubbleController : BazarControllerBase
 		public string describe { get; set; } = "";
 	}
 
+	char[] nochar = { '.', ',', '!', '?' };
+	List<string> nosearch = new List<string>()
+	{
+		"Deleted", "the", "is", "a", "in", "on", "to", "been", "be", "at", "what", "you", "me", "of", "the", "have",
+		"who", "from", "should", "not", "will", "can", "that", "and", "there's", "that's", "it's", "this", "my", "your",
+		"his", "their", "so", "for", "if", "has"
+	};
+
 	/// <summary>
 	/// 
 	/// </summary>
@@ -154,23 +162,54 @@ public class BubbleController : BazarControllerBase
 		{
 			count = 100;
 		}
-		var users = await userRepository.GetRandomUser(100);
+		var users = await userRepository.GetRandomUser(20);
 		var posts = await postRepository.GetRandomPost(100);
-		List<string> pool = new List<string>();
+		HashSet<string> set = new HashSet<string>();
 		foreach (var user in users)
 		{
-			pool.Add(user.userName);
+			var sub = user.userName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			foreach (var item in sub)
+			{
+				var ss = item.Trim().Trim(nochar);
+				if (ss.Length < 3)
+				{
+					continue;
+				}
+				set.Add(ss);
+			}
 		}
 		foreach (var post in posts)
 		{
-			var sub = post.content.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-			pool.AddRange(sub);
+			var sub = post.content.Replace('\n', ' ').Replace('\'', ' ').Replace('’', ' ').Split(' ', StringSplitOptions.RemoveEmptyEntries);
+			foreach (var item in sub)
+			{
+				var ss = item.Trim().Trim(nochar);
+				if (ss.Length < 3)
+				{
+					continue;
+				}
+				set.Add(ss);
+			}
 		}
+		foreach (var item in nosearch)
+		{
+			set.Remove(item.FirstCharUpper());
+			set.Remove(item.FirstCharLower());
+		}
+		set.Remove("");
 
+		List<string> pool = set.ToList();
 		List<TrendUnit> ret = new List<TrendUnit>();
+		HashSet<string> added = new HashSet<string>();
 		for (int i = 0; i < count; i++)
 		{
 			int idx = MyRandom.Random(0, pool.Count);
+			if (added.Contains(pool[idx]))
+			{
+				i--;
+				continue;
+			}
+			added.Add(pool[idx]);
 			TrendUnit item = new TrendUnit()
 			{
 				key = pool[idx],

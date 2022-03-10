@@ -184,5 +184,35 @@ namespace Common.Utils
 			var ret = Json.Serialize(obj);
 			return ret;
 		}
+
+		/// <summary>
+		/// return result that first char is upper. return empty if input empty
+		/// </summary>
+		/// <param name=""></param>
+		/// <returns></returns>
+		public static string FirstCharUpper(this string str)
+		{
+			string ret = "";
+			if (str.Length > 0)
+			{
+				ret = str.Substring(0, 1).ToUpper() + str.Substring(1);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// return result that first char is lower. return empty if input empty
+		/// </summary>
+		/// <param name="str"></param>
+		/// <returns></returns>
+		public static string FirstCharLower(this string str)
+		{
+			string ret = "";
+			if (str.Length > 0)
+			{
+				ret = str.Substring(0, 1).ToLower() + str.Substring(1);
+			}
+			return ret;
+		}
 	}
 }
