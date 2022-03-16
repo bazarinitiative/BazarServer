@@ -28,7 +28,7 @@ namespace BazarServer.Entity.Storage
 			await set.DeleteManyAsync(filter);
 		}
 
-		public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter)
+		public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter)
 		{
 			try
 			{

@@ -19,7 +19,7 @@ namespace BazarServer.Entity.Storage
 		/// </summary>
 		/// <param name="filter"></param>
 		/// <returns></returns>
-		Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter);
+		Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter);
 
 		/// <summary>
 		/// remove all documents that satisfy filter.
