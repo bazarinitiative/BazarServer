@@ -64,9 +64,9 @@ namespace BazarServer.Application.Commands
 			{
 				maxLen = 55 * 1024;
 			}
-			if (commandType == "UserRetrieve")
+			if (commandType == "UserInfo")
 			{
-				maxLen = 11 * 1024;
+				maxLen = 2 * 1024;
 			}
 			return commandContent.Length <= maxLen;
 		}
