@@ -4,6 +4,7 @@ using BazarServer.Entity.SeedWork;
 using BazarServer.Entity.Storage;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Net;
 
 namespace BazarServer.Controllers;
 
@@ -258,7 +259,7 @@ public partial class UserQueryController : BazarControllerBase
 		}
 		var dicPosts = await postRepository.GetPostsAsync(postIDs);
 		var ayDto = await PostQueryFacade.GetPostDto(postRepository, userID, dicPosts.Values.ToList());
-		var dicDto = ayDto.ToDictionary(x=>x.post.postID);
+		var dicDto = ayDto.ToDictionary(x => x.post.postID);
 
 		var current = dicDto[post.postID];
 		PostDetailDto ret = new PostDetailDto() { current = current };
@@ -342,7 +343,7 @@ public partial class UserQueryController : BazarControllerBase
 
 		//it is possible that we return less notifyMsg in some rare situation, it's ok. may do better later.
 		var ret = await userRepository.GetUserNotify(userID, startTime + 1, maxCount);
-		var ret2 = ret.Where(x=> x.fromWho != "").ToList();
+		var ret2 = ret.Where(x => x.fromWho != "").ToList();
 
 		if (ret.Count > 0)
 		{
@@ -367,6 +368,39 @@ public partial class UserQueryController : BazarControllerBase
 
 		var ret = await userRepository.GetNewNotifyCount(userID);
 		return Success(ret);
+	}
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <returns></returns>
+	[HttpGet]
+	[Route("/UserQuery/UserPicImage/{id?}")]
+	public async Task<IActionResult> GetUserPicImage()
+	{
+		string path = Request.Path.Value ?? "";
+		var userID = path.Split('/').Last().Replace(".jpeg", "");
+		var userPic = await userRepository.GetUserPicAsync(userID);
+		if (userPic == null)
+		{
+			return NotFound();
+		}
+		var lastModify = DateHelper.FromTimestamp(userPic.commandTime, TimeZoneInfo.Local).ToString("r");
+		var sss = Request.Headers.IfModifiedSince;
+		if (Request.Headers.TryGetValue("If-Modified-Since", out var since))
+		{
+			if (DateTime.Parse(since) >= DateTime.Parse(lastModify))
+			{
+				return StatusCode((int)HttpStatusCode.NotModified);
+			}
+		}
+
+		var picstr = userPic.pic;
+		var buf = Convert.FromBase64String(picstr);
+		//Response.Headers.ETag = Encryption.Md5Hash(picstr);
+		Response.Headers.LastModified = lastModify;
+		//Response.Headers.CacheControl = "public, max-age=1000";
+		return new FileContentResult(buf, "image/jpeg");
 	}
 }
 

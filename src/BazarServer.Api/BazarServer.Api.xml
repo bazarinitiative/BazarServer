@@ -278,6 +278,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetUserPicImage">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:BazarServer.Controllers.UserQueryFilterAttribute">
             <summary>
             antiSpam, rateLimit

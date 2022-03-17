@@ -59,9 +59,19 @@ namespace Common.Utils
 		/// <returns></returns>
 		public static DateTime FromTimestamp(long timestamp, TimeZoneInfo timeZoneInfo)
 		{
-			DateTime dt = new DateTime(1970, 1, 1).AddSeconds(timestamp);
-			var ret = TimeZoneInfo.ConvertTimeFromUtc(dt, timeZoneInfo);
-			return ret;
+			if (timestamp < int.MaxValue)
+			{
+				DateTime dt = new DateTime(1970, 1, 1).AddSeconds(timestamp);
+				var ret = TimeZoneInfo.ConvertTimeFromUtc(dt, timeZoneInfo);
+				return ret;
+			}
+			else
+			{
+				DateTime dt = new DateTime(1970, 1, 1).AddMilliseconds(timestamp);
+				var ret = TimeZoneInfo.ConvertTimeFromUtc(dt, timeZoneInfo);
+				return ret;
+			}
+
 		}
 	}
 }
