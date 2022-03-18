@@ -147,6 +147,24 @@ public class BubbleController : BazarControllerBase
 		"his", "their", "so", "for", "if", "has"
 	};
 
+	bool canTrend(string ss)
+	{
+		var keepSearch = true;
+		if (ss.Length < 3)
+		{
+			keepSearch = false;
+		}
+		if (ss.GetBytesUtf8().Length > 20)
+		{
+			keepSearch = false;
+		}
+		if (ss.Any(x => "~!@#$%^&*():<>?,./;'[]{}|-=\\\"，。？".Contains(x)))
+		{
+			keepSearch = false;
+		}
+		return keepSearch;
+	}
+
 	/// <summary>
 	/// 
 	/// </summary>
@@ -156,7 +174,7 @@ public class BubbleController : BazarControllerBase
 	/// <param name="count">max 100</param>
 	/// <returns></returns>
 	[HttpGet]
-	public async Task<ApiResponse<List<TrendUnit>>> Trending(string userID, long queryTime, string token, int count = 5)
+	public async Task<ApiResponse<List<TrendUnit>>> Trending(string? userID = "", long queryTime = 0, string? token = "", int count = 5)
 	{
 		if (count > 100)
 		{
@@ -171,11 +189,10 @@ public class BubbleController : BazarControllerBase
 			foreach (var item in sub)
 			{
 				var ss = item.Trim().Trim(nochar);
-				if (ss.Length < 3)
+				if (canTrend(ss))
 				{
-					continue;
+					set.Add(ss);
 				}
-				set.Add(ss);
 			}
 		}
 		foreach (var post in posts)
@@ -184,11 +201,10 @@ public class BubbleController : BazarControllerBase
 			foreach (var item in sub)
 			{
 				var ss = item.Trim().Trim(nochar);
-				if (ss.Length < 3)
+				if (canTrend(ss))
 				{
-					continue;
+					set.Add(ss);
 				}
-				set.Add(ss);
 			}
 		}
 		foreach (var item in nosearch)
