@@ -399,7 +399,7 @@ public partial class UserQueryController : BazarControllerBase
 		var buf = Convert.FromBase64String(picstr);
 		//Response.Headers.ETag = Encryption.Md5Hash(picstr);
 		Response.Headers.LastModified = lastModify;
-		//Response.Headers.CacheControl = "public, max-age=1000";
+		Response.Headers.CacheControl = "max-age=0";
 		return new FileContentResult(buf, "image/jpeg");
 	}
 }
