@@ -278,7 +278,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:BazarServer.Controllers.UserQueryController.GetUserPicImage">
+        <member name="M:BazarServer.Controllers.UserQueryController.GetUserPicImageAsync">
             <summary>
             
             </summary>

@@ -371,19 +371,24 @@ public partial class UserQueryController : BazarControllerBase
 	}
 
 	/// <summary>
-	/// 
+	/// URL like: https://api.bazar.social/UserQuery/UserPicImage/KrNa6OG2O0KjbVXLzRKuxlFknVE1oH.jpeg
 	/// </summary>
 	/// <returns></returns>
 	[HttpGet]
 	[Route("/UserQuery/UserPicImage/{id?}")]
-	public async Task<IActionResult> GetUserPicImage()
+	public async Task<IActionResult> GetUserPicImageAsync()
 	{
 		string path = Request.Path.Value ?? "";
 		var userID = path.Split('/').Last().Replace(".jpeg", "");
 		var userPic = await userRepository.GetUserPicAsync(userID);
 		if (userPic == null)
 		{
-			return NotFound();
+			var imgBuf = System.IO.File.ReadAllBytes(AppDomain.CurrentDomain.BaseDirectory + "/Static/avatar.png");
+			var imgStr = Convert.ToBase64String(imgBuf);
+			Response.Headers.ETag = Encryption.Md5Hash(imgStr);
+			Response.Headers.LastModified = new DateTime().ToString("r");
+			Response.Headers.CacheControl = "max-age=0";
+			return new FileContentResult(imgBuf, "image/jpeg");
 		}
 		var lastModify = DateHelper.FromTimestamp(userPic.commandTime, TimeZoneInfo.Local).ToString("r");
 		var sss = Request.Headers.IfModifiedSince;
@@ -397,7 +402,7 @@ public partial class UserQueryController : BazarControllerBase
 
 		var picstr = userPic.pic;
 		var buf = Convert.FromBase64String(picstr);
-		//Response.Headers.ETag = Encryption.Md5Hash(picstr);
+		Response.Headers.ETag = Encryption.Md5Hash(picstr);
 		Response.Headers.LastModified = lastModify;
 		Response.Headers.CacheControl = "max-age=0";
 		return new FileContentResult(buf, "image/jpeg");
