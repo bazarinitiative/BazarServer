@@ -70,7 +70,11 @@ internal class MyMiddleware
 		var ip = context.GetRemoteIP();
 		var xreal = context.Request.Headers["X-Real-IP"];
 
-		_logger.LogInformation($"RateLimit: remoteIP={ip}, x-real-ip={xreal}");
+		if (ip == "127.0.0.1" && !string.IsNullOrEmpty(xreal))
+		{
+			ip = xreal;
+		}
+		_logger.LogInformation($"RateLimit: remoteIP={ip}, x-real-ip={xreal}, final={ip}");
 
 		if (!fcIP.Check(ip))
 		{
