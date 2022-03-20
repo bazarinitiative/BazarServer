@@ -67,14 +67,15 @@ internal class MyMiddleware
 
 	private bool RateLimit(HttpContext context)
 	{
-		var ip = context.GetRemoteIP();
+		var remote = context.GetRemoteIP();
 		var xreal = context.Request.Headers["X-Real-IP"];
 
-		if (ip == "127.0.0.1" && !string.IsNullOrEmpty(xreal))
+		var ip = remote;
+		if (remote == "127.0.0.1" && !string.IsNullOrEmpty(xreal))
 		{
 			ip = xreal;
 		}
-		_logger.LogInformation($"RateLimit: remoteIP={ip}, x-real-ip={xreal}, final={ip}");
+		_logger.LogInformation($"RateLimit: remoteIP={remote}, x-real-ip={xreal}, final={ip}");
 
 		if (!fcIP.Check(ip))
 		{
