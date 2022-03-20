@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{5FDC4997-A07
 		Install.md = Install.md
 		README.md = README.md
 		run.sh = run.sh
+		stop.sh = stop.sh
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BazarServer.Infrastructure", "src\BazarServer.Infrastructure\BazarServer.Infrastructure.csproj", "{09CB90D2-A6C0-4A6A-82E5-0324CE09BD1A}"

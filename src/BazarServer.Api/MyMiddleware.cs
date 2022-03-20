@@ -65,9 +65,13 @@ internal class MyMiddleware
 
 	static FrequencyControl fcIP = new FrequencyControl(10, 100);
 
-	private static bool RateLimit(HttpContext context)
+	private bool RateLimit(HttpContext context)
 	{
 		var ip = context.GetRemoteIP();
+		var xreal = context.Request.Headers["X-Real-IP"];
+
+		_logger.LogInformation($"RateLimit: remoteIP={ip}, x-real-ip={xreal}");
+
 		if (!fcIP.Check(ip))
 		{
 			return false;

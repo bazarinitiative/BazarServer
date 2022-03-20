@@ -191,7 +191,7 @@ echo ====================BazarServer========================
 cd ~/work/BazarServer
 git pull
 sh build.sh
-killall dotnet
+ps -ef | grep BazarServer.Api.dll | grep -v grep |awk '{print "kill "$2}'|sh
 nohup sh run.sh &
 sleep 1
 
@@ -200,8 +200,8 @@ echo =====================BazarHtml=========================
 cd ~/work/BazarHtml
 git stash
 git pull
-git stash pop
 sh build.sh
+git stash pop
 ```
 
 Usage

@@ -280,7 +280,7 @@
         </member>
         <member name="M:BazarServer.Controllers.UserQueryController.GetUserPicImageAsync">
             <summary>
-            
+            URL like: https://api.bazar.social/UserQuery/UserPicImage/KrNa6OG2O0KjbVXLzRKuxlFknVE1oH.jpeg
             </summary>
             <returns></returns>
         </member>
