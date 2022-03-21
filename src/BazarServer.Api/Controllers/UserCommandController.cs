@@ -66,7 +66,7 @@ public class UserCommandController : BazarControllerBase
 			return new ApiResponse<UserCommandRespDto>(false, dd.msg);
 		}
 
-		string ip = HttpContext.GetRemoteIP();
+		string ip = HttpContext.GetRealIP();
 
 		var cmd = req.ToUserCommand();
 		var res = await commandManager.SaveAndDispatch(cmd, ip);
@@ -85,7 +85,7 @@ public class UserCommandController : BazarControllerBase
 	/// <returns></returns>
 	private async Task<(bool success, string msg)> Preprocess(UserCommandRequestModel req)
 	{
-		var spam = antiSpam.Check("Client.Command", HttpContext.GetRemoteIP());
+		var spam = antiSpam.Check("Client.Command", HttpContext.GetRealIP());
 		if (!spam.success)
 		{
 			return (false, spam.msg);

@@ -1,4 +1,6 @@
-﻿namespace BazarServer;
+﻿using Common.Utils.Util;
+
+namespace BazarServer;
 
 public static class AspNetExtention
 {
@@ -24,5 +26,23 @@ public static class AspNetExtention
 	public static string GetRemoteIP(this HttpContext context)
 	{
 		return context.Connection.RemoteIpAddress.ToStringSupportNull();
+	}
+
+	/// <summary>
+	/// for server after local nginx, get client real ip
+	/// </summary>
+	/// <param name="context"></param>
+	/// <returns></returns>
+	public static string GetRealIP(this HttpContext context)
+	{
+		var remote = context.GetRemoteIP();
+		var xreal = context.Request.Headers["X-Real-IP"];
+
+		var ip = remote;
+		if (NetHelper.IsInternalIP(remote) && !string.IsNullOrEmpty(xreal))
+		{
+			ip = xreal;
+		}
+		return ip;
 	}
 }

@@ -144,7 +144,7 @@ public class BubbleController : BazarControllerBase
 	{
 		"Deleted", "the", "is", "a", "in", "on", "to", "been", "be", "at", "what", "you", "me", "of", "the", "have",
 		"who", "from", "should", "not", "will", "can", "that", "and", "there's", "that's", "it's", "this", "my", "your",
-		"his", "their", "so", "for", "if", "has", "had", "when", "where"
+		"his", "their", "so", "for", "if", "has", "had", "when", "where", "they", "them"
 	};
 
 	bool canTrend(string ss)

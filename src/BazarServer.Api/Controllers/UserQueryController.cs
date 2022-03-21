@@ -424,7 +424,7 @@ internal class UserQueryFilterAttribute : ActionFilterAttribute
 			throw new Exception();
 		}
 
-		var spam = antiSpam.Check("Client.Query", context.HttpContext.GetRemoteIP());
+		var spam = antiSpam.Check("Client.Query", context.HttpContext.GetRealIP());
 		if (!spam.success)
 		{
 			context.Result = new JsonResult(new ApiResponse(false, spam.msg));

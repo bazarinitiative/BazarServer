@@ -47,13 +47,13 @@ public class EmailController : BazarControllerBase
 	/// <returns></returns>
 	private async Task<ApiResponse> SendInternal(string targetEmailAddr, string title, string content)
 	{
-		var spam = antiSpam.Check("Client.Command", HttpContext.GetRemoteIP());
+		var spam = antiSpam.Check("Client.Command", HttpContext.GetRealIP());
 		if (!spam.success)
 		{
 			return Error(spam.msg);
 		}
 
-		var ip = HttpContext.GetRemoteIP();
+		var ip = HttpContext.GetRealIP();
 		if (!fcEmailIP.Check(ip))
 		{
 			return Error($"email too much for IP: {ip}");

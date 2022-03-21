@@ -296,6 +296,13 @@
             <param name="request"></param>
             <returns></returns>
         </member>
+        <member name="M:BazarServer.AspNetExtention.GetRealIP(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            for server after local nginx, get client real ip
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
         <member name="T:BazarServer.MyMiddleware">
             <summary>
             request rate limit, reqest info log, etc.
