@@ -146,7 +146,7 @@ public class BubbleController : BazarControllerBase
 		"who", "from", "should", "not", "will", "can", "that", "and", "there's", "that's", "it's", "this", "my", "your",
 		"his", "their", "so", "for", "if", "has", "had", "when", "where", "they", "them", "over", "which", "how", "our",
 		"out", "here", "there", "very", "she", "with", "own", "why", "himself", "all", "some", "any", "would", "more",
-		"but", "into", "most"
+		"but", "into", "most", "off", "are", "than", "then", "him", "her", "did", "about", "was"
 	};
 
 	bool canTrend(string ss)
