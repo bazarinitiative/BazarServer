@@ -24,7 +24,7 @@ namespace BazarServer.Application.Users
 				return (false, $"user not found");
 			}
 			var diff = Math.Abs(queryTimestamp - DateHelper.CurrentTimeMillis());
-			if (diff > 600 * 1000)
+			if (diff > 24 * 3600 * 1000)
 			{
 				return (false, "time not match");
 			}

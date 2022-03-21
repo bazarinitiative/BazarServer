@@ -43,11 +43,13 @@ internal class MyMiddleware
 			string fullurl = context.Request.GetFullUrl();
 			var requestbody = await ReadRequestBody(context.Request);
 			var info = $"{fullurl} {context.Request.Method}: {requestbody.Left(2000)}";
+			var start = DateHelper.GetMilliSeconds();
 
 			// Call the next delegate/middleware in the pipeline
 			await _next(context);
 
-			_logger.LogInformation($"{info}, result={context.Response.StatusCode}");
+			var used = DateHelper.GetMilliSeconds() - start;
+			_logger.LogInformation($"{info}, result={context.Response.StatusCode}, used={used.ToString("0.00")}");
 			if (context.Response.StatusCode == StatusCodes.Status500InternalServerError)
 			{
 				_logger.LogError($"{info}, errorCode={context.Response.StatusCode}");

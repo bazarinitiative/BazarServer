@@ -68,6 +68,7 @@ namespace BazarServer.Application.PeerServers
 				{
 					foreach (var stat in dicServerStats.Values)
 					{
+						var url = stat.server.BaseUrl;
 						await TimerOne(stat);
 					}
 				}
@@ -175,7 +176,7 @@ namespace BazarServer.Application.PeerServers
 			try
 			{
 				var url = Url.Combine(pss.server.BaseUrl, "/Peer/RetrieveCommandBatch");
-				url += $"?lastOffset={pss.server.lastReceiveOffset}&forwardCount=1000";
+				url += $"?lastOffset={pss.server.lastReceiveOffset}&forwardCount=100";
 
 				var ss = HttpHelper.Get(url);
 

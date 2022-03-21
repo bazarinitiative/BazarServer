@@ -37,17 +37,18 @@ namespace BazarServer.Application.Posts
 		}
 
 		/// <summary>
-		/// get latest 1000 posts of user
+		/// get latest N posts of user
 		/// </summary>
 		/// <param name="postRepository"></param>
 		/// <param name="userID"></param>
 		/// <returns></returns>
 		private static async Task<List<Post>> GetUserLatestPosts_withCache(IPostRepository postRepository, string userID)
 		{
-			var cacheMilli = 1000;
+			var cacheMilli = 100 * 1000;
 			var key = GetUserLatestPostsKey(userID);
-			var list = await CacheHelper.WithCacheAsync<List<Post>>(key, async () => {
-				var ret = await postRepository.GetPostsByUserAsync(userID, false, 0, 1000);
+			var list = await CacheHelper.WithCacheAsync<List<Post>>(key, async () =>
+			{
+				var ret = await postRepository.GetPostsByUserAsync(userID, false, 0, 100);
 				return ret;
 			}, cacheMilli, true);
 			if (list == null)

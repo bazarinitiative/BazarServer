@@ -96,7 +96,7 @@
         </member>
         <member name="M:BazarServer.Application.Posts.PostQueryFacade.GetUserLatestPosts_withCache(BazarServer.Entity.Storage.IPostRepository,System.String)">
             <summary>
-            get latest 1000 posts of user
+            get latest N posts of user
             </summary>
             <param name="postRepository"></param>
             <param name="userID"></param>
