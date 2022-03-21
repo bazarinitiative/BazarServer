@@ -97,16 +97,21 @@ public class UserCommandController : BazarControllerBase
 		}
 
 		var user = await userRepository.GetUserInfoAsync(req.userID);
-		if (user == null)
+		var publicKey = "";
+		if (user != null)
+		{
+			publicKey = user.publicKey.Trim();
+		}
+		else
 		{
 			if (req.commandType == "UserInfo")
 			{
-				user = Json.Deserialize<UserInfo>(req.commandContent);
-				if (user == null)
+				var userCmd = Json.Deserialize<UserInfoCmd>(req.commandContent);
+				if (userCmd == null)
 				{
 					return (false, "invalid userInfo");
 				}
-				user.publicKey = user.publicKey.Trim();
+				publicKey = userCmd.publicKey.Trim();
 			}
 		}
 		if (user == null)
@@ -114,7 +119,7 @@ public class UserCommandController : BazarControllerBase
 			return (false, $"User not exist: {req.userID}");
 		}
 
-		bool check = Encryption.CheckSignature(req.commandContent, req.signature, user.publicKey);
+		bool check = Encryption.CheckSignature(req.commandContent, req.signature, publicKey);
 		if (!check)
 		{
 			return (false, "signature check fail");

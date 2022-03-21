@@ -1,4 +1,5 @@
 ﻿using BazarServer.Application.Commands;
+using BazarServer.Entity.Commands;
 using BazarServer.Entity.PeerServers;
 using BazarServer.Entity.SeedWork;
 using BazarServer.Entity.Storage;
@@ -384,14 +385,23 @@ namespace BazarServer.Application.PeerServers
 				}
 
 				var user = await userRepository.GetUserInfoAsync_WithCache(cmd.userID);
-				if (user == null)
+				var publicKey = "";
+				if (user != null)
+				{
+					publicKey = user.publicKey;
+				}
+				else
 				{
 					if (cmd.commandType == "UserInfo")
 					{
-						user = Json.Deserialize<UserInfo>(cmd.commandContent);
+						var userCmd = Json.Deserialize<UserInfoCmd>(cmd.commandContent);
+						if (userCmd != null)
+						{
+							publicKey = userCmd.publicKey;
+						}
 					}
 				}
-				if (user == null)
+				if (string.IsNullOrEmpty(publicKey))
 				{
 					stat.server.ReceiveErrorCount++;
 					return MsgResult.Error;
@@ -403,7 +413,7 @@ namespace BazarServer.Application.PeerServers
 					return MsgResult.Error;
 				}
 
-				if (!Encryption.CheckSignature(cmd.commandContent, cmd.signature, user.publicKey))
+				if (!Encryption.CheckSignature(cmd.commandContent, cmd.signature, publicKey))
 				{
 					stat.server.ReceiveErrorCount++;
 					return MsgResult.Error;

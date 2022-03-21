@@ -48,6 +48,11 @@ public partial class UserQueryController : BazarControllerBase
 			return Error<UserInfo>("user not found");
 		}
 
+		if (user.createTime == 0)
+		{
+			user.createTime = user.commandTime;
+		}
+
 		return Success(user);
 	}
 

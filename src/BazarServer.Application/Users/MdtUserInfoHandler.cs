@@ -74,10 +74,17 @@ namespace BazarServer.Application.Users
 				{
 					return (false, "older can not update newer");
 				}
+				model.createTime = old.createTime;
+				if (model.createTime == 0)
+				{
+					model.createTime = old.commandTime;
+				}
+
 				await userRepository.UpdateUserAsync(model);
 			}
 			else
 			{
+				model.createTime = DateHelper.CurrentTimeMillis();
 				await userRepository.SaveUserAsync(model);
 			}
 			return (true, "");

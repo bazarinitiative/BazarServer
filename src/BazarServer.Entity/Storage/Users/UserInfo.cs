@@ -48,5 +48,9 @@ namespace BazarServer.Entity.Storage
 		[StringLength(100)]
 		public string website { get; set; } = "";
 
+		/// <summary>
+		/// when this account created
+		/// </summary>
+		public long createTime { get; set; }
 	}
 }

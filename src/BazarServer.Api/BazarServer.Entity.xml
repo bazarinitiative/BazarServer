@@ -872,6 +872,11 @@
             website
             </summary>
         </member>
+        <member name="P:BazarServer.Entity.Storage.UserInfo.createTime">
+            <summary>
+            when this account created
+            </summary>
+        </member>
         <member name="T:BazarServer.Entity.Storage.UserPic">
             <summary>
             user avatar pic
