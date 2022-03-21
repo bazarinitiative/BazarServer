@@ -145,7 +145,8 @@ public class BubbleController : BazarControllerBase
 		"Deleted", "the", "is", "a", "in", "on", "to", "been", "be", "at", "what", "you", "me", "of", "the", "have",
 		"who", "from", "should", "not", "will", "can", "that", "and", "there's", "that's", "it's", "this", "my", "your",
 		"his", "their", "so", "for", "if", "has", "had", "when", "where", "they", "them", "over", "which", "how", "our",
-		"out", "here", "there", "very", "she", "with", "own", "why", "himself", "all"
+		"out", "here", "there", "very", "she", "with", "own", "why", "himself", "all", "some", "any", "would", "more",
+		"but", "into", "most"
 	};
 
 	bool canTrend(string ss)
@@ -181,8 +182,8 @@ public class BubbleController : BazarControllerBase
 		{
 			count = 100;
 		}
-		var users = await userRepository.GetRandomUser(20);
-		var posts = await postRepository.GetRandomPost(100);
+		var users = (await userRepository.GetRandomUser(20)).OrderByDescending(x=>x.commandTime).Take(10);
+		var posts = (await postRepository.GetRandomPost(100)).OrderByDescending(x=>x.commandTime).Take(50);
 		HashSet<string> set = new HashSet<string>();
 		foreach (var user in users)
 		{
