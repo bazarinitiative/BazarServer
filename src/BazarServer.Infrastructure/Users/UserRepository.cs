@@ -79,22 +79,6 @@ namespace BazarServer.Infrastructure.Users
 			}
 		}
 
-		public async Task UpdateUserAsync(UserInfo model)
-		{
-			var ret = await _conn.FirstOrDefaultAsync(x => x.userID == model.userID);
-			if (ret == null)
-			{
-				return;
-			}
-			ret.userName = model.userName;
-			ret.biography = model.biography;
-			ret.location = model.location;
-			ret.website = model.website;
-			ret.commandID = model.commandID;
-			ret.commandTime = model.commandTime;
-			await _conn.UpdateAsync(x => x.userID == model.userID, ret);
-		}
-
 		public async Task<UserPic?> GetUserPicAsync(string userID)
 		{
 			var ret = await _connPic.FirstOrDefaultAsync(x => x.userID == userID);

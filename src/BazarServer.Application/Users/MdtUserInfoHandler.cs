@@ -80,7 +80,7 @@ namespace BazarServer.Application.Users
 					model.createTime = old.commandTime;
 				}
 
-				await userRepository.UpdateUserAsync(model);
+				await userRepository.SaveUserAsync(model);
 			}
 			else
 			{

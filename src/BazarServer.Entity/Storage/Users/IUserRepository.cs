@@ -13,8 +13,6 @@
 		Task<UserPic?> GetUserPicAsync(string userID);
 		Task<UserStatistic?> GetUserStatisticAsync(string userID);
 		Task SaveUserAsync(UserInfo model);
-		Task UpdateUserAsync(UserInfo model);
-
 		Task UpsertUserStatisticAsync(string userID, int addPostCount = 0, int addLikedCount = 0, int addFollowingCount = 0, int addFollowedCount = 0);
 		Task<bool> IsExistUserAsync(string userID);
 
