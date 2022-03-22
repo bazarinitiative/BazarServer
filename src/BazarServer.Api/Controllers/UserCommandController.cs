@@ -114,7 +114,7 @@ public class UserCommandController : BazarControllerBase
 				publicKey = userCmd.publicKey.Trim();
 			}
 		}
-		if (user == null)
+		if (string.IsNullOrEmpty(publicKey))
 		{
 			return (false, $"User not exist: {req.userID}");
 		}
