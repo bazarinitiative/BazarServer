@@ -38,18 +38,15 @@ namespace BazarServer.Application.Users
 				{
 					return new MdtResp(false, $"can't follow yourself");
 				}
-				UserCommandRespDto rc = new UserCommandRespDto();
 				if (!await userRepository.IsExistUserAsync(model.userID))
 				{
-					rc.AddUser(model.userID);
-					return new MdtResp(false, "lack data", rc);
+					return new MdtResp(false, "lack data", new UserCommandRespDto(CommandErrorCode.NoUser, model.userID));
 				}
 				if (model.targetType == "User")
 				{
 					if (!await userRepository.IsExistUserAsync(model.targetID))
 					{
-						rc.AddUser(model.targetID);
-						return new MdtResp(false, "lack data", rc);
+						return new MdtResp(false, "lack data", new UserCommandRespDto(CommandErrorCode.NoUser, model.targetID));
 					}
 				}
 				else if (model.targetType == "Channel")
@@ -57,8 +54,7 @@ namespace BazarServer.Application.Users
 					var cc = await _connChannel.FirstOrDefaultAsync(x => x.channelID == model.targetID);
 					if (cc == null)
 					{
-						rc.AddChannel(model.targetID);
-						return new MdtResp(false, "lack data", rc);
+						return new MdtResp(false, "lack data", new UserCommandRespDto(CommandErrorCode.NoChannel, model.targetID));
 					}
 				}
 				else

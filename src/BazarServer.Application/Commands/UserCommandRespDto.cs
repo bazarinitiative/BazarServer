@@ -1,35 +1,37 @@
 ﻿namespace BazarServer.Application.Commands
 {
+	public enum CommandErrorCode
+	{
+		/// <summary>
+		/// 1-99 reserved
+		/// </summary>
+		Default = 0,
+		NoUser = 100,
+		NoPost = 101,
+		NoChannel = 102,
+		NoFollowing = 103,
+	}
+
 	/// <summary>
 	/// response data for a command. usually lack of data. client should upload the necessary data and retry
 	/// </summary>
 	public class UserCommandRespDto
 	{
-		/// <summary>
-		/// need some extra UserInfo to execute a user command such as 'Following', 'Like', 'Repost', etc.
-		/// </summary>
-		public List<string> lackUserInfo { get; set; } = new List<string>();
+		public CommandErrorCode code { get; set; }
 
 		/// <summary>
-		/// need some extra Post to execute a user command.
+		/// content depends on CommandErrorCode. usually the id of lack-resource
 		/// </summary>
-		public List<string> lackPost { get; set; } = new List<string>();
+		public string message { get; set; } = "";
 
-		public List<string> lackChannel { get; set; } = new List<string>();
-
-		public void AddUser(string userID)
+		public UserCommandRespDto()
 		{
-			lackUserInfo.Add(userID);
 		}
 
-		public void AddPost(string postID)
+		public UserCommandRespDto(CommandErrorCode code, string message)
 		{
-			lackPost.Add(postID);
-		}
-
-		public void AddChannel(string channelID)
-		{
-			lackChannel.Add(channelID);
+			this.code = code;
+			this.message = message;
 		}
 	}
 }

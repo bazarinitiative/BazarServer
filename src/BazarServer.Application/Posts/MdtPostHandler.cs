@@ -56,12 +56,10 @@ namespace BazarServer.Application.Posts
 
 				if (model.replyTo.Length > 0)
 				{
-					UserCommandRespDto rc = new UserCommandRespDto();
 					var parent = await postRepository.GetPostAsync(model.replyTo);
 					if (parent == null)
 					{
-						rc.AddPost(model.replyTo);
-						return new MdtResp(false, "lack data", rc);
+						return new MdtResp(false, "lack data", new UserCommandRespDto(CommandErrorCode.NoPost, model.replyTo));
 					}
 					if (model.threadID != parent.threadID)
 					{

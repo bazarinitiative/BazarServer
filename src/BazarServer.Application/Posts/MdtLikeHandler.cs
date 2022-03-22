@@ -30,12 +30,10 @@ namespace BazarServer.Application.Posts
 			try
 			{
 				var model = req.model;
-				UserCommandRespDto rc = new UserCommandRespDto();
 				var post = await postRepository.GetPostAsync(model.postID);
 				if (post == null)
 				{
-					rc.AddPost(model.postID);
-					return new MdtResp(false, "lack data", rc);
+					return new MdtResp(false, "lack data", new UserCommandRespDto(CommandErrorCode.NoPost, model.postID));
 				}
 				var info = await OnLikeAsync(model, post);
 

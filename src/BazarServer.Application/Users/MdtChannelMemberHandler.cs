@@ -28,11 +28,9 @@ namespace BazarServer.Application.Users
 			try
 			{
 				var model = req.model;
-				UserCommandRespDto rc = new UserCommandRespDto();
 				if (!await userRepository.IsExistUserAsync(model.userID))
 				{
-					rc.AddUser(model.userID);
-					return new MdtResp(false, "lack data", rc);
+					return new MdtResp(false, "lack data", new UserCommandRespDto(CommandErrorCode.NoUser, model.userID));
 				}
 				var info = await OnChannelMemberAsync(model);
 

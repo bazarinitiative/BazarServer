@@ -70,19 +70,19 @@
             signed by user with privateKey. can be verified by user publicKey.
             </summary>
         </member>
+        <member name="F:BazarServer.Application.Commands.CommandErrorCode.Default">
+            <summary>
+            1-99 reserved
+            </summary>
+        </member>
         <member name="T:BazarServer.Application.Commands.UserCommandRespDto">
             <summary>
             response data for a command. usually lack of data. client should upload the necessary data and retry
             </summary>
         </member>
-        <member name="P:BazarServer.Application.Commands.UserCommandRespDto.lackUserInfo">
+        <member name="P:BazarServer.Application.Commands.UserCommandRespDto.message">
             <summary>
-            need some extra UserInfo to execute a user command such as 'Following', 'Like', 'Repost', etc.
-            </summary>
-        </member>
-        <member name="P:BazarServer.Application.Commands.UserCommandRespDto.lackPost">
-            <summary>
-            need some extra Post to execute a user command.
+            content depends on CommandErrorCode. usually the id of lack-resource
             </summary>
         </member>
         <member name="M:BazarServer.Application.Posts.PostQueryFacade.GetPostDto(BazarServer.Entity.Storage.IPostRepository,System.String,System.Collections.Generic.List{BazarServer.Entity.Storage.Post})">

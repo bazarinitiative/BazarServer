@@ -32,11 +32,9 @@ namespace BazarServer.Application.Users
 				{
 					return new MdtResp(false, "description too long");
 				}
-				UserCommandRespDto rc = new UserCommandRespDto();
 				if (!await userRepository.IsExistUserAsync(model.userID))
 				{
-					rc.AddUser(model.userID);
-					return new MdtResp(false, "lack data", rc);
+					return new MdtResp(false, "lack data", new UserCommandRespDto(CommandErrorCode.NoUser, model.userID));
 				}
 				var info = await OnChannelAsync(model);
 
