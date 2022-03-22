@@ -41,8 +41,9 @@ internal class MyMiddleware
 			}
 
 			string fullurl = context.Request.GetFullUrl();
-			var requestbody = await ReadRequestBody(context.Request);
-			var info = $"{fullurl} {context.Request.Method}: {requestbody.Left(2000)}";
+			//var requestbody = await ReadRequestBody(context.Request);
+			//var info = $"{fullurl} {context.Request.Method}: {requestbody.Left(2000)}";
+			var info = $"{fullurl} {context.Request.Method}";
 			var start = DateHelper.GetMilliSeconds();
 
 			// Call the next delegate/middleware in the pipeline

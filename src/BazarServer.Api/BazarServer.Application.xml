@@ -108,9 +108,9 @@
             </summary>
             <param name="userID"></param>
         </member>
-        <member name="M:BazarServer.Application.Posts.PostQueryFacade.GetPostsByUsers(BazarServer.Entity.Storage.IPostRepository,System.Collections.Generic.List{System.String},System.Int32,System.Int32)">
+        <member name="M:BazarServer.Application.Posts.PostQueryFacade.GetLatestPostsByUsers(BazarServer.Entity.Storage.IPostRepository,System.Collections.Generic.List{System.String},System.Int32,System.Int32)">
             <summary>
-            return the posts of users. latest at top.
+            return the top N posts of users. latest at top. with cache.
             </summary>
             <param name="postRepository"></param>
             <param name="userIDs"></param>

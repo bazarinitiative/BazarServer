@@ -44,7 +44,8 @@ namespace BazarServer.Application.Posts
 		/// <returns></returns>
 		private static async Task<List<Post>> GetUserLatestPosts_withCache(IPostRepository postRepository, string userID)
 		{
-			var cacheMilli = 100 * 1000;
+			// work with RemoveUserLatestPostsCache
+			var cacheMilli = 7 * 24 * 3600 * 1000;
 			var key = GetUserLatestPostsKey(userID);
 			var list = await CacheHelper.WithCacheAsync<List<Post>>(key, async () =>
 			{
@@ -69,14 +70,14 @@ namespace BazarServer.Application.Posts
 		}
 
 		/// <summary>
-		/// return the posts of users. latest at top.
+		/// return the top N posts of users. latest at top. with cache.
 		/// </summary>
 		/// <param name="postRepository"></param>
 		/// <param name="userIDs"></param>
 		/// <param name="page"></param>
 		/// <param name="pageSize"></param>
 		/// <returns></returns>
-		public static async Task<List<Post>> GetPostsByUsers(IPostRepository postRepository, List<string> userIDs, int page, int pageSize)
+		public static async Task<List<Post>> GetLatestPostsByUsers(IPostRepository postRepository, List<string> userIDs, int page, int pageSize)
 		{
 			List<Post> posts = new List<Post>();
 			foreach (var userID in userIDs)

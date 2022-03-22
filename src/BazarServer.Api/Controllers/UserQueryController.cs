@@ -128,7 +128,7 @@ public partial class UserQueryController : BazarControllerBase
 		var users = await userRepository.GetUserFollowees(userID, 0, 1000);
 		var ay = users.Select(x => x.targetID).ToList();
 		ay.Add(userID);
-		var posts = await PostQueryFacade.GetPostsByUsers(postRepository, ay, page, pageSize);
+		var posts = await PostQueryFacade.GetLatestPostsByUsers(postRepository, ay, page, pageSize);
 		var ret = await PostQueryFacade.GetPostDto(postRepository, userID, posts);
 		return ret;
 	}

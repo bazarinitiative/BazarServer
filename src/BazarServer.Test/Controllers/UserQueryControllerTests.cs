@@ -52,7 +52,7 @@ namespace BazarServer.Controllers.Tests
 
 			var users = await userRepository.GetUserFollowees(userID, 0, 1000);
 			var ay = users.Select(x => x.targetID).ToList();
-			var posts = await PostQueryFacade.GetPostsByUsers(postRepository, ay, page, pageSize);
+			var posts = await PostQueryFacade.GetLatestPostsByUsers(postRepository, ay, page, pageSize);
 			var ret = await PostQueryFacade.GetPostDto(postRepository, userID, posts);
 
 			Assert.IsTrue(true);
