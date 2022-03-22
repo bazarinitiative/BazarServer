@@ -447,12 +447,14 @@
             <param name="count"></param>
             <returns></returns>
         </member>
-        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.Search(System.Collections.Generic.List{System.String},System.Int32)">
+        <member name="M:BazarServer.Entity.Storage.IGenericMongoCollection`1.Search``1(System.Collections.Generic.List{System.String},System.Int32,System.Int32,System.Linq.Expressions.Expression{System.Func{`0,``0}})">
             <summary>
             
             </summary>
             <param name="ay"></param>
-            <param name="maxCount"></param>
+            <param name="startIdx"></param>
+            <param name="endIdx"></param>
+            <param name="keySelector"></param>
             <returns></returns>
         </member>
         <member name="T:BazarServer.Entity.Storage.IMongoContext">
@@ -518,12 +520,13 @@
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="M:BazarServer.Entity.Storage.IPostRepository.Search(System.Collections.Generic.List{System.String},System.Int32)">
+        <member name="M:BazarServer.Entity.Storage.IPostRepository.Search(System.Collections.Generic.List{System.String},System.Int32,System.Int32)">
             <summary>
             
             </summary>
             <param name="ay"></param>
-            <param name="maxCount"></param>
+            <param name="startIdx"></param>
+            <param name="endIdx"></param>
             <returns></returns>
         </member>
         <member name="M:BazarServer.Entity.Storage.IPostRepository.GetPostMeta(System.String)">
@@ -752,12 +755,13 @@
             <param name="pageSize"></param>
             <returns></returns>
         </member>
-        <member name="M:BazarServer.Entity.Storage.IUserRepository.Search(System.Collections.Generic.List{System.String},System.Int32)">
+        <member name="M:BazarServer.Entity.Storage.IUserRepository.Search(System.Collections.Generic.List{System.String},System.Int32,System.Int32)">
             <summary>
             
             </summary>
             <param name="ay"></param>
-            <param name="maxCount"></param>
+            <param name="startIdx"></param>
+            <param name="endIdx"></param>
             <returns></returns>
         </member>
         <member name="M:BazarServer.Entity.Storage.IUserRepository.GetUserFollowing(System.String,System.String)">

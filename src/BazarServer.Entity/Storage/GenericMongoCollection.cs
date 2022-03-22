@@ -138,11 +138,16 @@ namespace BazarServer.Entity.Storage
 			return ret;
 		}
 
-		public async Task<List<TEntity>> Search(List<string> ay, int maxCount)
+		public async Task<List<TEntity>> Search<TKey>(List<string> ay, int startIdx, int endIdx, Expression<Func<TEntity, TKey>>? keySelector = null)
 		{
 			var search = string.Join(' ', ay);
 			var filter = Builders<TEntity>.Filter.Text(search);
-			var ret = await set.AsQueryable().Where(_ => filter.Inject()).Take(maxCount).ToListAsync();
+			var query = set.AsQueryable().Where(_ => filter.Inject());
+			if (keySelector != null)
+			{
+				query = query.OrderByDescending(keySelector);
+			}
+			var ret = await query.Skip(startIdx).Take(endIdx - startIdx).ToListAsync();
 			return ret;
 		}
 	}

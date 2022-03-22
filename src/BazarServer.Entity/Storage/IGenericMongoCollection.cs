@@ -104,8 +104,10 @@ namespace BazarServer.Entity.Storage
 		/// 
 		/// </summary>
 		/// <param name="ay"></param>
-		/// <param name="maxCount"></param>
+		/// <param name="startIdx"></param>
+		/// <param name="endIdx"></param>
+		/// <param name="keySelector"></param>
 		/// <returns></returns>
-		Task<List<TEntity>> Search(List<string> ay, int maxCount);
+		Task<List<TEntity>> Search<TKey>(List<string> ay, int startIdx, int endIdx, Expression<Func<TEntity, TKey>>? keySelector = null);
 	}
 }

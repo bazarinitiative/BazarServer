@@ -9,7 +9,7 @@
             for those search and recommendation
             </summary>
         </member>
-        <member name="M:BazarServer.Controllers.BubbleController.Search(System.String,System.Int64,System.String,System.String)">
+        <member name="M:BazarServer.Controllers.BubbleController.Search(System.String,System.Int64,System.String,System.String,System.String,System.Int32,System.Int32)">
             <summary>
             return personal search result
             </summary>
@@ -17,13 +17,19 @@
             <param name="queryTime"></param>
             <param name="token"></param>
             <param name="keys"></param>
+            <param name="catalog">can be: Top, Latest, People, etc. Top by default inluces people and posts. Lastest is lastest posts. People is users.</param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
             <returns></returns>
         </member>
-        <member name="M:BazarServer.Controllers.BubbleController.PublicSearch(System.String)">
+        <member name="M:BazarServer.Controllers.BubbleController.PublicSearch(System.String,System.String,System.Int32,System.Int32)">
             <summary>
             public search
             </summary>
             <param name="keys"></param>
+            <param name="catalog"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
             <returns></returns>
         </member>
         <member name="M:BazarServer.Controllers.BubbleController.MightLike(System.String,System.Int64,System.String,System.Int32)">

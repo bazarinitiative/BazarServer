@@ -175,9 +175,9 @@ namespace BazarServer.Infrastructure.Users
 			return ret;
 		}
 
-		public async Task<List<UserInfo>> Search(List<string> ay, int maxCount)
+		public async Task<List<UserInfo>> Search(List<string> ay, int startIdx, int endIdx)
 		{
-			var ret = await _conn.Search(ay, maxCount);
+			var ret = await _conn.Search(ay, startIdx, endIdx, x => x.createTime);
 			return ret;
 		}
 	}

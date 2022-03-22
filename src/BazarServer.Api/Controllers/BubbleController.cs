@@ -30,58 +30,80 @@ public class BubbleController : BazarControllerBase
 	/// <param name="queryTime"></param>
 	/// <param name="token"></param>
 	/// <param name="keys"></param>
+	/// <param name="catalog">can be: Top, Latest, People, etc. Top by default inluces people and posts. Lastest is lastest posts. People is users.</param>
+	/// <param name="page"></param>
+	/// <param name="pageSize"></param>
 	/// <returns></returns>
 	[HttpGet]
-	public async Task<ApiResponse<SearchResult>> Search(string userID, long queryTime, string token, string keys)
+	public async Task<ApiResponse<SearchResult>> Search(string userID, long queryTime, string token, string keys, string? catalog = "", int page = 0, int pageSize = 20)
 	{
-		var ret = new SearchResult();
 		var check = await UserQueryFacade.CheckQuery(userRepository, userID, queryTime, token);
 		if (!check.success)
 		{
-			return Error(check.msg, ret);
+			return Error(check.msg, new SearchResult());
 		}
 		var ay = keys.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
-		var users = await userRepository.Search(ay, 10);
-		foreach (var user in users)
-		{
-			UserDto dd = await UserQueryFacade.GetUserDto_WithCache(userRepository, user.userID);
-			ret.users.Add(dd);
-		}
-		var posts = await postRepository.Search(ay, 10);
-		foreach (var post in posts)
-		{
-			PostStatistic ps = await postRepository.GetPostStatisticAsync(post.postID) ?? new PostStatistic(post.postID);
-			var liked = await postRepository.GetPostLikeAsync(userID, post.postID);
-			PostDto dd = new PostDto(post, ps, liked);
-			ret.posts.Add(dd);
-		}
+
+		var ret = await SearchInter(userID, catalog ?? "", page, pageSize, ay);
 		return Success(ret);
+	}
+
+	private async Task<SearchResult> SearchInter(string userID, string catalog, int page, int pageSize, List<string> keys)
+	{
+		var ret = new SearchResult();
+		if (catalog == "" || catalog == "Top")
+		{
+			var users = await userRepository.Search(keys, 0, 10);
+			foreach (var user in users)
+			{
+				UserDto dd = await UserQueryFacade.GetUserDto_WithCache(userRepository, user.userID);
+				ret.users.Add(dd);
+			}
+			var posts = await postRepository.Search(keys, 0, 10);
+			var dtos = await PostQueryFacade.GetPostDto(postRepository, userID, posts);
+			foreach (var dd in dtos)
+			{
+				ret.posts.Add(dd);
+			}
+		}
+		else if (catalog == "Latest")
+		{
+			int startIdx = page * pageSize;
+			var posts = await postRepository.Search(keys, startIdx, startIdx + pageSize);
+			var dtos = await PostQueryFacade.GetPostDto(postRepository, userID, posts);
+			foreach (var dd in dtos)
+			{
+				ret.posts.Add(dd);
+			}
+		}
+		else if (catalog == "People")
+		{
+			int startIdx = page * pageSize;
+			var users = await userRepository.Search(keys, startIdx, startIdx + pageSize);
+			foreach (var user in users)
+			{
+				UserDto dd = await UserQueryFacade.GetUserDto_WithCache(userRepository, user.userID);
+				ret.users.Add(dd);
+			}
+		}
+
+		return ret;
 	}
 
 	/// <summary>
 	/// public search
 	/// </summary>
 	/// <param name="keys"></param>
+	/// <param name="catalog"></param>
+	/// <param name="page"></param>
+	/// <param name="pageSize"></param>
 	/// <returns></returns>
 	[HttpGet]
-	public async Task<ApiResponse<SearchResult>> PublicSearch(string keys)
+	public async Task<ApiResponse<SearchResult>> PublicSearch(string keys, string? catalog = "", int page = 0, int pageSize = 20)
 	{
-		var ret = new SearchResult();
 		var ay = keys.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
-		var users = await userRepository.Search(ay, 10);
-		foreach (var user in users)
-		{
-			UserDto dd = await UserQueryFacade.GetUserDto_WithCache(userRepository, user.userID);
-			ret.users.Add(dd);
-		}
-		var posts = await postRepository.Search(ay, 10);
-		foreach (var post in posts)
-		{
-			PostStatistic ps = await postRepository.GetPostStatisticAsync(post.postID) ?? new PostStatistic(post.postID);
-			var liked = false;
-			PostDto dd = new PostDto(post, ps, liked);
-			ret.posts.Add(dd);
-		}
+
+		var ret = await SearchInter("", catalog ?? "", page, pageSize, ay);
 		return Success(ret);
 	}
 
@@ -146,7 +168,8 @@ public class BubbleController : BazarControllerBase
 		"who", "from", "should", "not", "will", "can", "that", "and", "there's", "that's", "it's", "this", "my", "your",
 		"his", "their", "so", "for", "if", "has", "had", "when", "where", "they", "them", "over", "which", "how", "our",
 		"out", "here", "there", "very", "she", "with", "own", "why", "himself", "all", "some", "any", "would", "more",
-		"but", "into", "most", "off", "are", "than", "then", "him", "her", "did", "about", "was"
+		"but", "into", "most", "off", "are", "than", "then", "him", "her", "did", "about", "was", "both", "other",
+		"after", "before", "each", "having", "its", "too", "between"
 	};
 
 	bool canTrend(string ss)
@@ -182,9 +205,9 @@ public class BubbleController : BazarControllerBase
 		{
 			count = 100;
 		}
-		var users = (await userRepository.GetRandomUser(20)).OrderByDescending(x=>x.commandTime).Take(10);
-		var posts = (await postRepository.GetRandomPost(100)).OrderByDescending(x=>x.commandTime).Take(50);
-		HashSet<string> set = new HashSet<string>();
+		var users = (await userRepository.GetRandomUser(20)).OrderByDescending(x => x.commandTime).Take(10);
+		var posts = (await postRepository.GetRandomPost(100)).OrderByDescending(x => x.commandTime).Take(50);
+		HashSet<string> trendSet = new HashSet<string>();
 		foreach (var user in users)
 		{
 			var sub = user.userName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -193,7 +216,7 @@ public class BubbleController : BazarControllerBase
 				var ss = item.Trim().Trim(nochar);
 				if (canTrend(ss))
 				{
-					set.Add(ss);
+					trendSet.Add(ss);
 				}
 			}
 		}
@@ -205,18 +228,29 @@ public class BubbleController : BazarControllerBase
 				var ss = item.Trim().Trim(nochar);
 				if (canTrend(ss))
 				{
-					set.Add(ss);
+					trendSet.Add(ss);
 				}
 			}
 		}
+
+		HashSet<string> toRemove = new HashSet<string>();
 		foreach (var item in nosearch)
 		{
-			set.Remove(item.FirstCharUpper());
-			set.Remove(item.FirstCharLower());
+			foreach (string one in trendSet)
+			{
+				if (string.Compare(one, item, true) == 0)
+				{
+					toRemove.Add(one);
+				}
+			}
 		}
-		set.Remove("");
+		foreach (var item in toRemove)
+		{
+			trendSet.Remove(item);
+		}
+		trendSet.Remove("");
 
-		List<string> pool = set.ToList();
+		List<string> pool = trendSet.ToList();
 		List<TrendUnit> ret = new List<TrendUnit>();
 		HashSet<string> added = new HashSet<string>();
 		for (int i = 0; i < count; i++)

@@ -173,9 +173,9 @@ namespace BazarServer.Infrastructure.Posts
 			return list.ToDictionary(x => x.postID);
 		}
 
-		public async Task<List<Post>> Search(List<string> ay, int maxCount)
+		public async Task<List<Post>> Search(List<string> ay, int startIdx, int endIdx)
 		{
-			var ret = await _conn.Search(ay, maxCount);
+			var ret = await _conn.Search(ay, startIdx, endIdx, x => x.commandTime);
 			return ret;
 		}
 

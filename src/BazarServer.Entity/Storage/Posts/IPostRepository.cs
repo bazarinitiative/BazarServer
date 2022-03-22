@@ -59,9 +59,10 @@
 		/// 
 		/// </summary>
 		/// <param name="ay"></param>
-		/// <param name="maxCount"></param>
+		/// <param name="startIdx"></param>
+		/// <param name="endIdx"></param>
 		/// <returns></returns>
-		Task<List<Post>> Search(List<string> ay, int maxCount);
+		Task<List<Post>> Search(List<string> ay, int startIdx, int endIdx);
 
 		/// <summary>
 		/// 
