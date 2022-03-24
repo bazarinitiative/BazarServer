@@ -214,7 +214,7 @@ public partial class UserQueryController : BazarControllerBase
 	/// <param name="userID">input to get if this user had liked the post</param>
 	/// <returns></returns>
 	[HttpGet]
-	public async Task<ApiResponse<PostDto>> GetPostSimple(string postID, string userID = "")
+	public async Task<ApiResponse<PostDto>> GetPostSimple(string postID, string? userID)
 	{
 		var post = await postRepository.GetPostAsync(postID);
 		if (post == null)
@@ -226,8 +226,18 @@ public partial class UserQueryController : BazarControllerBase
 		{
 			ps = new PostStatistic(postID);
 		}
-		var liked = await postRepository.GetPostLikeAsync(userID, postID);
-		PostDto dto = new PostDto(post, ps, liked);
+		var liked = false;
+		if (!string.IsNullOrEmpty(userID))
+		{
+			liked = await postRepository.GetPostLikeAsync(userID, postID);
+		}
+		var replyToUser = "";
+		if (post.replyTo.Length > 0)
+		{
+			var rpost = await postRepository.GetPostAsync(post.replyTo);
+			replyToUser = rpost?.userID ?? "";
+		}
+		PostDto dto = new PostDto(post, ps, liked, replyToUser);
 		return Success(dto);
 	}
 

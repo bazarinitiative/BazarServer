@@ -23,10 +23,18 @@ namespace BazarServer.Application.Posts
 			var dic = await postRepository.GetPostStatisticAsync(postIDs);
 			var dic2 = await postRepository.GetPostLikeAsync(userID, postIDs);
 
+			var replyTos = ay.Select(x => x.replyTo).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
+			var dicReplyTos = await postRepository.GetPostsAsync(replyTos);
+
 			List<PostDto> ret = new List<PostDto>();
 			foreach (var post in ay)
 			{
-				ret.Add(new PostDto(post, dic[post.postID], dic2[post.postID]));
+				var replyToUser = "";
+				if (dicReplyTos.ContainsKey(post.replyTo))
+				{
+					replyToUser = dicReplyTos[post.replyTo].userID;
+				}
+				ret.Add(new PostDto(post, dic[post.postID], dic2[post.postID], replyToUser));
 			}
 			return ret;
 		}

@@ -138,6 +138,11 @@
             empty means not liked
             </summary>
         </member>
+        <member name="P:BazarServer.Application.Posts.PostDto.replyToUser">
+            <summary>
+            userID of post.replyTo. empty if not reply to anyone
+            </summary>
+        </member>
         <member name="M:BazarServer.Application.Users.UserQueryFacade.CheckQuery(BazarServer.Entity.Storage.IUserRepository,System.String,System.Int64,System.String)">
             <summary>
             for some heavy or private query, we want to make sure the qurey comes from specific user

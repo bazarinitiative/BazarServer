@@ -11,11 +11,17 @@ namespace BazarServer.Application.Posts
 		/// </summary>
 		public bool liked { get; }
 
-		public PostDto(Post post, PostStatistic ps, bool liked)
+		/// <summary>
+		/// userID of post.replyTo. empty if not reply to anyone
+		/// </summary>
+		public string replyToUser { get; }
+
+		public PostDto(Post post, PostStatistic ps, bool liked, string replyToUser)
 		{
 			this.post = post;
 			this.ps = ps;
 			this.liked = liked;
+			this.replyToUser = replyToUser;
 		}
 
 	}
