@@ -16,11 +16,13 @@ public class BubbleController : BazarControllerBase
 {
 	IUserRepository userRepository;
 	IPostRepository postRepository;
+	ILogger<BubbleController> logger;
 
-	public BubbleController(IUserRepository userRepository, IPostRepository postRepository)
+	public BubbleController(IUserRepository userRepository, IPostRepository postRepository, ILogger<BubbleController> logger)
 	{
 		this.userRepository = userRepository;
 		this.postRepository = postRepository;
+		this.logger = logger;
 	}
 
 	/// <summary>
@@ -136,11 +138,25 @@ public class BubbleController : BazarControllerBase
 			return Error(check.msg, ret);
 		}
 
-		var ay = await userRepository.GetRandomUser(count);
+		var ay = await userRepository.GetRandomUser(count * 2 + 5);
 		foreach (var user in ay)
 		{
+			var cur = user;
 			UserDto dto = await UserQueryFacade.GetUserDto_WithCache(userRepository, user.userID);
+			var fl = await userRepository.GetUserFollowing(userID, user.userID);
+			if (fl != null)
+			{
+				continue;
+			}
 			ret.Add(dto);
+			if (ret.Count >= count)
+			{
+				break;
+			}
+		}
+		if (ret.Count != count)
+		{
+			logger.LogError($"MightLike count error [{ret.Count}] [{count}]");
 		}
 		return Success(ret);
 	}

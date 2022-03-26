@@ -198,10 +198,10 @@ sleep 1
 echo
 echo =====================BazarHtml=========================
 cd ~/work/BazarHtml
-git stash
+git reset HEAD
+git checkout .
 git pull
 sh build.sh
-git stash pop
 ```
 
 Usage
