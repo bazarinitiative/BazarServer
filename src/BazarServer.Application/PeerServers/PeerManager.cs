@@ -94,6 +94,7 @@ namespace BazarServer.Application.PeerServers
 				var ret = await RefreshCommandAsync(stat);
 				if (ret.success)
 				{
+					var ss = stat.server.BaseUrl;
 					stat.server.IncreaseReputation(100000);
 				}
 				else
@@ -195,6 +196,10 @@ namespace BazarServer.Application.PeerServers
 						{
 							okCount++;
 						}
+						else if (ret != MsgResult.Dup)
+						{
+							var ccc = ret;
+						}
 					}
 					catch (Exception ex)
 					{
@@ -206,6 +211,7 @@ namespace BazarServer.Application.PeerServers
 						pss.server.lastReceiveOffset = cmd.receiveOffset;
 					}
 				}
+				logger.LogInformation($"succeed RefreshCommandAsync {pss.server.BaseUrl}, total={total}, ok={okCount}");
 				return (true, total, okCount);
 			}
 			catch (HttpRequestException)

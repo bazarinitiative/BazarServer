@@ -50,10 +50,14 @@ internal class MyMiddleware
 			await _next(context);
 
 			var used = DateHelper.GetMilliSeconds() - start;
-			_logger.LogInformation($"{info}, result={context.Response.StatusCode}, used={used.ToString("0.00")}");
+			_logger.LogInformation($"result={context.Response.StatusCode}, used={used.ToString("0.00")}, {info}");
 			if (context.Response.StatusCode == StatusCodes.Status500InternalServerError)
 			{
 				_logger.LogError($"{info}, errorCode={context.Response.StatusCode}");
+			}
+			if (used > 100)
+			{
+				_logger.LogWarning($"too slow {used.ToString("0.00")} ms, {info}");
 			}
 
 		}
