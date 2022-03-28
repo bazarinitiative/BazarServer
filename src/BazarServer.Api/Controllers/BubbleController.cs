@@ -55,13 +55,18 @@ public class BubbleController : BazarControllerBase
 		var ret = new SearchResult();
 		if (catalog == "" || catalog == "Top")
 		{
-			var users = await userRepository.Search(keys, 0, 10);
-			foreach (var user in users)
+			if (page == 0)
 			{
-				UserDto dd = await UserQueryFacade.GetUserDto_WithCache(userRepository, user.userID);
-				ret.users.Add(dd);
+				var users = await userRepository.Search(keys, 0, 10);
+				foreach (var user in users)
+				{
+					UserDto dd = await UserQueryFacade.GetUserDto_WithCache(userRepository, user.userID);
+					ret.users.Add(dd);
+				}
 			}
-			var posts = await postRepository.Search(keys, 0, 10);
+
+			int startIdx = page * pageSize;
+			var posts = await postRepository.Search(keys, startIdx, startIdx + pageSize);
 			var dtos = await PostQueryFacade.GetPostDto(postRepository, userID, posts);
 			foreach (var dd in dtos)
 			{
