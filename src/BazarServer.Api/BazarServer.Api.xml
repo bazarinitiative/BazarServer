@@ -167,6 +167,13 @@
             <param name="userID"></param>
             <returns></returns>
         </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetUserDto(System.String)">
+            <summary>
+            get more user info
+            </summary>
+            <param name="userID"></param>
+            <returns></returns>
+        </member>
         <member name="M:BazarServer.Controllers.UserQueryController.GetUserPicAsync(System.String)">
             <summary>
             get avatar pic of one user

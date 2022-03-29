@@ -57,6 +57,33 @@ public partial class UserQueryController : BazarControllerBase
 	}
 
 	/// <summary>
+	/// get more user info
+	/// </summary>
+	/// <param name="userID"></param>
+	/// <returns></returns>
+	[HttpGet]
+	public async Task<ApiResponse<UserDto>> GetUserDto(string userID)
+	{
+		if (string.IsNullOrEmpty(userID))
+		{
+			return Error<UserDto>("userID param empty");
+		}
+
+		var dto = await UserQueryFacade.GetUserDto_WithCache(userRepository, userID);
+		if (dto == null)
+		{
+			return Error<UserDto>("user not found");
+		}
+
+		if (dto.userInfo.createTime == 0)
+		{
+			dto.userInfo.createTime = dto.userInfo.commandTime;
+		}
+
+		return Success(dto);
+	}
+
+	/// <summary>
 	/// get avatar pic of one user
 	/// </summary>
 	/// <param name="userID"></param>
