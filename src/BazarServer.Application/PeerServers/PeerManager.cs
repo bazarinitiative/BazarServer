@@ -217,7 +217,7 @@ namespace BazarServer.Application.PeerServers
 			catch (HttpRequestException)
 			{
 				// normal situation
-				logger.LogInformation($"fail RefreshCommandAsync {pss.server.BaseUrl}");
+				//logger.LogInformation($"fail RefreshCommandAsync {pss.server.BaseUrl}");
 				return (false, total, okCount);
 			}
 			catch (Exception ex)

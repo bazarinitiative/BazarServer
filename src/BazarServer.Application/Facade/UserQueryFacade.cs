@@ -63,6 +63,7 @@ namespace BazarServer.Application.Users
 			{
 				userInfo = await userRepository.GetUserInfoAsync(userID) ?? new UserInfo(),
 				userStatistic = await userRepository.GetUserStatisticAsync(userID) ?? new UserStatistic(userID),
+				lastPicTime = (await userRepository.GetUserPicAsync(userID))?.commandTime ?? 0,
 			};
 		}
 	}

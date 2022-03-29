@@ -177,6 +177,11 @@
             
             </summary>
         </member>
+        <member name="P:BazarServer.Application.Users.UserDto.lastPicTime">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="F:BazarServer.Application.PeerServers.PeerManager.dicServerStats">
             <summary>
             server baseUrl as key

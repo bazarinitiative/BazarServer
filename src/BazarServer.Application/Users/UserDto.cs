@@ -25,5 +25,10 @@ namespace BazarServer.Application.Users
 		/// 
 		/// </summary>
 		public UserStatistic userStatistic { get; set; } = new UserStatistic("");
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public long lastPicTime { get; set; }
 	}
 }

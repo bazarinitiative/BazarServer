@@ -57,6 +57,7 @@ namespace BazarServer.Entity.Storage
 			BuildIndex<Post>(nameof(Post.postID));
 			BuildIndex<Post>(nameof(Post.userID));
 			BuildIndex<Post>(nameof(Post.threadID));
+			BuildIndex<Post>(nameof(Post.replyTo));
 			BuildIndex<Post>(nameof(Post.commandTime));
 
 			BuildIndex<PostStatistic>(nameof(PostStatistic.postID));
