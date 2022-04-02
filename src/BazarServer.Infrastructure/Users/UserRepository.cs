@@ -10,6 +10,7 @@ namespace BazarServer.Infrastructure.Users
 		private readonly IGenericMongoCollection<UserInfo> _conn;
 		private readonly IGenericMongoCollection<UserPic> _connPic;
 		private readonly IGenericMongoCollection<Following> _followings;
+		private readonly IGenericMongoCollection<Like> _connLike;
 		private readonly IGenericMongoCollection<UserStatistic> _connStat;
 		private readonly IGenericMongoCollection<NotifyMessage> _connNoti;
 		private readonly IGenericMongoCollection<NotifyGetTime> _connNotiGetTime;
@@ -18,7 +19,7 @@ namespace BazarServer.Infrastructure.Users
 		public UserRepository(IGenericMongoCollection<UserInfo> conn, IGenericMongoCollection<UserStatistic> connStat,
 						ILogger<UserRepository> logger, IGenericMongoCollection<UserPic> connPic,
 						IGenericMongoCollection<Following> followings, IGenericMongoCollection<NotifyMessage> connNoti,
-						IGenericMongoCollection<NotifyGetTime> connNotiGetTime)
+						IGenericMongoCollection<NotifyGetTime> connNotiGetTime, IGenericMongoCollection<Like> connLike)
 		{
 			_conn = conn;
 			_connStat = connStat;
@@ -27,6 +28,7 @@ namespace BazarServer.Infrastructure.Users
 			_followings = followings;
 			_connNoti = connNoti;
 			_connNotiGetTime = connNotiGetTime;
+			_connLike = connLike;
 		}
 
 		public async Task SaveUserAsync(UserInfo model)
@@ -162,6 +164,12 @@ namespace BazarServer.Infrastructure.Users
 		public async Task<List<UserInfo>> Search(List<string> ay, int startIdx, int endIdx)
 		{
 			var ret = await _conn.Search(ay, startIdx, endIdx, x => x.createTime);
+			return ret;
+		}
+
+		public async Task<List<Like>> GetUserLikes(string userID, int page, int pageSize)
+		{
+			var ret = await _connLike.PageAsync(x => x.userID == userID, x => x.commandTime, page, pageSize, true);
 			return ret;
 		}
 	}

@@ -229,13 +229,24 @@
             <param name="pageSize"></param>
             <returns></returns>
         </member>
-        <member name="M:BazarServer.Controllers.UserQueryController.GetPostsAsync(System.String,System.Boolean,System.Int32,System.Int32)">
+        <member name="M:BazarServer.Controllers.UserQueryController.GetPostsAsync(System.String,System.Boolean,System.Int32,System.Int32,System.String)">
             <summary>
             get posts of one user. latest at top.
             </summary>
             <param name="userID"></param>
             <param name="onlyOriginalPost">without reply and repost</param>
             <param name="page">start from 0</param>
+            <param name="pageSize"></param>
+            <param name="observerUserID">different observer will see different liked in PostDto</param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetUserLikePostsAsync(System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            get posts that userID likes, observe by someone. latest at top.
+            </summary>
+            <param name="observerUserID"></param>
+            <param name="userID"></param>
+            <param name="page"></param>
             <param name="pageSize"></param>
             <returns></returns>
         </member>

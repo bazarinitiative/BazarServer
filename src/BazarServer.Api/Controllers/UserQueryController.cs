@@ -224,14 +224,39 @@ public partial class UserQueryController : BazarControllerBase
 	/// <param name="onlyOriginalPost">without reply and repost</param>
 	/// <param name="page">start from 0</param>
 	/// <param name="pageSize"></param>
+	/// <param name="observerUserID">different observer will see different liked in PostDto</param>
 	/// <returns></returns>
 	[HttpGet]
-	public async Task<ApiResponse<List<PostDto>>> GetPostsAsync(string userID, bool onlyOriginalPost = true, int page = 0, int pageSize = 5)
+	public async Task<ApiResponse<List<PostDto>>> GetPostsAsync(string userID, bool onlyOriginalPost = true, int page = 0, int pageSize = 5, string? observerUserID = "")
 	{
 		List<Post> ay = await postRepository.GetPostsByUserAsync(userID, onlyOriginalPost, page, pageSize);
-		var ret = await PostQueryFacade.GetPostDto(postRepository, userID, ay);
+		var ret = await PostQueryFacade.GetPostDto(postRepository, observerUserID ?? "", ay);
 
 		return Success(ret);
+	}
+
+	/// <summary>
+	/// get posts that userID likes, observe by someone. latest at top.
+	/// </summary>
+	/// <param name="observerUserID"></param>
+	/// <param name="userID"></param>
+	/// <param name="page"></param>
+	/// <param name="pageSize"></param>
+	/// <returns></returns>
+	[HttpGet]
+	public async Task<ApiResponse<List<PostDto>>> GetUserLikePostsAsync(string userID, int page = 0, int pageSize = 5, string? observerUserID = "")
+	{
+		var ret = await userRepository.GetUserLikes(userID, page, pageSize);
+		var ayPostID = ret.Select(x => x.postID).ToList();
+		var dic = (await postRepository.GetPostsAsync(ayPostID));
+		var ayPost = new List<Post>();
+		foreach (var id in ayPostID)
+		{
+			ayPost.Add(dic[id]);
+		}
+		var ret2 = await PostQueryFacade.GetPostDto(postRepository, observerUserID ?? "", ayPost);
+
+		return Success(ret2);
 	}
 
 	/// <summary>

@@ -801,6 +801,15 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:BazarServer.Entity.Storage.IUserRepository.GetUserLikes(System.String,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="userID"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
         <member name="P:BazarServer.Entity.Storage.NotifyGetTime.userID">
             <summary>
             

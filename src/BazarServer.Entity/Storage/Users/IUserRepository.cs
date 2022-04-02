@@ -81,5 +81,14 @@
 		/// </summary>
 		/// <returns></returns>
 		Task<long> GetNewNotifyCount(string userID);
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="userID"></param>
+		/// <param name="page"></param>
+		/// <param name="pageSize"></param>
+		/// <returns></returns>
+		Task<List<Like>> GetUserLikes(string userID, int page, int pageSize);
 	}
 }
