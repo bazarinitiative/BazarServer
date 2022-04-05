@@ -446,7 +446,7 @@ public partial class UserQueryController : BazarControllerBase
 		var ret = await userRepository.GetUserNotify(userID, startTime + 1, maxCount);
 		var ret2 = ret.Where(x => x.fromWho != "").ToList();
 
-		var ret3 = await PostQueryFacade.ConvertNotify(postRepository, ret2);
+		var ret3 = await PostQueryFacade.ConvertNotify(postRepository, userID, ret2);
 
 		if (ret.Count > 0)
 		{

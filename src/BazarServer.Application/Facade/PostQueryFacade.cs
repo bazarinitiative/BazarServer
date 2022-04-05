@@ -97,16 +97,21 @@ namespace BazarServer.Application.Posts
 			return ret;
 		}
 
-		public static async Task<List<NotifyDto>> ConvertNotify(IPostRepository postRepository, List<NotifyMessage> ret2)
+		public static async Task<List<NotifyDto>> ConvertNotify(IPostRepository postRepository, string userID, List<NotifyMessage> ret2)
 		{
+			var postIDs = ret2.Select(x => x.fromWhere).ToList();
+			var dicPost = await postRepository.GetPostsAsync(postIDs);
+			var ayDto = await PostQueryFacade.GetPostDto(postRepository, userID, dicPost.Values.ToList());
+			var dicDto = ayDto.ToDictionary(x => x.post.postID);
+
 			List<NotifyDto> ret = new List<NotifyDto>();
 			foreach (var noti in ret2)
 			{
 				if (noti.notifyType == "Like" || noti.notifyType == "Reply" || noti.notifyType == "Mention")
 				{
 					var postID = noti.fromWhere;
-					var post = await postRepository.GetPostAsync(noti.fromWhere);
-					if (post == null)
+					dicDto.TryGetValue(noti.fromWhere, out var dto);
+					if (dto == null)
 					{
 						continue;
 					}
@@ -119,7 +124,7 @@ namespace BazarServer.Application.Posts
 						}
 					}
 					bool isReply = (noti.notifyType == "Reply");
-					var node = new NotifyDto(noti, post, isReply);
+					var node = new NotifyDto(noti, dto, isReply);
 					ret.Add(node);
 				}
 			}

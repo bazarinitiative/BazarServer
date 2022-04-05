@@ -10,13 +10,13 @@ namespace BazarServer.Application.Posts
 	public class NotifyDto
 	{
 		public NotifyMessage noti { get; set; }
-		public Post post { get; set; }
+		public PostDto postDto { get; set; }
 		public bool isDirectReplyTo { get; set; }
 
-		public NotifyDto(NotifyMessage noti, Post post, bool isDirectReplyTo)
+		public NotifyDto(NotifyMessage noti, PostDto post, bool isDirectReplyTo)
 		{
 			this.noti = noti;
-			this.post = post;
+			this.postDto = post;
 			this.isDirectReplyTo = isDirectReplyTo;
 		}
 	}
