@@ -76,7 +76,7 @@ namespace BazarServer.Application.PeerServers
 				{
 					logger.LogError(ex, "");
 				}
-				await Task.Delay(1000);
+				await Task.Delay(100);
 			}
 		}
 
@@ -112,6 +112,12 @@ namespace BazarServer.Application.PeerServers
 				{
 					//for every OK-msg will postpone 100 milli, refers to 10 effective msg per seconds.
 					stat.server.nextRetrieveTime = DateTime.Now + TimeSpan.FromSeconds(ret.okCount * 0.1);
+				}
+
+				if (ret.okCount > 0)
+				{
+					//faster fetch for whitelist. currently every peer is in whitelist.
+					stat.server.nextRetrieveTime = DateTime.Now;
 				}
 
 				var count = counters.GetOrAdd(stat.server.BaseUrl, 0);
