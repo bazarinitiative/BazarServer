@@ -22,7 +22,7 @@ namespace BazarServer.Entity.Storage
 		public long notifyTime { get; set; } = default;
 
 		/// <summary>
-		/// including "Like", "Mention", "Follow", "AddList", etc
+		/// including "Like", "Reply", "Mention", "Follow", "AddList", etc
 		/// like is from user to post.
 		/// mention is from current post, to related inherit post or empty
 		/// </summary>
@@ -34,8 +34,9 @@ namespace BazarServer.Entity.Storage
 		public string fromWho { get; set; } = "";
 
 		/// <summary>
+		/// postID if type = 'Like'
+		/// postID if type = 'Reply'
 		/// postID if type = 'Mention'
-		/// empty if type = 'Like'
 		/// empty if type = 'Follow'
 		/// listID if type = 'AddList'
 		/// </summary>

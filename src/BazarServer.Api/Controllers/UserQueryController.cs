@@ -387,7 +387,7 @@ public partial class UserQueryController : BazarControllerBase
 	}
 
 	/// <summary>
-	/// 
+	/// get raw notifyMessages
 	/// </summary>
 	/// <param name="userID"></param>
 	/// <param name="queryTime">time of query. for check. in milli</param>
@@ -418,6 +418,42 @@ public partial class UserQueryController : BazarControllerBase
 			await userRepository.TryUpdateNotifyGetTime(userID, maxTime);
 		}
 		return Success(ret2);
+	}
+
+	/// <summary>
+	/// get notifyDto for display
+	/// </summary>
+	/// <param name="userID"></param>
+	/// <param name="queryTime"></param>
+	/// <param name="token"></param>
+	/// <param name="startTime"></param>
+	/// <param name="maxCount"></param>
+	/// <returns></returns>
+	[HttpGet]
+	public async Task<ApiResponse<List<NotifyDto>>> GetNotifyDtos(string userID, long queryTime, string token, long startTime = 0, int maxCount = 20)
+	{
+		if (startTime == 0)
+		{
+			startTime = DateHelper.CurrentTimeMillis();
+		}
+		var check = await UserQueryFacade.CheckQuery(userRepository, userID, queryTime, token);
+		if (!check.success)
+		{
+			return Error<List<NotifyDto>>($"{check.msg}");
+		}
+
+		//it is possible that we return less notifyMsg in some rare situation, it's ok. may do better later.
+		var ret = await userRepository.GetUserNotify(userID, startTime + 1, maxCount);
+		var ret2 = ret.Where(x => x.fromWho != "").ToList();
+
+		var ret3 = await PostQueryFacade.ConvertNotify(postRepository, ret2);
+
+		if (ret.Count > 0)
+		{
+			long maxTime = ret.Max(x => x.notifyTime);
+			await userRepository.TryUpdateNotifyGetTime(userID, maxTime);
+		}
+		return Success(ret3);
 	}
 
 	/// <summary>

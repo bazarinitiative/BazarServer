@@ -91,7 +91,6 @@ namespace BazarServer.Application.Posts
 
 			await postRepository.SaveAsync(model);
 
-
 			var meta = new PostMeta()
 			{
 				postID = model.postID,
@@ -130,6 +129,10 @@ namespace BazarServer.Application.Posts
 						fromWho = cmd.userID,
 						fromWhere = cmd.postID
 					};
+					if (cmd.replyTo == post.postID)
+					{
+						noti.notifyType = "Reply";
+					}
 
 					//fire and forget. currently we don't care if this noti lost. may be better later.
 					_ = userRepository.AddUserNotify(noti);

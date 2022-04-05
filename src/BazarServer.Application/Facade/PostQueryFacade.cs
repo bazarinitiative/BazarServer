@@ -96,5 +96,34 @@ namespace BazarServer.Application.Posts
 			var ret = posts.OrderByDescending(x => x.commandTime).Take(new Range(page * pageSize, (page + 1) * pageSize)).ToList();
 			return ret;
 		}
+
+		public static async Task<List<NotifyDto>> ConvertNotify(IPostRepository postRepository, List<NotifyMessage> ret2)
+		{
+			List<NotifyDto> ret = new List<NotifyDto>();
+			foreach (var noti in ret2)
+			{
+				if (noti.notifyType == "Like" || noti.notifyType == "Reply" || noti.notifyType == "Mention")
+				{
+					var postID = noti.fromWhere;
+					var post = await postRepository.GetPostAsync(noti.fromWhere);
+					if (post == null)
+					{
+						continue;
+					}
+					foreach (var item in ret)
+					{
+						if (item.noti.fromWhere == noti.fromWhere && item.noti.fromWho == noti.fromWho)
+						{
+							//ignore dup
+							continue;
+						}
+					}
+					bool isReply = (noti.notifyType == "Reply");
+					var node = new NotifyDto(noti, post, isReply);
+					ret.Add(node);
+				}
+			}
+			return ret;
+		}
 	}
 }

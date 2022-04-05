@@ -90,5 +90,6 @@
 		/// <param name="pageSize"></param>
 		/// <returns></returns>
 		Task<List<Like>> GetUserLikes(string userID, int page, int pageSize);
+		Task RemoveNotify(string fromWhere);
 	}
 }

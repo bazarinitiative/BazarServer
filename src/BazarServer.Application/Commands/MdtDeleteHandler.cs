@@ -111,6 +111,7 @@ namespace BazarServer.Application.Commands
 					await _connLike.RemoveAsync(x => x.userID == model.userID && x.postID == model.targetID);
 					await postRepository.UpsertPostStatisticAsync(post.postID, 0, 0, -1);
 					await userRepository.UpsertUserStatisticAsync(post.userID, 0, -1, 0, 0);
+					await userRepository.RemoveNotify(post.postID);
 					break;
 				default:
 					break;
@@ -131,7 +132,6 @@ namespace BazarServer.Application.Commands
 				{
 					await postRepository.UpsertPostStatisticAsync(model.replyTo, 0, -1, 0);
 				}
-
 			}
 
 			await userRepository.UpsertUserStatisticAsync(model.userID, 1);
@@ -143,6 +143,8 @@ namespace BazarServer.Application.Commands
 				meta.deleteFrom = commandFrom;
 				await postRepository.UpsertPostMeta(meta);
 			}
+
+			await userRepository.RemoveNotify(oldPost.postID);
 		}
 	}
 }

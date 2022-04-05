@@ -287,12 +287,23 @@
         </member>
         <member name="M:BazarServer.Controllers.UserQueryController.GetNotifies(System.String,System.Int64,System.String,System.Int64,System.Int32)">
             <summary>
-            
+            get raw notifyMessages
             </summary>
             <param name="userID"></param>
             <param name="queryTime">time of query. for check. in milli</param>
             <param name="token">should be signature of queryTime.ToString()</param>
             <param name="startTime">startTime (include) of backwards. 0 means now.</param>
+            <param name="maxCount"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetNotifyDtos(System.String,System.Int64,System.String,System.Int64,System.Int32)">
+            <summary>
+            get notifyDto for display
+            </summary>
+            <param name="userID"></param>
+            <param name="queryTime"></param>
+            <param name="token"></param>
+            <param name="startTime"></param>
             <param name="maxCount"></param>
             <returns></returns>
         </member>

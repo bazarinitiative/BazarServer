@@ -119,6 +119,11 @@ namespace BazarServer.Infrastructure.Users
 			await _connNoti.UpsertAsync(x => x.notifyID == noti.notifyID, noti);
 		}
 
+		public async Task RemoveNotify(string fromWhere)
+		{
+			await _connNoti.RemoveAsync(x => x.fromWhere == fromWhere);
+		}
+
 		public async Task<List<NotifyMessage>> GetUserNotify(string userID, long startTime, int backwardCount = 1000)
 		{
 			if (startTime == 0)
