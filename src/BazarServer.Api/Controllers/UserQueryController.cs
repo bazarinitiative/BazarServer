@@ -426,7 +426,7 @@ public partial class UserQueryController : BazarControllerBase
 	/// <param name="userID"></param>
 	/// <param name="queryTime"></param>
 	/// <param name="token"></param>
-	/// <param name="startTime"></param>
+	/// <param name="startTime">startTime (include) of backwards</param>
 	/// <param name="maxCount"></param>
 	/// <returns></returns>
 	[HttpGet]
@@ -443,7 +443,7 @@ public partial class UserQueryController : BazarControllerBase
 		}
 
 		//it is possible that we return less notifyMsg in some rare situation, it's ok. may do better later.
-		var ret = await userRepository.GetUserNotify(userID, startTime + 1, maxCount);
+		var ret = await userRepository.GetUserNotify(userID, startTime, maxCount);
 		var ret2 = ret.Where(x => x.fromWho != "").ToList();
 
 		var ret3 = await PostQueryFacade.ConvertNotify(postRepository, userID, ret2);
