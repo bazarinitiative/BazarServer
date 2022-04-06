@@ -29,6 +29,9 @@ A server for decentralized micro-blog
 - Every server can try retrieve data from another server.
 - Any one can throw any message to any server at any time. Server is designed to survive in such chaos battlefield.
 
+## Architecture
+
+<img src="https://github.com/bazarinitiative/BazarServer/raw/master/doc/bazar-architect.jpg" height="50%" width="50%" />
 
 # Developer
 
@@ -42,7 +45,7 @@ A server for decentralized micro-blog
 
 - Because changestream has various limitation, we will not use changestream.
 
-## BazarServer Should only run one instance
+## BazarServer Should only run one instance for each MongoDB
 
 - Because we need to maintain `receiveOffset` for this instance, while MongoDB do not support auto-increment id.
 - We will separate reader to dedicate module for better performance. Reader can run multiple instances. receiveOffset will help reader work better.
