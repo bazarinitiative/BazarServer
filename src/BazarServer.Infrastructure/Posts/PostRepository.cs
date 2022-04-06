@@ -74,7 +74,7 @@ namespace BazarServer.Infrastructure.Posts
 		/// <returns></returns>
 		public async Task<List<Post>> TimelineAsync(int page, int pageSize)
 		{
-			var qry = _conn.GetQueryable().Where(x => x.replyTo == "" && !x.deleted);
+			var qry = _conn.GetQueryable().Where(x => !x.deleted);
 			var ay = await qry.OrderByDescending(x => x.commandTime)
 						.Skip(page * pageSize)
 						.Take(pageSize)

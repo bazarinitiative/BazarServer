@@ -303,7 +303,7 @@
             <param name="userID"></param>
             <param name="queryTime"></param>
             <param name="token"></param>
-            <param name="startTime"></param>
+            <param name="startTime">startTime (include) of backwards</param>
             <param name="maxCount"></param>
             <returns></returns>
         </member>
