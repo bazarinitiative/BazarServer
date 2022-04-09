@@ -62,24 +62,12 @@ public partial class PeerController : BazarControllerBase
 		{
 			return Error<List<UserCommand>>($"forwardCount exceed limit {limit}");
 		}
-		IEnumerable<UserCommand>? ay = await RetrieveCommandWithCache(lastOffset, forwardCount);
+		List<UserCommand>? ay = await peerManager.RetrieveUserCommandBatch(lastOffset, forwardCount);
 		if (ay == null)
 		{
 			return Error<List<UserCommand>>("fail to query return null");
 		}
-		return Success(ay.ToList());
-	}
-
-	private async Task<IEnumerable<UserCommand>?> RetrieveCommandWithCache(long lastOffset, int forwardCount)
-	{
-		string key = $"GetCommandWithCache_{lastOffset}_{forwardCount}";
-		var ret = await CacheHelper.WithCacheAsync(
-									key,
-									async () => await peerManager.RetrieveUserCommandBatch(lastOffset, forwardCount),
-									5000,
-									false
-									);
-		return ret;
+		return Success(ay);
 	}
 
 	/// <summary>

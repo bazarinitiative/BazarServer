@@ -5,7 +5,7 @@ namespace BazarServer.Application.PeerServers
 	public interface IPeerManager
 	{
 
-		Task<IEnumerable<UserCommand>> RetrieveUserCommandBatch(long lastOffset, int forwardCount);
+		Task<List<UserCommand>> RetrieveUserCommandBatch(long lastOffset, int forwardCount);
 
 		/// <summary>
 		/// 

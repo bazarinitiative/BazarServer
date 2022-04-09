@@ -185,6 +185,8 @@ namespace BazarServer.Application.PeerServers
 				var url = Url.Combine(pss.server.BaseUrl, "/Peer/RetrieveCommandBatch");
 				url += $"?lastOffset={pss.server.lastReceiveOffset}&forwardCount=100";
 
+				logger.LogInformation($"{pss.server.BaseUrl}, offset={pss.server.lastReceiveOffset}");
+
 				var ss = HttpHelper.Get(url);
 
 				var res = Json.Deserialize<ApiResponse<List<UserCommand>>>(ss);
@@ -192,6 +194,9 @@ namespace BazarServer.Application.PeerServers
 				{
 					return (false, total, okCount);
 				}
+				var ay1 = res.data.Select(x => x.commandID);
+				var ay2 = res.data.Select(x => x.receiveOffset);
+				List<MsgResult> ayres = new List<MsgResult>();
 				total = res.data.Count;
 				foreach (var cmd in res.data)
 				{
@@ -206,6 +211,7 @@ namespace BazarServer.Application.PeerServers
 						{
 							var ccc = ret;
 						}
+						ayres.Add(ret);
 					}
 					catch (Exception ex)
 					{
@@ -217,7 +223,7 @@ namespace BazarServer.Application.PeerServers
 						pss.server.lastReceiveOffset = cmd.receiveOffset;
 					}
 				}
-				logger.LogInformation($"succeed RefreshCommandAsync {pss.server.BaseUrl}, total={total}, ok={okCount}");
+				logger.LogInformation($"succeed RefreshCommandAsync {pss.server.BaseUrl}, total={total}, ok={okCount}, lastOffset={pss.server.lastReceiveOffset}");
 				return (true, total, okCount);
 			}
 			catch (HttpRequestException)
@@ -317,7 +323,7 @@ namespace BazarServer.Application.PeerServers
 			return (val > rand);
 		}
 
-		public async Task<IEnumerable<UserCommand>> RetrieveUserCommandBatch(long lastOffset, int forwardCount)
+		public async Task<List<UserCommand>> RetrieveUserCommandBatch(long lastOffset, int forwardCount)
 		{
 			List<UserCommand> ay = await commandRepository.Batch(lastOffset, forwardCount);
 			return ay;
