@@ -1,5 +1,5 @@
-﻿using BazarServer.Application.Posts;
-using BazarServer.Entity.Storage;
+﻿using BazarServer.Application.Query;
+using BazarServer.Infrastructure.Repository;
 
 namespace BazarServer.Services
 {

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BazarServer.Entity\BazarServer.Entity.csproj" />
+    <ProjectReference Include="..\BazarServer.Infrastructure\BazarServer.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

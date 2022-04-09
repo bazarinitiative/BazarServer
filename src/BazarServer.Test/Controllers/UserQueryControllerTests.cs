@@ -1,6 +1,6 @@
-﻿using BazarServer.Application.Posts;
-using BazarServer.Controllers;
+﻿using BazarServer.Application.Query;
 using BazarServer.Entity.Storage;
+using BazarServer.Infrastructure.Repository;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

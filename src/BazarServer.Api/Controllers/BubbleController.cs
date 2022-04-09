@@ -1,9 +1,6 @@
-﻿using BazarServer.Application.Posts;
-using BazarServer.Application.Users;
-using BazarServer.Entity.SeedWork;
-using BazarServer.Entity.Storage;
-using BazarServer.Infrastructure.Users;
-using MediatR;
+﻿using BazarServer.Application.Common;
+using BazarServer.Application.Query;
+using BazarServer.Infrastructure.Repository;
 
 namespace BazarServer.Controllers;
 

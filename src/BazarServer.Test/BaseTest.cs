@@ -1,10 +1,7 @@
 ﻿using BazarServer.Application.PeerServers;
-using BazarServer.Entity.PeerServers;
 using BazarServer.Entity.Storage;
-using BazarServer.Infrastructure.Commands;
-using BazarServer.Infrastructure.PeerServers;
-using BazarServer.Infrastructure.Posts;
-using BazarServer.Infrastructure.Users;
+using BazarServer.Infrastructure.Repository;
+using BazarServer.Infrastructure.Storage;
 using Common.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

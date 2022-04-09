@@ -1,4 +1,4 @@
-﻿using BazarServer.Entity.SeedWork;
+﻿using BazarServer.Entity.Commands;
 using BazarServer.Entity.Storage;
 using Common.Utils;
 using MediatR;

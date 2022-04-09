@@ -1,4 +1,4 @@
-﻿using BazarServer.Entity.PeerServers;
+﻿using BazarServer.Entity.Storage;
 using Microsoft.Extensions.Logging;
 
 namespace BazarServer.Application.PeerServers

@@ -1,6 +1,6 @@
 ﻿using BazarServer.Entity.Commands;
-using BazarServer.Entity.SeedWork;
 using BazarServer.Entity.Storage;
+using BazarServer.Infrastructure.Repository;
 using Common.Utils;
 using MediatR;
 using Microsoft.Extensions.Logging;

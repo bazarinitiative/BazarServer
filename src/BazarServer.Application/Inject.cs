@@ -1,6 +1,5 @@
 ﻿using BazarServer.Application.Commands;
 using BazarServer.Application.PeerServers;
-using BazarServer.Entity.PeerServers;
 using Common.Utils;
 using MediatR;
 using Microsoft.Extensions.Configuration;

@@ -1,5 +1,4 @@
-﻿using BazarServer.Entity.SeedWork;
-
+﻿
 namespace BazarServer.Entity.Storage
 {
 	/// <summary>

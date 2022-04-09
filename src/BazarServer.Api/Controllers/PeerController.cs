@@ -1,8 +1,7 @@
 ﻿using BazarServer.Application.PeerServers;
-using BazarServer.Entity.PeerServers;
-using BazarServer.Entity.SeedWork;
+using BazarServer.Application.Common;
 using BazarServer.Entity.Storage;
-using MediatR;
+using BazarServer.Infrastructure.Repository;
 
 namespace BazarServer.Controllers;
 

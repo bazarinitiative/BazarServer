@@ -1,8 +1,7 @@
-﻿using BazarServer.Application.Posts;
-using BazarServer.Application.Users;
-using BazarServer.Entity.SeedWork;
+﻿using BazarServer.Application.Query;
+using BazarServer.Application.Common;
 using BazarServer.Entity.Storage;
-using MediatR;
+using BazarServer.Infrastructure.Repository;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
 

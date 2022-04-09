@@ -1,10 +1,10 @@
 using BazarServer.Application;
 using BazarServer.Services;
-using BazarServer.Entity.PeerServers;
 using BazarServer.Infrastructure;
 using MediatR;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using BazarServer.Application.PeerServers;
 
 namespace BazarServer;
 

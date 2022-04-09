@@ -1,5 +1,4 @@
-﻿using BazarServer.Entity.SeedWork;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BazarServer.Entity.Commands
 {

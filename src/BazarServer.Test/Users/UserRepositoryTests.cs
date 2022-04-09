@@ -1,4 +1,5 @@
 ﻿using BazarServer.Entity.Storage;
+using BazarServer.Infrastructure.Repository;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

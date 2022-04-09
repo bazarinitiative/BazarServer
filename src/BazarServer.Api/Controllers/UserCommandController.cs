@@ -1,8 +1,7 @@
 ﻿using BazarServer.Application.Commands;
 using BazarServer.Entity.Commands;
-using BazarServer.Entity.SeedWork;
-using BazarServer.Entity.Storage;
-using MediatR;
+using BazarServer.Application.Common;
+using BazarServer.Infrastructure.Repository;
 
 namespace BazarServer.Controllers;
 

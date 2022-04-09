@@ -1,5 +1,4 @@
-﻿using BazarServer.Entity.SeedWork;
-
+﻿
 namespace BazarServer.Entity.Storage
 {
 	public class FailureCommand : IStoreData

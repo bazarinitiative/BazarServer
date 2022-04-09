@@ -1,8 +1,8 @@
 ﻿using BazarServer.Application.Commands;
+using BazarServer.Application.Common;
 using BazarServer.Entity.Commands;
-using BazarServer.Entity.PeerServers;
-using BazarServer.Entity.SeedWork;
 using BazarServer.Entity.Storage;
+using BazarServer.Infrastructure.Repository;
 using Common.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

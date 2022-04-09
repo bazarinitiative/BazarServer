@@ -1,5 +1,4 @@
-﻿using BazarServer.Entity.SeedWork;
-using MediatR;
+﻿using BazarServer.Application.Common;
 
 namespace BazarServer.Controllers;
 

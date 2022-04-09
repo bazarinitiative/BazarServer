@@ -85,102 +85,40 @@
             content depends on CommandErrorCode. usually the id of lack-resource
             </summary>
         </member>
-        <member name="M:BazarServer.Application.Posts.PostQueryFacade.GetPostDto(BazarServer.Entity.Storage.IPostRepository,System.String,System.Collections.Generic.List{BazarServer.Entity.Storage.Post})">
+        <member name="P:BazarServer.Application.Common.ApiResponse`1.success">
             <summary>
-            get PostDto based on Post. batch for better performance
-            </summary>
-            <param name="postRepository"></param>
-            <param name="userID"></param>
-            <param name="ay"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BazarServer.Application.Posts.PostQueryFacade.GetUserLatestPosts_withCache(BazarServer.Entity.Storage.IPostRepository,System.String)">
-            <summary>
-            get latest N posts of user
-            </summary>
-            <param name="postRepository"></param>
-            <param name="userID"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BazarServer.Application.Posts.PostQueryFacade.RemoveUserLatestPostsCache(System.String)">
-            <summary>
-            remove cache when mongodb has 'Post' change event
-            </summary>
-            <param name="userID"></param>
-        </member>
-        <member name="M:BazarServer.Application.Posts.PostQueryFacade.GetLatestPostsByUsers(BazarServer.Entity.Storage.IPostRepository,System.Collections.Generic.List{System.String},System.Int32,System.Int32)">
-            <summary>
-            return the top N posts of users. latest at top. with cache.
-            </summary>
-            <param name="postRepository"></param>
-            <param name="userIDs"></param>
-            <param name="page"></param>
-            <param name="pageSize"></param>
-            <returns></returns>
-        </member>
-        <member name="P:BazarServer.Application.Posts.PostDetailDto.parent">
-            <summary>
-            maybe null if current is topmost
+            success or not
             </summary>
         </member>
-        <member name="P:BazarServer.Application.Posts.PostDetailDto.thread">
+        <member name="P:BazarServer.Application.Common.ApiResponse`1.msg">
             <summary>
-            maybe null if current is topmost or parrent is topmost
+            variant message may change later.
             </summary>
         </member>
-        <member name="P:BazarServer.Application.Posts.PostDetailDto.replies">
+        <member name="P:BazarServer.Application.Common.ApiResponse`1.data">
+            <summary>
+            response data, maybe null on failure.
+            </summary>
+        </member>
+        <member name="M:BazarServer.Application.PeerServers.IPeerManager.GetServerCount">
             <summary>
             
             </summary>
-        </member>
-        <member name="P:BazarServer.Application.Posts.PostDto.liked">
-            <summary>
-            empty means not liked
-            </summary>
-        </member>
-        <member name="P:BazarServer.Application.Posts.PostDto.replyToUser">
-            <summary>
-            userID of post.replyTo. empty if not reply to anyone
-            </summary>
-        </member>
-        <member name="M:BazarServer.Application.Users.UserQueryFacade.CheckQuery(BazarServer.Entity.Storage.IUserRepository,System.String,System.Int64,System.String)">
-            <summary>
-            for some heavy or private query, we want to make sure the qurey comes from specific user
-            </summary>
-            <param name="userRepository"></param>
-            <param name="userID"></param>
-            <param name="queryTimestamp">time milli</param>
-            <param name="queryToken"></param>
             <returns></returns>
         </member>
-        <member name="M:BazarServer.Application.Users.UserQueryFacade.GetUserDto_WithCache(BazarServer.Entity.Storage.IUserRepository,System.String,System.Int32)">
+        <member name="M:BazarServer.Application.PeerServers.IPeerManager.GetAllServers(System.Int32)">
             <summary>
             
             </summary>
-            <param name="userRepository"></param>
-            <param name="userID"></param>
-            <param name="cacheMilli">millseconds that result will cache</param>
+            <param name="topNReputation">top N servers of highest Reputation</param>
             <returns></returns>
         </member>
-        <member name="T:BazarServer.Application.Users.UserDto">
+        <member name="M:BazarServer.Application.PeerServers.IPeerManager.RegisterAsync(System.String)">
             <summary>
-            we don't return userPic directly for bandwidth consideration, there should be client side cache.
+            some remote ask to register a new peer
             </summary>
-        </member>
-        <member name="P:BazarServer.Application.Users.UserDto.userInfo">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:BazarServer.Application.Users.UserDto.userStatistic">
-            <summary>
-            
-            </summary>
-        </member>
-        <member name="P:BazarServer.Application.Users.UserDto.lastPicTime">
-            <summary>
-            
-            </summary>
+            <param name="baseUrl"></param>
+            <returns></returns>
         </member>
         <member name="F:BazarServer.Application.PeerServers.PeerManager.dicServerStats">
             <summary>
@@ -194,7 +132,7 @@
             <param name="pss"></param>
             <returns></returns>
         </member>
-        <member name="M:BazarServer.Application.PeerServers.PeerManager.RegisterToRemoteAsync(BazarServer.Entity.PeerServers.PeerServer,System.String)">
+        <member name="M:BazarServer.Application.PeerServers.PeerManager.RegisterToRemoteAsync(BazarServer.Entity.Storage.PeerServer,System.String)">
             <summary>
             register baseUrl to a remote server
             </summary>
@@ -202,7 +140,7 @@
             <param name="selfBaseUrl"></param>
             <returns></returns>
         </member>
-        <member name="M:BazarServer.Application.PeerServers.PeerManager.GetPeerListAsync(BazarServer.Entity.PeerServers.PeerServer)">
+        <member name="M:BazarServer.Application.PeerServers.PeerManager.GetPeerListAsync(BazarServer.Entity.Storage.PeerServer)">
             <summary>
             get peerList from one remote server
             </summary>
@@ -253,6 +191,103 @@
             <summary>
             receive command count from peer. effective ones only.
             </summary>
+        </member>
+        <member name="P:BazarServer.Application.Query.PostDetailDto.parent">
+            <summary>
+            maybe null if current is topmost
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Query.PostDetailDto.thread">
+            <summary>
+            maybe null if current is topmost or parrent is topmost
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Query.PostDetailDto.replies">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Query.PostDto.liked">
+            <summary>
+            empty means not liked
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Query.PostDto.replyToUser">
+            <summary>
+            userID of post.replyTo. empty if not reply to anyone
+            </summary>
+        </member>
+        <member name="M:BazarServer.Application.Query.PostQueryFacade.GetPostDto(BazarServer.Infrastructure.Repository.IPostRepository,System.String,System.Collections.Generic.List{BazarServer.Entity.Storage.Post})">
+            <summary>
+            get PostDto based on Post. batch for better performance
+            </summary>
+            <param name="postRepository"></param>
+            <param name="userID"></param>
+            <param name="ay"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Application.Query.PostQueryFacade.GetUserLatestPosts_withCache(BazarServer.Infrastructure.Repository.IPostRepository,System.String)">
+            <summary>
+            get latest N posts of user
+            </summary>
+            <param name="postRepository"></param>
+            <param name="userID"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Application.Query.PostQueryFacade.RemoveUserLatestPostsCache(System.String)">
+            <summary>
+            remove cache when mongodb has 'Post' change event
+            </summary>
+            <param name="userID"></param>
+        </member>
+        <member name="M:BazarServer.Application.Query.PostQueryFacade.GetLatestPostsByUsers(BazarServer.Infrastructure.Repository.IPostRepository,System.Collections.Generic.List{System.String},System.Int32,System.Int32)">
+            <summary>
+            return the top N posts of users. latest at top. with cache.
+            </summary>
+            <param name="postRepository"></param>
+            <param name="userIDs"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BazarServer.Application.Query.UserDto">
+            <summary>
+            we don't return userPic directly for bandwidth consideration, there should be client side cache.
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Query.UserDto.userInfo">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Query.UserDto.userStatistic">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Application.Query.UserDto.lastPicTime">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:BazarServer.Application.Query.UserQueryFacade.CheckQuery(BazarServer.Infrastructure.Repository.IUserRepository,System.String,System.Int64,System.String)">
+            <summary>
+            for some heavy or private query, we want to make sure the qurey comes from specific user
+            </summary>
+            <param name="userRepository"></param>
+            <param name="userID"></param>
+            <param name="queryTimestamp">time milli</param>
+            <param name="queryToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Application.Query.UserQueryFacade.GetUserDto_WithCache(BazarServer.Infrastructure.Repository.IUserRepository,System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="userRepository"></param>
+            <param name="userID"></param>
+            <param name="cacheMilli">millseconds that result will cache</param>
+            <returns></returns>
         </member>
     </members>
 </doc>
