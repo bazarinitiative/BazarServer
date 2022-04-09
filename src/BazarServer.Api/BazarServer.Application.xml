@@ -159,7 +159,7 @@
             this function may be called in multi-thread
             </summary>
             <param name="stat"></param>
-            <param name="cmd"></param>
+            <param name="cmdRemote"></param>
             <returns></returns>
         </member>
         <member name="P:BazarServer.Application.PeerServers.PeerServerDto.baseUrl">

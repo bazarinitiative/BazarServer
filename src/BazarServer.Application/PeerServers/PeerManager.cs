@@ -385,10 +385,13 @@ namespace BazarServer.Application.PeerServers
 		/// this function may be called in multi-thread
 		/// </summary>
 		/// <param name="stat"></param>
-		/// <param name="cmd"></param>
+		/// <param name="cmdRemote"></param>
 		/// <returns></returns>
-		public async Task<MsgResult> Peer_OnMessage(PeerServerStat stat, UserCommand cmd)
+		public async Task<MsgResult> Peer_OnMessage(PeerServerStat stat, UserCommand cmdRemote)
 		{
+			var cmd = new UserCommand();
+			FastCopy.Copy(cmdRemote, cmd);
+
 			await sem.WaitAsync();
 			try
 			{
