@@ -51,11 +51,11 @@ namespace BazarServer.Infrastructure.Repository
 
 		public async Task<List<UserCommand>> Batch(long lastOffset, int forwardCount)
 		{
-			var qry = _connCmd.GetQueryable()
-									.Where(x => x.receiveOffset > lastOffset)
-									.OrderBy(x => x.receiveOffset)
-									.Take(forwardCount);
-			var ret = await qry.ToListAsync();
+			var ret = await _connCmd.PageAsync(x => x.receiveOffset > lastOffset,
+												x => x.receiveOffset,
+												0,
+												forwardCount,
+												false);
 			return ret;
 		}
 
