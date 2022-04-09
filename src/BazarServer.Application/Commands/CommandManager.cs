@@ -20,8 +20,11 @@ namespace BazarServer.Application.Commands
 			this.mediator = mediator;
 		}
 
-		public async Task<MdtResp> SaveAndDispatch(UserCommand cmd, string commandFrom)
+		public async Task<MdtResp> SaveAndDispatch(UserCommand cmdOrig, string commandFrom)
 		{
+			var cmd = new UserCommand();
+			FastCopy.Copy(cmd, cmdOrig);
+
 			cmd.receiveOffset = await commandRepository.GetNextReceiveOffset();
 			var sc = await commandRepository.SaveCommandAsync(cmd);
 			if (!sc.success)
