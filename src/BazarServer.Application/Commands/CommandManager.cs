@@ -23,7 +23,7 @@ namespace BazarServer.Application.Commands
 		public async Task<MdtResp> SaveAndDispatch(UserCommand cmdOrig, string commandFrom)
 		{
 			var cmd = new UserCommand();
-			FastCopy.Copy(cmd, cmdOrig);
+			FastCopy.Copy(cmdOrig, cmd);
 
 			cmd.receiveOffset = await commandRepository.GetNextReceiveOffset();
 			var sc = await commandRepository.SaveCommandAsync(cmd);

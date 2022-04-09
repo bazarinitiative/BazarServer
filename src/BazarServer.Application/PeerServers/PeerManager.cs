@@ -389,12 +389,12 @@ namespace BazarServer.Application.PeerServers
 		/// <returns></returns>
 		public async Task<MsgResult> Peer_OnMessage(PeerServerStat stat, UserCommand cmdRemote)
 		{
-			var cmd = new UserCommand();
-			FastCopy.Copy(cmdRemote, cmd);
-
 			await sem.WaitAsync();
 			try
 			{
+				var cmd = new UserCommand();
+				FastCopy.Copy(cmdRemote, cmd);
+
 				stat.server.ReceiveCount++;
 
 				cmd.receiveTime = DateHelper.CurrentTimeMillis();
