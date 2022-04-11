@@ -528,6 +528,20 @@ public partial class UserQueryController : BazarControllerBase
 	}
 
 	[HttpGet]
+	public async Task<ApiResponse<ChannelDto>> GetChannel(string channelID)
+	{
+		var channel = await userRepository.getChannel(channelID);
+		if (channel == null)
+		{
+			return Error<ChannelDto>($"fail to get channel for {channelID}");
+		}
+		var node = new ChannelDto(channel);
+		node.memberCount = 0;
+		node.followerCount = 0;
+		return Success(node);
+	}
+
+	[HttpGet]
 	public async Task<ApiResponse<List<ChannelMemberDto>>> GetChannelMembers(string channelID)
 	{
 		var ay = await userRepository.getChannelMembers(channelID);
@@ -536,6 +550,24 @@ public partial class UserQueryController : BazarControllerBase
 		{
 			ret.Add(new ChannelMemberDto(item));
 		}
+		return Success(ret);
+	}
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="channelID"></param>
+	/// <param name="page"></param>
+	/// <param name="pageSize"></param>
+	/// <param name="observerUserID">who is looking at this channel</param>
+	/// <returns></returns>
+	[HttpGet]
+	public async Task<ApiResponse<List<PostDto>>> GetChannelPosts(string channelID, int page, int pageSize, string? observerUserID = "")
+	{
+		var users = await userRepository.getChannelMembers(channelID);
+		var ay = users.Select(x => x.memberID).ToList();
+		var posts = await PostQueryFacade.GetLatestPostsByUsers(postRepository, ay, page, pageSize);
+		var ret = await PostQueryFacade.GetPostDto(postRepository, observerUserID ?? "", posts);
 		return Success(ret);
 	}
 

@@ -194,6 +194,12 @@ namespace BazarServer.Infrastructure.Repository
 			return ret;
 		}
 
+		public async Task<Channel?> getChannel(string channelID)
+		{
+			var ret = await _connChannel.FirstOrDefaultAsync(x=>x.channelID == channelID);
+			return ret;
+		}
+
 		public async Task<List<Following>> getChannelFollowers(string channelID)
 		{
 			var ret = await _connFollowings.GetAsync(x=>x.targetID == channelID);

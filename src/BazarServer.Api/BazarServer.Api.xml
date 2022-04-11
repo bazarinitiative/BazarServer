@@ -319,6 +319,16 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:BazarServer.Controllers.UserQueryController.GetChannelPosts(System.String,System.Int32,System.Int32,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="channelID"></param>
+            <param name="page"></param>
+            <param name="pageSize"></param>
+            <param name="observerUserID">who is looking at this channel</param>
+            <returns></returns>
+        </member>
         <member name="T:BazarServer.Controllers.UserQueryFilterAttribute">
             <summary>
             antiSpam, rateLimit

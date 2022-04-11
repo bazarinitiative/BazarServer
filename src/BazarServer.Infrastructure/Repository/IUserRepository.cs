@@ -98,5 +98,6 @@ namespace BazarServer.Infrastructure.Repository
 		Task UpsertChannel(Channel channel);
 		Task UpsertChannelMember(ChannelMember member);
 		Task<List<Following>> getChannelFollowers(string channelID);
+		Task<Channel?> getChannel(string channelID);
 	}
 }

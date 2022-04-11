@@ -44,11 +44,6 @@ namespace BazarServer.Application.Commands
 				{
 					return new MdtResp(false, "lack data", new UserCommandRespDto(CommandErrorCode.NoUser, model.userID));
 				}
-				var old = await _conn.FirstOrDefaultAsync(x => x.userID == model.userID && x.channelName == model.channelName);
-				if (old != null)
-				{
-					return new MdtResp(false, "duplicate channelName already exist");
-				}
 				var count = await _conn.CountAsync(x => x.userID == model.userID);
 				if (count > maxChannelCount)
 				{

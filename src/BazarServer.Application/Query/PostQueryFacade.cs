@@ -10,7 +10,7 @@ namespace BazarServer.Application.Query
 		/// get PostDto based on Post. batch for better performance
 		/// </summary>
 		/// <param name="postRepository"></param>
-		/// <param name="userID"></param>
+		/// <param name="userID">from whose point of view</param>
 		/// <param name="ay"></param>
 		/// <returns></returns>
 		public static async Task<List<PostDto>> GetPostDto(IPostRepository postRepository, string userID, List<Post> ay)
