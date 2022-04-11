@@ -16,12 +16,18 @@ namespace BazarServer.Application.Query
 		/// </summary>
 		public string replyToUser { get; }
 
-		public PostDto(Post post, PostStatistic ps, bool liked, string replyToUser)
+		/// <summary>
+		/// 
+		/// </summary>
+		public bool bookmarked { get; }
+
+		public PostDto(Post post, PostStatistic ps, bool liked, string replyToUser, bool bookmarked)
 		{
 			this.post = post;
 			this.ps = ps;
 			this.liked = liked;
 			this.replyToUser = replyToUser;
+			this.bookmarked = bookmarked;
 		}
 
 	}

@@ -217,6 +217,11 @@
             userID of post.replyTo. empty if not reply to anyone
             </summary>
         </member>
+        <member name="P:BazarServer.Application.Query.PostDto.bookmarked">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:BazarServer.Application.Query.PostQueryFacade.GetPostDto(BazarServer.Infrastructure.Repository.IPostRepository,System.String,System.Collections.Generic.List{BazarServer.Entity.Storage.Post})">
             <summary>
             get PostDto based on Post. batch for better performance

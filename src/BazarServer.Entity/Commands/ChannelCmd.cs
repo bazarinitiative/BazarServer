@@ -7,15 +7,21 @@ namespace BazarServer.Entity.Commands
 	/// </summary>
 	public class ChannelCmd : ICommandContent
 	{
+		public string userID { get; set; }
+		public string commandID { get; set; } = "";
+		public long commandTime { get; set; }
+
 		/// <summary>
 		/// uniqueID of this Channel
 		/// </summary>
 		[StringLength(30, MinimumLength = 30)]
 		public string channelID { get; set; }
 
-		public string userID { get; set; }
-		public string commandID { get; set; } = "";
-		public long commandTime { get; set; }
+		/// <summary>
+		/// displayName of this Channel
+		/// </summary>
+		[StringLength(100)]
+		public string channelName { get; set; }
 
 		/// <summary>
 		/// 
@@ -23,10 +29,11 @@ namespace BazarServer.Entity.Commands
 		[StringLength(300)]
 		public string description { get; set; } = "";
 
-		public ChannelCmd(string channelID, string userID)
+		public ChannelCmd(string channelID, string userID, string channelName)
 		{
 			this.channelID = channelID;
 			this.userID = userID;
+			this.channelName = channelName;
 		}
 	}
 }

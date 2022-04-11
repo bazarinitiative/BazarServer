@@ -17,6 +17,8 @@ namespace BazarServer.Application.Commands
 		IGenericMongoCollection<Channel> _conn;
 		IUserRepository userRepository;
 
+		const int maxChannelCount = 50;
+
 		public MdtChannelHandler(ISender mediator, ILogger<MdtChannelHandler> logger, IGenericMongoCollection<Channel> conn, IUserRepository userRepository)
 		{
 			_mediator = mediator;
@@ -30,6 +32,10 @@ namespace BazarServer.Application.Commands
 			try
 			{
 				var model = req.model;
+				if (model.channelName.Length > 50)
+				{
+					return new MdtResp(false, "channelName too long");
+				}
 				if (model.description.Length > 300)
 				{
 					return new MdtResp(false, "description too long");
@@ -37,6 +43,16 @@ namespace BazarServer.Application.Commands
 				if (!await userRepository.IsExistUserAsync(model.userID))
 				{
 					return new MdtResp(false, "lack data", new UserCommandRespDto(CommandErrorCode.NoUser, model.userID));
+				}
+				var old = await _conn.FirstOrDefaultAsync(x => x.userID == model.userID && x.channelName == model.channelName);
+				if (old != null)
+				{
+					return new MdtResp(false, "duplicate channelName already exist");
+				}
+				var count = await _conn.CountAsync(x => x.userID == model.userID);
+				if (count > maxChannelCount)
+				{
+					return new MdtResp(false, $"you can only have {maxChannelCount} channels at most");
 				}
 				var info = await OnChannelAsync(model);
 
@@ -51,7 +67,7 @@ namespace BazarServer.Application.Commands
 
 		private async Task<(bool success, string msg)> OnChannelAsync(ChannelCmd cmd)
 		{
-			Channel model = new Channel(cmd.channelID, cmd.userID);
+			Channel model = new Channel(cmd.channelID, cmd.userID, cmd.channelName);
 			FastCopy.Copy(cmd, model);
 
 			await _conn.UpsertAsync(x => x.channelID == model.channelID, model);

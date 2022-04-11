@@ -18,6 +18,7 @@ namespace BazarServer.Application.Query
 			var postIDs = ay.Select(x => x.postID).ToList();
 			var dic = await postRepository.GetPostStatisticAsync(postIDs);
 			var dic2 = await postRepository.GetPostLikeAsync(userID, postIDs);
+			var dic3 = await postRepository.GetPostBookmarkAsync(userID, postIDs);
 
 			var replyTos = ay.Select(x => x.replyTo).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
 			var dicReplyTos = await postRepository.GetPostsAsync(replyTos);
@@ -30,7 +31,7 @@ namespace BazarServer.Application.Query
 				{
 					replyToUser = dicReplyTos[post.replyTo].userID;
 				}
-				ret.Add(new PostDto(post, dic[post.postID], dic2[post.postID], replyToUser));
+				ret.Add(new PostDto(post, dic[post.postID], dic2[post.postID], replyToUser, dic3[post.postID]));
 			}
 			return ret;
 		}

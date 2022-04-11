@@ -13,15 +13,17 @@ namespace BazarServer.Infrastructure.Repository
 		IGenericMongoCollection<Like> _connLike;
 		IGenericMongoCollection<PostStatistic> _connStat;
 		IGenericMongoCollection<PostMeta> _connMeta;
+		IGenericMongoCollection<Bookmark> _connBookmark;
 		ILogger<PostRepository> _logger;
 
-		public PostRepository(IGenericMongoCollection<Post> conn, IGenericMongoCollection<PostStatistic> connStat, ILogger<PostRepository> logger, IGenericMongoCollection<Like> connLike, IGenericMongoCollection<PostMeta> connMeta)
+		public PostRepository(IGenericMongoCollection<Post> conn, IGenericMongoCollection<PostStatistic> connStat, ILogger<PostRepository> logger, IGenericMongoCollection<Like> connLike, IGenericMongoCollection<PostMeta> connMeta, IGenericMongoCollection<Bookmark> connBookmark)
 		{
 			_conn = conn;
 			_connStat = connStat;
 			_logger = logger;
 			_connLike = connLike;
 			_connMeta = connMeta;
+			_connBookmark = connBookmark;
 		}
 
 		public async Task<List<Post>> GetPostsByUserAsync(string userID, bool onlyOriginalPost, int page, int pageSize)
@@ -138,6 +140,19 @@ namespace BazarServer.Infrastructure.Repository
 			return ret;
 		}
 
+		public async Task<Dictionary<string, bool>> GetPostBookmarkAsync(string userID, List<string> postIDs)
+		{
+			var list = await _connBookmark.InFilterAsync(nameof(Post.postID), postIDs, x => x.userID == userID);
+			var set = list.Select(x => x.postID).ToHashSet();
+
+			Dictionary<string, bool> ret = new Dictionary<string, bool>();
+			foreach (var postID in postIDs)
+			{
+				ret[postID] = set.Contains(postID);
+			}
+			return ret;
+		}
+
 		public async Task<PostStatistic?> GetPostStatisticAsync(string postID)
 		{
 			var stat = await _connStat.FirstOrDefaultAsync(x => x.postID == postID);
@@ -148,6 +163,19 @@ namespace BazarServer.Infrastructure.Repository
 		{
 			var like = await _connLike.FirstOrDefaultAsync(x => x.userID == userID && x.postID == postID);
 			if (like != null)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+
+		public async Task<bool> GetPostBookmarkAsync(string userID, string postID)
+		{
+			var bookmark = await _connBookmark.FirstOrDefaultAsync(x => x.userID == userID && x.postID == postID);
+			if (bookmark != null)
 			{
 				return true;
 			}
@@ -183,6 +211,17 @@ namespace BazarServer.Infrastructure.Repository
 		public async Task<List<Post>> GetRandomPost(int count)
 		{
 			var ret = await _conn.Random(count);
+			return ret;
+		}
+
+		public async Task UpsertBookmark(Bookmark model)
+		{
+			await _connBookmark.UpsertAsync(x => x.userID == model.userID && x.postID == model.postID, model);
+		}
+
+		public async Task<List<Bookmark>> GetUserBookmarks(string userID, int page, int pageSize)
+		{
+			var ret = await _connBookmark.PageAsync(x => x.userID == userID, x => x.commandTime, page, pageSize, true);
 			return ret;
 		}
 	}

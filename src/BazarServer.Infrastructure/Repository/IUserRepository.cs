@@ -93,5 +93,10 @@ namespace BazarServer.Infrastructure.Repository
 		/// <returns></returns>
 		Task<List<Like>> GetUserLikes(string userID, int page, int pageSize);
 		Task RemoveNotify(string fromWhere);
+		Task<List<Channel>> getUserChannels(string userID);
+		Task<List<ChannelMember>> getChannelMembers(string channelID);
+		Task UpsertChannel(Channel channel);
+		Task UpsertChannelMember(ChannelMember member);
+		Task<List<Following>> getChannelFollowers(string channelID);
 	}
 }

@@ -10,26 +10,30 @@ namespace BazarServer.Infrastructure.Repository
 	{
 		private readonly IGenericMongoCollection<UserInfo> _conn;
 		private readonly IGenericMongoCollection<UserPic> _connPic;
-		private readonly IGenericMongoCollection<Following> _followings;
+		private readonly IGenericMongoCollection<Following> _connFollowings;
 		private readonly IGenericMongoCollection<Like> _connLike;
 		private readonly IGenericMongoCollection<UserStatistic> _connStat;
 		private readonly IGenericMongoCollection<NotifyMessage> _connNoti;
 		private readonly IGenericMongoCollection<NotifyGetTime> _connNotiGetTime;
+		private readonly IGenericMongoCollection<Channel> _connChannel;
+		private readonly IGenericMongoCollection<ChannelMember> _connChannelMember;
 		private readonly ILogger<UserRepository> _logger;
 
 		public UserRepository(IGenericMongoCollection<UserInfo> conn, IGenericMongoCollection<UserStatistic> connStat,
 						ILogger<UserRepository> logger, IGenericMongoCollection<UserPic> connPic,
 						IGenericMongoCollection<Following> followings, IGenericMongoCollection<NotifyMessage> connNoti,
-						IGenericMongoCollection<NotifyGetTime> connNotiGetTime, IGenericMongoCollection<Like> connLike)
+						IGenericMongoCollection<NotifyGetTime> connNotiGetTime, IGenericMongoCollection<Like> connLike, IGenericMongoCollection<Channel> connChannel, IGenericMongoCollection<ChannelMember> connChannelMember)
 		{
 			_conn = conn;
 			_connStat = connStat;
 			_logger = logger;
 			_connPic = connPic;
-			_followings = followings;
+			_connFollowings = followings;
 			_connNoti = connNoti;
 			_connNotiGetTime = connNotiGetTime;
 			_connLike = connLike;
+			_connChannel = connChannel;
+			_connChannelMember = connChannelMember;
 		}
 
 		public async Task SaveUserAsync(UserInfo model)
@@ -96,21 +100,21 @@ namespace BazarServer.Infrastructure.Repository
 
 		public async Task<List<Following>> GetUserFollowers(string userID, int page, int pageSize)
 		{
-			var ret = await _followings.PageAsync(x => x.targetID == userID && x.targetType == "User",
+			var ret = await _connFollowings.PageAsync(x => x.targetID == userID && x.targetType == "User",
 											x => x.commandTime, page, pageSize, true);
 			return ret;
 		}
 
 		public async Task<List<Following>> GetUserFollowees(string userID, int page, int pageSize)
 		{
-			var ret = await _followings.PageAsync(x => x.userID == userID && x.targetType == "User",
+			var ret = await _connFollowings.PageAsync(x => x.userID == userID && x.targetType == "User",
 											x => x.commandTime, page, pageSize, true);
 			return ret;
 		}
 
 		public async Task<Following?> GetUserFollowing(string userID, string targetID)
 		{
-			var ay = await _followings.GetAsync(x => x.userID == userID && x.targetID == targetID);
+			var ay = await _connFollowings.GetAsync(x => x.userID == userID && x.targetID == targetID);
 			var ret = ay.FirstOrDefault();
 			return ret;
 		}
@@ -176,6 +180,34 @@ namespace BazarServer.Infrastructure.Repository
 		public async Task<List<Like>> GetUserLikes(string userID, int page, int pageSize)
 		{
 			var ret = await _connLike.PageAsync(x => x.userID == userID, x => x.commandTime, page, pageSize, true);
+			return ret;
+		}
+
+		public async Task UpsertChannel(Channel channel)
+		{
+			await _connChannel.UpsertAsync(x => x.channelID == channel.channelID, channel);
+		}
+
+		public async Task<List<Channel>> getUserChannels(string userID)
+		{
+			var ret = await _connChannel.GetAsync(x => x.userID == userID);
+			return ret;
+		}
+
+		public async Task<List<Following>> getChannelFollowers(string channelID)
+		{
+			var ret = await _connFollowings.GetAsync(x=>x.targetID == channelID);
+			return ret;
+		}
+
+		public async Task UpsertChannelMember(ChannelMember member)
+		{
+			await _connChannelMember.UpsertAsync(x => x.cmID == member.cmID, member);
+		}
+
+		public async Task<List<ChannelMember>> getChannelMembers(string channelID)
+		{
+			var ret = await _connChannelMember.GetAsync(x => x.channelID == channelID);
 			return ret;
 		}
 	}

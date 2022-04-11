@@ -53,11 +53,17 @@ namespace BazarServer.Application.Commands
 					case "Channel":
 						resp = await OnUserCommandDetail<ChannelCmd>(cmd, commandFrom);
 						break;
+					case "ChannelMember":
+						resp = await OnUserCommandDetail<ChannelMemberCmd>(cmd, commandFrom);
+						break;
 					case "Post":
 						resp = await OnUserCommandDetail<PostCmd>(cmd, commandFrom);
 						break;
 					case "Like":
 						resp = await OnUserCommandDetail<LikeCmd>(cmd, commandFrom);
+						break;
+					case "Bookmark":
+						resp = await OnUserCommandDetail<BookmarkCmd>(cmd, commandFrom);
 						break;
 					case "Delete":
 						resp = await OnUserCommandDetail<DeleteCmd>(cmd, commandFrom);

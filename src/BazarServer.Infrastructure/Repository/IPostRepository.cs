@@ -119,5 +119,9 @@ namespace BazarServer.Infrastructure.Repository
 		/// <param name="count"></param>
 		/// <returns></returns>
 		Task<List<Post>> GetRandomPost(int count);
+		Task UpsertBookmark(Bookmark model);
+		Task<List<Bookmark>> GetUserBookmarks(string userID, int page, int pageSize);
+		Task<Dictionary<string, bool>> GetPostBookmarkAsync(string userID, List<string> postIDs);
+		Task<bool> GetPostBookmarkAsync(string userID, string postID);
 	}
 }

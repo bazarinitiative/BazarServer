@@ -278,9 +278,11 @@ public partial class UserQueryController : BazarControllerBase
 			ps = new PostStatistic(postID);
 		}
 		var liked = false;
+		var bookmarked = false;
 		if (!string.IsNullOrEmpty(userID))
 		{
 			liked = await postRepository.GetPostLikeAsync(userID, postID);
+			bookmarked = await postRepository.GetPostBookmarkAsync(userID, postID);
 		}
 		var replyToUser = "";
 		if (post.replyTo.Length > 0)
@@ -288,7 +290,7 @@ public partial class UserQueryController : BazarControllerBase
 			var rpost = await postRepository.GetPostAsync(post.replyTo);
 			replyToUser = rpost?.userID ?? "";
 		}
-		PostDto dto = new PostDto(post, ps, liked, replyToUser);
+		PostDto dto = new PostDto(post, ps, liked, replyToUser, bookmarked);
 		return Success(dto);
 	}
 
@@ -508,6 +510,50 @@ public partial class UserQueryController : BazarControllerBase
 		Response.Headers.LastModified = lastModify;
 		Response.Headers.CacheControl = "max-age=0";
 		return new FileContentResult(buf, "image/jpeg");
+	}
+
+	[HttpGet]
+	public async Task<ApiResponse<List<ChannelDto>>> GetUserChannels(string userID)
+	{
+		var ay = await userRepository.getUserChannels(userID);
+		List<ChannelDto> ret = new List<ChannelDto>();
+		foreach (var item in ay)
+		{
+			var node = new ChannelDto(item);
+			node.memberCount = 0;
+			node.followerCount = 0;
+			ret.Add(node);
+		}
+		return Success(ret);
+	}
+
+	[HttpGet]
+	public async Task<ApiResponse<List<ChannelMemberDto>>> GetChannelMembers(string channelID)
+	{
+		var ay = await userRepository.getChannelMembers(channelID);
+		List<ChannelMemberDto> ret = new List<ChannelMemberDto>();
+		foreach (var item in ay)
+		{
+			ret.Add(new ChannelMemberDto(item));
+		}
+		return Success(ret);
+	}
+
+	[HttpGet]
+	public async Task<ApiResponse<List<BookmarkDto>>> GetUserBookmarks(string userID, int page, int pageSize)
+	{
+		var ay = await postRepository.GetUserBookmarks(userID, page, pageSize);
+		var ids = ay.Select(x => x.postID).ToList();
+		var posts = await postRepository.GetPostsAsync(ids);
+		var dtos = await PostQueryFacade.GetPostDto(postRepository, userID, posts.Values.ToList());
+		var dic = dtos.ToDictionary(x => x.post.postID);
+		List<BookmarkDto> ret = new List<BookmarkDto>();
+		foreach (var item in ay)
+		{
+			var dto = dic[item.postID];
+			ret.Add(new BookmarkDto(item, dto));
+		}
+		return Success(ret);
 	}
 }
 

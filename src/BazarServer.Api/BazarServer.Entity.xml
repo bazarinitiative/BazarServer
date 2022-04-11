@@ -4,6 +4,16 @@
         <name>BazarServer.Entity</name>
     </assembly>
     <members>
+        <member name="T:BazarServer.Entity.Commands.BookmarkCmd">
+            <summary>
+            userID+postID is unique
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.BookmarkCmd.postID">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:BazarServer.Entity.Commands.ChannelCmd">
             <summary>
             group of users. like channel in telegram or list in twitter. 
@@ -12,6 +22,11 @@
         <member name="P:BazarServer.Entity.Commands.ChannelCmd.channelID">
             <summary>
             uniqueID of this Channel
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.ChannelCmd.channelName">
+            <summary>
+            displayName of this Channel
             </summary>
         </member>
         <member name="P:BazarServer.Entity.Commands.ChannelCmd.description">
@@ -24,9 +39,24 @@
             
             </summary>
         </member>
+        <member name="P:BazarServer.Entity.Commands.ChannelMemberCmd.userID">
+            <summary>
+            who send this command
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.ChannelMemberCmd.cmID">
+            <summary>
+            uniqueID of this channel-member relationship
+            </summary>
+        </member>
         <member name="P:BazarServer.Entity.Commands.ChannelMemberCmd.channelID">
             <summary>
             uniqueID of this Channel
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Commands.ChannelMemberCmd.memberID">
+            <summary>
+            whom to add to this channel
             </summary>
         </member>
         <member name="T:BazarServer.Entity.Commands.DeleteCmd">
@@ -268,6 +298,11 @@
             Time of next retrieve. Every OK-msg will postpon this time, to prevent too much effective msg.
             </summary>
         </member>
+        <member name="P:BazarServer.Entity.Storage.Bookmark.postID">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:BazarServer.Entity.Storage.Like">
             <summary>
             userID+postID is unique
@@ -389,6 +424,11 @@
             uniqueID of this Channel
             </summary>
         </member>
+        <member name="P:BazarServer.Entity.Storage.Channel.channelName">
+            <summary>
+            displayName of this Channel
+            </summary>
+        </member>
         <member name="P:BazarServer.Entity.Storage.Channel.description">
             <summary>
             
@@ -399,9 +439,24 @@
             
             </summary>
         </member>
+        <member name="P:BazarServer.Entity.Storage.ChannelMember.userID">
+            <summary>
+            who send this command
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.ChannelMember.cmID">
+            <summary>
+            uniqueID of this channel-member relationship
+            </summary>
+        </member>
         <member name="P:BazarServer.Entity.Storage.ChannelMember.channelID">
             <summary>
             uniqueID of this Channel
+            </summary>
+        </member>
+        <member name="P:BazarServer.Entity.Storage.ChannelMember.memberID">
+            <summary>
+            whom to add to this channel
             </summary>
         </member>
         <member name="T:BazarServer.Entity.Storage.Following">

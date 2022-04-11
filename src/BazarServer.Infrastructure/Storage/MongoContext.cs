@@ -45,6 +45,7 @@ namespace BazarServer.Infrastructure.Storage
 			BuildIndex<Channel>(nameof(Channel.channelID));
 			BuildIndex<Channel>(nameof(Channel.userID));
 
+			BuildIndex<ChannelMember>(nameof(ChannelMember.cmID));
 			BuildIndex<ChannelMember>(nameof(ChannelMember.channelID));
 			BuildIndex<ChannelMember>(nameof(ChannelMember.userID));
 
@@ -64,6 +65,9 @@ namespace BazarServer.Infrastructure.Storage
 
 			BuildIndex<Like>(nameof(Like.userID));
 			BuildIndex<Like>(nameof(Like.postID));
+
+			BuildIndex<Bookmark>(nameof(Bookmark.userID));
+			BuildIndex<Bookmark>(nameof(Bookmark.postID));
 
 			BuildIndex<NotifyMessage>(nameof(NotifyMessage.notifyID));
 			BuildIndex<NotifyMessage>(nameof(NotifyMessage.userID));

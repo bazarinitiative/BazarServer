@@ -14,13 +14,14 @@ namespace BazarServer.Application.Commands
 
 		IGenericMongoCollection<Post> _connPost;
 		IGenericMongoCollection<Like> _connLike;
+		IGenericMongoCollection<Bookmark> _connBookmark;
 		IGenericMongoCollection<Following> _connFollowing;
 		IGenericMongoCollection<Channel> _connChannel;
 		IGenericMongoCollection<ChannelMember> _connChannelMember;
 		IPostRepository postRepository;
 		IUserRepository userRepository;
 
-		public MdtDeleteHandler(IMediator mediator, ILogger<MdtDeleteHandler> logger, IGenericMongoCollection<Post> connPost, IGenericMongoCollection<Like> connLike, IGenericMongoCollection<Following> connFollowing, IGenericMongoCollection<Channel> connChannel, IPostRepository postRepository, IUserRepository userRepository, IGenericMongoCollection<ChannelMember> connChannelMember)
+		public MdtDeleteHandler(IMediator mediator, ILogger<MdtDeleteHandler> logger, IGenericMongoCollection<Post> connPost, IGenericMongoCollection<Like> connLike, IGenericMongoCollection<Following> connFollowing, IGenericMongoCollection<Channel> connChannel, IPostRepository postRepository, IUserRepository userRepository, IGenericMongoCollection<ChannelMember> connChannelMember, IGenericMongoCollection<Bookmark> connBookmark)
 		{
 			_mediator = mediator;
 			_logger = logger;
@@ -31,6 +32,7 @@ namespace BazarServer.Application.Commands
 			this.postRepository = postRepository;
 			this.userRepository = userRepository;
 			_connChannelMember = connChannelMember;
+			_connBookmark = connBookmark;
 		}
 
 		public async Task<MdtResp> Handle(MdtRequest<DeleteCmd> req, CancellationToken cancellationToken)
@@ -92,12 +94,12 @@ namespace BazarServer.Application.Commands
 					await _connChannel.RemoveAsync(x => x.channelID == model.targetID);
 					break;
 				case "ChannelMember":
-					var oldCM = await _connChannelMember.FirstOrDefaultAsync(x => x.channelID == model.targetID && x.userID == model.userID);
+					var oldCM = await _connChannelMember.FirstOrDefaultAsync(x => x.cmID == model.targetID && x.userID == model.userID);
 					if (oldCM == null)
 					{
 						return (false, "Target not exist. You can only maintain your own object.");
 					}
-					await _connChannelMember.RemoveAsync(x => x.channelID == model.targetID && x.userID == model.userID);
+					await _connChannelMember.RemoveAsync(x => x.cmID == model.targetID && x.userID == model.userID);
 					break;
 				case "Like":
 					var oldLike = await _connLike.FirstOrDefaultAsync(x => x.userID == model.userID && x.postID == model.targetID);
@@ -114,6 +116,14 @@ namespace BazarServer.Application.Commands
 					await postRepository.UpsertPostStatisticAsync(post.postID, 0, 0, -1);
 					await userRepository.UpsertUserStatisticAsync(post.userID, 0, -1, 0, 0);
 					await userRepository.RemoveNotify(post.postID);
+					break;
+				case "Bookmark":
+					var old = await _connBookmark.FirstOrDefaultAsync(x=>x.userID == model.userID && x.postID == model.targetID);
+					if (old == null)
+					{
+						return (false, "Target not exist. You can only remove your own object.");
+					}
+					await _connBookmark.RemoveAsync(x => x.userID == model.userID && x.postID == model.targetID);
 					break;
 				default:
 					break;

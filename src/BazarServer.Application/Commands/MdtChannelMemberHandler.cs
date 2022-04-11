@@ -16,6 +16,8 @@ namespace BazarServer.Application.Commands
 		IGenericMongoCollection<ChannelMember> _conn;
 		IUserRepository userRepository;
 
+		const int maxChannelMemberCount = 200;
+
 		public MdtChannelMemberHandler(ISender mediator, ILogger<MdtChannelMemberHandler> logger, IGenericMongoCollection<ChannelMember> conn, IUserRepository userRepository)
 		{
 			_mediator = mediator;
@@ -49,10 +51,15 @@ namespace BazarServer.Application.Commands
 			var model = new ChannelMember();
 			FastCopy.Copy(cmd, model);
 
-			var old = await _conn.FirstOrDefaultAsync(x => x.channelID == model.channelID && x.userID == model.userID);
+			var old = await _conn.FirstOrDefaultAsync(x => x.channelID == model.channelID && x.memberID == model.memberID);
 			if (old != null)
 			{
 				return (false, "dup");
+			}
+			var count = await _conn.CountAsync(x => x.channelID == model.channelID);
+			if (count > maxChannelMemberCount)
+			{
+				return (false, $"each channel can have {maxChannelMemberCount} members at most");
 			}
 
 			await _conn.UpsertAsync(x => x.channelID == model.channelID && x.userID == model.userID, model);
