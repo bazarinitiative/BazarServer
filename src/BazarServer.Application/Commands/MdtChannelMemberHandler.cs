@@ -14,16 +14,18 @@ namespace BazarServer.Application.Commands
 		ISender _mediator;
 
 		IGenericMongoCollection<ChannelMember> _conn;
+		IGenericMongoCollection<Channel> _connChannel;
 		IUserRepository userRepository;
 
 		const int maxChannelMemberCount = 200;
 
-		public MdtChannelMemberHandler(ISender mediator, ILogger<MdtChannelMemberHandler> logger, IGenericMongoCollection<ChannelMember> conn, IUserRepository userRepository)
+		public MdtChannelMemberHandler(ISender mediator, ILogger<MdtChannelMemberHandler> logger, IGenericMongoCollection<ChannelMember> conn, IUserRepository userRepository, IGenericMongoCollection<Channel> connChannel)
 		{
 			_mediator = mediator;
 			_logger = logger;
 			_conn = conn;
 			this.userRepository = userRepository;
+			_connChannel = connChannel;
 		}
 
 		public async Task<MdtResp> Handle(MdtRequest<ChannelMemberCmd> req, CancellationToken cancellationToken)
@@ -50,6 +52,12 @@ namespace BazarServer.Application.Commands
 		{
 			var model = new ChannelMember();
 			FastCopy.Copy(cmd, model);
+
+			var cc = await _connChannel.FirstOrDefaultAsync(x=>x.channelID == cmd.channelID);
+			if (cc != null && cc.userID != cmd.userID)
+			{
+				return (false, "you can only edit you own list member");
+			}
 
 			var old = await _conn.FirstOrDefaultAsync(x => x.channelID == model.channelID && x.memberID == model.memberID);
 			if (old != null)

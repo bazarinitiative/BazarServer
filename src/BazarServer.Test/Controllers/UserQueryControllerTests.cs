@@ -1,6 +1,7 @@
 ﻿using BazarServer.Application.Query;
 using BazarServer.Entity.Storage;
 using BazarServer.Infrastructure.Repository;
+using Common.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -46,14 +47,17 @@ namespace BazarServer.Controllers.Tests
 			IUserRepository userRepository = provider.GetService<IUserRepository>();
 			IPostRepository postRepository = provider.GetService<IPostRepository>();
 
-			var userID = "Kce3xXlO5D8bT4dIeuaq6p6wgAuDr9";
+			var userID = "k7RmZwQlkX4cbaOl3RGaMoD3LpE2Db";
 			var page = 0;
 			var pageSize = 20;
 
+			var begin = DateHelper.GetMilliSeconds();
 			var users = await userRepository.GetUserFollowees(userID, 0, 1000);
 			var ay = users.Select(x => x.targetID).ToList();
 			var posts = await PostQueryFacade.GetLatestPostsByUsers(postRepository, ay, page, pageSize);
 			var ret = await PostQueryFacade.GetPostDto(postRepository, userID, posts);
+			var used = DateHelper.GetMilliSeconds() - begin;
+			var ss = used.ToString("0.00");
 
 			Assert.IsTrue(true);
 		}

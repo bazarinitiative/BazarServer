@@ -44,6 +44,11 @@ namespace BazarServer.Application.Commands
 				{
 					return new MdtResp(false, "lack data", new UserCommandRespDto(CommandErrorCode.NoUser, model.userID));
 				}
+				var old = await _conn.FirstOrDefaultAsync(x=>x.channelID == model.channelID);
+				if (old != null && old.userID != model.userID)
+				{
+					return new MdtResp(false, "you can only edit your own list");
+				}
 				var count = await _conn.CountAsync(x => x.userID == model.userID);
 				if (count > maxChannelCount)
 				{
