@@ -54,7 +54,12 @@ namespace BazarServer.Application.Commands
 			var old = await _conn.FirstOrDefaultAsync(x => x.channelID == model.channelID && x.memberID == model.memberID);
 			if (old != null)
 			{
-				return (false, "dup");
+				return (false, "dup member already exist");
+			}
+			var old2 = await _conn.FirstOrDefaultAsync(x => x.cmID == model.cmID);
+			if (old2 != null)
+			{
+				return (false, $"dup cmID: {model.cmID}");
 			}
 			var count = await _conn.CountAsync(x => x.channelID == model.channelID);
 			if (count > maxChannelMemberCount)
@@ -62,7 +67,7 @@ namespace BazarServer.Application.Commands
 				return (false, $"each channel can have {maxChannelMemberCount} members at most");
 			}
 
-			await _conn.UpsertAsync(x => x.channelID == model.channelID && x.userID == model.userID, model);
+			await _conn.UpsertAsync(x => x.channelID == model.channelID && x.memberID == model.memberID, model);
 
 			return (true, "");
 		}
