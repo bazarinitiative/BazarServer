@@ -21,9 +21,10 @@ namespace Common.Utils
 		/// <param name="bodyEncoding">null will default to UTF8</param>
 		/// <param name="enableSsl"></param>
 		/// <returns></returns>
-		public static async Task SendMail(string from, string to, string title, string body, bool isBodyHtml = true, Encoding? bodyEncoding = null, bool enableSsl = false)
+		public static async Task SendMail(string from, string to, string title, string body, bool isBodyHtml = true, Encoding? bodyEncoding = null, bool enableSsl = false, string displayFromName = "")
 		{
 			using MailMessage message = new MailMessage(from, to, title, body);
+			message.From = new MailAddress(from, displayFromName);
 			message.IsBodyHtml = isBodyHtml;
 			if (bodyEncoding == null)
 			{
@@ -60,7 +61,7 @@ namespace Common.Utils
 				MailHelper.mailPort = mailPort;
 				MailHelper.mailAcccount = mailAcccount;
 				MailHelper.mailPassword = mailPassword;
-				SendMail(mailAcccount, mailAcccount, title, content, true, null, enableSsl).Wait();
+				SendMail(mailAcccount, mailAcccount, title, content, true, null, enableSsl, "Bazar").Wait();
 			}
 		}
 

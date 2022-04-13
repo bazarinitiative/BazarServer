@@ -1,4 +1,6 @@
 ﻿using BazarServer.Application.Common;
+using BazarServer.Application.Query;
+using BazarServer.Infrastructure.Repository;
 
 namespace BazarServer.Controllers;
 
@@ -12,6 +14,7 @@ public class EmailController : BazarControllerBase
 	ILogger<EmailController> logger;
 	IConfiguration configuration;
 	IAntiSpam antiSpam;
+	IUserRepository userRepository;
 
 	string mailAcccount;
 	string mailPassword;
@@ -19,7 +22,7 @@ public class EmailController : BazarControllerBase
 	int mailPort;
 	bool enableSsl;
 
-	public EmailController(ILogger<EmailController> logger, IConfiguration configuration, IAntiSpam antiSpam)
+	public EmailController(ILogger<EmailController> logger, IConfiguration configuration, IAntiSpam antiSpam, IUserRepository userRepository)
 	{
 		this.logger = logger;
 		this.configuration = configuration;
@@ -33,6 +36,7 @@ public class EmailController : BazarControllerBase
 		mailPort = Convert.ToInt32(ay[3]);
 		enableSsl = bool.Parse(ay[4]);
 		this.antiSpam = antiSpam;
+		this.userRepository = userRepository;
 	}
 
 	static FrequencyControl fcEmailIP = new FrequencyControl(3600, 10);
@@ -66,7 +70,7 @@ public class EmailController : BazarControllerBase
 			MailHelper.mailPassword = mailPassword;
 
 			logger.LogInformation($"SendMail from {mailAcccount} to {targetEmailAddr}, ssl={enableSsl}");
-			await MailHelper.SendMail(mailAcccount, targetEmailAddr, title, content, true, null, enableSsl);
+			await MailHelper.SendMail(mailAcccount, targetEmailAddr, title, content, true, null, enableSsl, "Bazar");
 		}
 		catch (Exception ex)
 		{
@@ -132,16 +136,21 @@ Your verification code is <div style='color: red'><big>{req.code}</big></div>
 			//}
 
 			var userID = Encryption.CalculateUserID(publicKey);
+			var userDto = await UserQueryFacade.GetUserDto_WithCache(userRepository, userID);
+			var userName = userDto.userInfo.userName ?? "";
 
 			Dictionary<string, string> dic = new Dictionary<string, string>();
 			dic.Add("Public Key", "Private Key");
 			dic.Add(publicKey, privateKey);
 			string content = @$"
-UserID: <div style='color: grey'>{userID}</div><br>
+<html><body><div>
+UserID: <span style='color: grey'>{userID}</span><br>
+UserName: <span style='color: grey'>{userName}</span><br>
 Your backup account data is <br>
-<div style='max-width: 400px'>
+<div style='max-width: 400px; word-break: break-all;'>
 {DataFormatHelper.ToHtmlTable(dic)}
 </div>
+</div></body></html>
 ";
 			return await SendInternal(targetEmailAddr, title, content);
 		}
