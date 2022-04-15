@@ -10,18 +10,18 @@
 
 - An unique ECDSA key pair means an account.
 - UserID is just a shortcut to a ECDSA publicKey. Which is generated from publicKey with a specific algorithm.
-- One biological or logical user may have several userID, if he lost his privateKey. There won't be any way to findback the lost privatKey.
-- Account-Inherit service will announce that a new UserID is replacing an old UserID. Clients can choose which service to trust or not.
+- One biological or logical user may have several userID.
+- If someone lost his privateKey, there won't be any way to findback the lost privatKey.
+- RealnameService will announce that a new UserID is replacing an old UserID. Clients can choose which service to trust or not.
 - User Identity  
-   User Identity is private user profile, includes userID, userName, userPic, publicKey, privateKey, account findback service information, etc.  
-   Will be kept in client side only.
+   User Identity is public/private key paire of one user account. Will be kept in client side only. We will remind user to backup his identity personally and privately.
 
 ## User Generated Content
 
   All UGC will keep in Bazar Federation forever, like blockchain content.
 
 - User Info  
-   Public user profile. Subset of User Identity, eliminate privateKey and account findback information.
+   Public user profile, with userID, publicKey, userName, userPic, etc.
 - Post  
    Inlude post and replay.
 - Repost  
@@ -45,8 +45,7 @@
 - UserID-PublicKey binding will never change. Because UserID is just a shortcut to a ECDSA publicKey.
 - UGC is always verified by publicKey. Server will trust any UGC from any where if ECDSA signature check is passed.
 - Time inside UGC is not trustworthy. A server can only trust the time of receiving.
-- Real-Identity service is a weak point. Client can choose which service provider to trust or not.
-- Account-Inherit service is a weak point. Client can choose which service provider to trust or not.
+- RealnameService is a weak point. Client can choose which service provider to trust or not.
 
 ## Anti-spam
 
@@ -75,11 +74,11 @@
 
 # Luxury Service (Not yet, should be commercial)
 
-## Broadcast service
+## Bubble service
 
 - Decide what to broadcast. In the form of Recommendation, Search, Tag, etc. Should combine with moderation.
 
-### Hot-Recommendation service
+### Recommendation service
 
 - Decide which user/post/channel should be seen by users. Combine with moderation.
 
@@ -87,21 +86,17 @@
 
 - Combine with Recommendation.
 
-### Tag service
+### Hashtag service
 
 - Combine with Recommendation.
 
-## Real-Identity service
+## Realname service
 
-- Tells that an userID is somebody in real world.
-
-## Account-Inherit service
-
-- Tells that a new userID is replacing an old userID.
+- Tells that an userID is somebody in real world. Tells that a new userID is inheriting an old userID.
 
 ## Translation service
 
-- Translate UGC to different language.
+- Translate UGC to different languages.
 
 ## Statistic service
 
