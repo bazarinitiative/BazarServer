@@ -34,18 +34,27 @@ namespace BazarServer.Services
 
 			while (running)
 			{
-				var list = await commandRepository.Batch(lastReceiveOffset, 1000);
-				foreach (var cmd in list)
+				try
 				{
-					if (cmd.commandType == "Post" || cmd.commandType == "Delete")
+					var list = await commandRepository.Batch(lastReceiveOffset, 1000);
+					foreach (var cmd in list)
 					{
-						PostQueryFacade.RemoveUserLatestPostsCache(cmd.userID);
-					}
-					if (cmd.receiveOffset > lastReceiveOffset)
-					{
-						lastReceiveOffset = cmd.receiveOffset;
+						if (cmd.commandType == "Post" || cmd.commandType == "Delete")
+						{
+							PostQueryFacade.RemoveUserLatestPostsCache(cmd.userID);
+						}
+						if (cmd.receiveOffset > lastReceiveOffset)
+						{
+							lastReceiveOffset = cmd.receiveOffset;
+						}
 					}
 				}
+				catch (Exception ex)
+				{
+					LogFacade.LogError(ex.ToString());
+					await Task.Delay(1000);
+				}
+
 				await Task.Delay(50);
 			}
 		}
