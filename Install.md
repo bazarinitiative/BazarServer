@@ -8,16 +8,28 @@
 ```shell
 # add linux user
 adduser bazar
-# add user bazar to sudo list
+# add user bazar to sudo list.
 vi /etc/sudoers
 # switch to user bazar
 su bazar
 ```
 
-* Install mongodb. See also <https://docs.mongodb.com/manual/installation/> . You need to setup user name and password for mongodb <https://docs.mongodb.com/v4.4/core/authentication>
+* Install mongodb. MongoDB 4.4 or above. See also <https://docs.mongodb.com/manual/installation/> . You need to setup user name and password for mongodb <https://www.mongodb.com/docs/manual/core/authentication/> .
 
 ```shell
 sudo apt install mongodb
+```
+
+```shell
+#create mongodb user
+mongosh
+#modify bindIP to 0.0.0.0, port to a specific port AAAA (don't open default port to internet for security reason)
+#enable security authentication
+sudo vi /etc/mongodb.cfg
+#restart mongodb
+sudo systemctl restart mongod
+#open port for internet access
+sudo ufw allow AAAA
 ```
 
 * Install dotnet6. See also <https://docs.microsoft.com/en-us/dotnet/core/install/linux>
@@ -181,7 +193,8 @@ server {
 * Update source code from github and rebuild all
 
 ```shell
-vi ~/update.sh
+vi ~/svrupdate.sh
+vi ~/htmlupdate.sh
 ```
 
 Content
@@ -189,12 +202,17 @@ Content
 ```shell
 echo ====================BazarServer========================
 cd ~/work/BazarServer
+git reset HEAD
+git checkout .
 git pull
 sh build.sh
+#killall dotnet
 ps -ef | grep BazarServer.Api.dll | grep -v grep |awk '{print "kill "$2}'|sh
 nohup sh run.sh &
 sleep 1
+```
 
+```
 echo
 echo =====================BazarHtml=========================
 cd ~/work/BazarHtml
@@ -208,5 +226,6 @@ Usage
 
 ```shell
 cd ~
-sh update.sh
+sh svrupdate.sh
+sh htmlupdate.sh
 ```
