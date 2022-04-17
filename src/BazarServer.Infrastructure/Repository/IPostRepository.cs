@@ -31,7 +31,7 @@ namespace BazarServer.Infrastructure.Repository
 		/// <param name="page"></param>
 		/// <param name="pageSize"></param>
 		/// <returns></returns>
-		Task<List<Post>> TimelineAsync(int page, int pageSize);
+		Task<List<Post>> TimelineAsync(int page, int pageSize, string? lang);
 
 		/// <summary>
 		/// upsert

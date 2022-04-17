@@ -181,7 +181,7 @@
             <param name="userID"></param>
             <returns></returns>
         </member>
-        <member name="M:BazarServer.Controllers.UserQueryController.PublicTimeline(System.String,System.Int32,System.Int32)">
+        <member name="M:BazarServer.Controllers.UserQueryController.PublicTimeline(System.String,System.Int32,System.Int32,System.String)">
             <summary>
             timeline data for public.
             
@@ -190,6 +190,7 @@
             <param name="userID"></param>
             <param name="page"></param>
             <param name="pageSize"></param>
+            <param name="lang">filter by language. en, fr, de, ja, zh, ko, es, etc. empty means all.</param>
             <returns></returns>
         </member>
         <member name="M:BazarServer.Controllers.UserQueryController.HomeLine(System.String,System.Int64,System.String,System.Int32,System.Int32)">

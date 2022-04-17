@@ -74,10 +74,15 @@ namespace BazarServer.Infrastructure.Repository
 		/// </summary>
 		/// <param name="page"></param>
 		/// <param name="pageSize"></param>
+		/// <param name="lang"></param>
 		/// <returns></returns>
-		public async Task<List<Post>> TimelineAsync(int page, int pageSize)
+		public async Task<List<Post>> TimelineAsync(int page, int pageSize, string? lang)
 		{
 			var qry = _conn.GetQueryable().Where(x => !x.deleted);
+			if (!string.IsNullOrEmpty(lang))
+			{
+				qry = qry.Where(x => x.contentLang == lang);
+			}
 			var ay = await qry.OrderByDescending(x => x.commandTime)
 						.Skip(page * pageSize)
 						.Take(pageSize)

@@ -112,16 +112,17 @@ public partial class UserQueryController : BazarControllerBase
 	/// <param name="userID"></param>
 	/// <param name="page"></param>
 	/// <param name="pageSize"></param>
+	/// <param name="lang">filter by language. en, fr, de, ja, zh, ko, es, etc. empty means all.</param>
 	/// <returns></returns>
 	[HttpGet]
-	public async Task<ApiResponse<List<PostDto>>> PublicTimeline(string? userID, int page = 0, int pageSize = 20)
+	public async Task<ApiResponse<List<PostDto>>> PublicTimeline(string? userID, int page = 0, int pageSize = 20, string? lang = "")
 	{
 		if (userID == null)
 		{
 			userID = "";
 		}
 
-		List<Post> ay = await postRepository.TimelineAsync(page, pageSize);
+		List<Post> ay = await postRepository.TimelineAsync(page, pageSize, lang);
 		var ret = await PostQueryFacade.GetPostDto(postRepository, userID, ay);
 
 		return Success(ret);
