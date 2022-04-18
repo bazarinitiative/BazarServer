@@ -62,6 +62,10 @@ public partial class PeerController : BazarControllerBase
 		{
 			return Error<List<UserCommand>>($"forwardCount exceed limit {limit}");
 		}
+		if (forwardCount <= 0)
+		{
+			return Error<List<UserCommand>>($"forwardCount should be positive");
+		}
 		List<UserCommand>? ay = await peerManager.RetrieveUserCommandBatch(lastOffset, forwardCount);
 		if (ay == null)
 		{
