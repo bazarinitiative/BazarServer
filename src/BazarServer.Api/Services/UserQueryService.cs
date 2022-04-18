@@ -8,21 +8,23 @@ namespace BazarServer.Services
 	/// </summary>
 	public class UserQueryService : IHostedService
 	{
+		Thread? thread = null;
 		bool running = true;
 		ICommandRepository commandRepository;
 		IPostRepository postRepository;
+		ILogger<UserQueryService> logger;
 
-		public UserQueryService(ICommandRepository commandRepository, IPostRepository postRepository)
+		public UserQueryService(ICommandRepository commandRepository, IPostRepository postRepository, ILogger<UserQueryService> logger)
 		{
 			this.commandRepository = commandRepository;
 			this.postRepository = postRepository;
+			this.logger = logger;
 		}
 
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
 			running = true;
-
-			Thread thread = new Thread(async () => await Worker());
+			thread = new Thread(async () => await Worker());
 			thread.Start();
 
 			return Task.CompletedTask;
@@ -51,7 +53,7 @@ namespace BazarServer.Services
 				}
 				catch (Exception ex)
 				{
-					LogFacade.LogError(ex.ToString());
+					logger.LogError(ex.ToString());
 					await Task.Delay(1000);
 				}
 
@@ -62,6 +64,11 @@ namespace BazarServer.Services
 		public Task StopAsync(CancellationToken cancellationToken)
 		{
 			running = false;
+			if (thread != null)
+			{
+				thread.Join();
+				thread = null;
+			}
 			return Task.CompletedTask;
 		}
 	}

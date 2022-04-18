@@ -121,6 +121,8 @@ Then add following content to the end of file:
 export BazarMail="emailAddr_password_mailServerAddr_mailServerPort_enableSsl"
 export BazarBaseUrl="https://api.bazar.social/"
 export BazarMongodb="mongodb://localhost:27017/"
+# we use google API to detect PostConent language. see also <https://cloud.google.com/docs/authentication/api-keys>
+export BazarTranslateKey="yourApiKey"
 ```
 
 and replace the variables to proper value.

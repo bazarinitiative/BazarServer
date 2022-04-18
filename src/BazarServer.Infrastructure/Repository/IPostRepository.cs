@@ -26,10 +26,19 @@ namespace BazarServer.Infrastructure.Repository
 		Task<PostStatistic?> GetPostStatisticAsync(string postID);
 
 		/// <summary>
+		/// return next N posts where post.commandTime >= lastPostTime and lang is empty
+		/// </summary>
+		/// <param name="lastPostTime"></param>
+		/// <param name="count"></param>
+		/// <returns></returns>
+		Task<List<Post>> GetPostNoLang(long lastPostTime, int count);
+
+		/// <summary>
 		/// timeline of all known posts. latest at top.
 		/// </summary>
 		/// <param name="page"></param>
 		/// <param name="pageSize"></param>
+		/// <param name="lang"></param>
 		/// <returns></returns>
 		Task<List<Post>> TimelineAsync(int page, int pageSize, string? lang);
 

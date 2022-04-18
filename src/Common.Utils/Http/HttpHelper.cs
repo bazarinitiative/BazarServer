@@ -147,5 +147,13 @@ namespace Common.Utils
 			var responseBody = await res.Content.ReadAsStringAsync();
 			return responseBody;
 		}
+
+		public static async Task<string> SendAsync(HttpRequestMessage req)
+		{
+			using var res = await httpClient.SendAsync(req);
+			res.EnsureSuccessStatusCode();
+			var responseBody = await res.Content.ReadAsStringAsync();
+			return responseBody;
+		}
 	}
 }

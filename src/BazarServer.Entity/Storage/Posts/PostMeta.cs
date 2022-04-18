@@ -1,6 +1,6 @@
 ﻿namespace BazarServer.Entity.Storage
 {
-	public class PostMeta
+	public class PostMeta : IStoreData
 	{
 		public string postID { get; set; } = "";
 

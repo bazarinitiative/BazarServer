@@ -229,5 +229,12 @@ namespace BazarServer.Infrastructure.Repository
 			var ret = await _connBookmark.PageAsync(x => x.userID == userID, x => x.commandTime, page, pageSize, true);
 			return ret;
 		}
+
+		public async Task<List<Post>> GetPostNoLang(long lastPostTime, int count)
+		{
+			var ret = await _conn.PageAsync(x => x.commandTime >= lastPostTime && x.contentLang == "",
+									x => x.commandTime, 0, count, false);
+			return ret;
+		}
 	}
 }

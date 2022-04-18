@@ -72,12 +72,21 @@
             <param name="postID"></param>
             <returns></returns>
         </member>
+        <member name="M:BazarServer.Infrastructure.Repository.IPostRepository.GetPostNoLang(System.Int64,System.Int32)">
+            <summary>
+            return next N posts where post.commandTime >= lastPostTime and lang is empty
+            </summary>
+            <param name="lastPostTime"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
         <member name="M:BazarServer.Infrastructure.Repository.IPostRepository.TimelineAsync(System.Int32,System.Int32,System.String)">
             <summary>
             timeline of all known posts. latest at top.
             </summary>
             <param name="page"></param>
             <param name="pageSize"></param>
+            <param name="lang"></param>
             <returns></returns>
         </member>
         <member name="M:BazarServer.Infrastructure.Repository.IPostRepository.SaveAsync(BazarServer.Entity.Storage.Post)">

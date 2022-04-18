@@ -30,6 +30,7 @@ public class Startup
 		services.UseBazarInfrastructure(Configuration);
 
 		services.AddHostedService<UserQueryService>();
+		services.AddHostedService<PostLangDetectService>();
 
 		services.AddControllers();
 

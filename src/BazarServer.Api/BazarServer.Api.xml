@@ -354,6 +354,28 @@
             request rate limit, reqest info log, etc.
             </summary>
         </member>
+        <member name="P:BazarServer.Services.PostLangDetectService.TranslateRespUnit.confidence">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Services.PostLangDetectService.TranslateRespUnit.isReliable">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:BazarServer.Services.PostLangDetectService.TranslateRespUnit.language">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:BazarServer.Services.PostLangDetectService.DetectLang(System.String)">
+            <summary>
+            detect first N char for language from google or somewhere
+            </summary>
+            <param name="str"></param>
+            <returns>en, fr, zh, ja, etc</returns>
+        </member>
         <member name="T:BazarServer.Services.UserQueryService">
             <summary>
             background service for user query related logic

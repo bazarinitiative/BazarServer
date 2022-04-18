@@ -63,6 +63,8 @@ namespace BazarServer.Infrastructure.Storage
 
 			BuildIndex<PostMeta>(nameof(PostMeta.postID));
 
+			BuildIndex<PostLangDetect>(nameof(PostLangDetect.postID));
+
 			BuildIndex<Like>(nameof(Like.userID));
 			BuildIndex<Like>(nameof(Like.postID));
 
