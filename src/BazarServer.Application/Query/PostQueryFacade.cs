@@ -1,6 +1,7 @@
 ﻿using BazarServer.Entity.Storage;
 using BazarServer.Infrastructure.Repository;
 using Common.Utils;
+using System.Collections.Concurrent;
 
 namespace BazarServer.Application.Query
 {
@@ -126,6 +127,63 @@ namespace BazarServer.Application.Query
 				}
 			}
 			return ret;
+		}
+
+		static ConcurrentDictionary<string, Post> dicPosts = new ConcurrentDictionary<string, Post>();
+
+		/// <summary>
+		/// get random posts with reasonable cache
+		/// </summary>
+		/// <param name="postRepository"></param>
+		/// <param name="count"></param>
+		/// <returns></returns>
+		public static async Task<List<Post>> GetRandomPostsWithCache(IPostRepository postRepository, int count)
+		{
+			while (dicPosts.Count < count * 2)
+			{
+				await CacheSomePosts(postRepository);
+			}
+
+			_ = Task.Run(() => MaintainCache(postRepository));
+
+			var ay = MyRandom.RandomList(0, dicPosts.Count, count);
+			List<Post> res = new List<Post>();
+			foreach (var idx in ay)
+			{
+				res.Add(dicPosts.ElementAt(idx).Value);
+			}
+			return res;
+		}
+
+		static DateTime lastMaintain = DateTime.Now;
+
+		private static async Task MaintainCache(IPostRepository postRepository)
+		{
+			var span = lastMaintain - DateTime.Now;
+			if (span.TotalSeconds < 60)
+			{
+				return;
+			}
+			lastMaintain = DateTime.Now;
+
+			await CacheSomePosts(postRepository);
+			if (dicPosts.Count > 10000)
+			{
+				var ay = dicPosts.Values.OrderByDescending(x => x.commandTime).Take(1000);
+				foreach (var item in ay)
+				{
+					dicPosts.TryRemove(item.postID, out _);
+				}
+			}
+		}
+
+		private static async Task CacheSomePosts(IPostRepository postRepository)
+		{
+			var posts = (await postRepository.GetRandomPost(100)).OrderByDescending(x => x.commandTime).Take(50);
+			foreach (var item in posts)
+			{
+				dicPosts.TryAdd(item.postID, item);
+			}
 		}
 	}
 }

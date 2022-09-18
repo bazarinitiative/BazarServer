@@ -104,5 +104,29 @@ namespace Common.Utils
 			return ret;
 		}
 
+		/// <summary>
+		/// return count random int, not duplicated. include min not include max.
+		/// </summary>
+		/// <param name="min"></param>
+		/// <param name="max"></param>
+		/// <param name="count"></param>
+		/// <exception cref="NotImplementedException"></exception>
+		public static HashSet<int> RandomList(int min, int max, int count)
+		{
+			if (max - min < count)
+			{
+				throw new Exception($"RandomList range not enough {min},{max},{count}");
+			}
+			HashSet<int> set = new HashSet<int>();
+			while (set.Count < count)
+			{
+				var vv = Random(min, max);
+				if (!set.Contains(vv))
+				{
+					set.Add(vv);
+				}
+			}
+			return set;
+		}
 	}
 }

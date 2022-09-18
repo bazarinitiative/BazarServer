@@ -255,6 +255,14 @@
             <param name="pageSize"></param>
             <returns></returns>
         </member>
+        <member name="M:BazarServer.Application.Query.PostQueryFacade.GetRandomPostsWithCache(BazarServer.Infrastructure.Repository.IPostRepository,System.Int32)">
+            <summary>
+            get random posts with reasonable cache
+            </summary>
+            <param name="postRepository"></param>
+            <param name="count"></param>
+            <returns></returns>
+        </member>
         <member name="T:BazarServer.Application.Query.UserDto">
             <summary>
             we don't return userPic directly for bandwidth consideration, there should be client side cache.

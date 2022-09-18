@@ -224,7 +224,7 @@ public class BubbleController : BazarControllerBase
 			count = 100;
 		}
 		var users = (await userRepository.GetRandomUser(20)).OrderByDescending(x => x.commandTime).Take(10);
-		var posts = (await postRepository.GetRandomPost(100)).OrderByDescending(x => x.commandTime).Take(50);
+		var posts = (await PostQueryFacade.GetRandomPostsWithCache(postRepository, 100)).OrderByDescending(x => x.commandTime).Take(50);
 		HashSet<string> trendSet = new HashSet<string>();
 		foreach (var user in users)
 		{

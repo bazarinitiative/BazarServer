@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Common.Utils;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Concurrent;
 
@@ -56,6 +57,16 @@ namespace Common.Utils.Tests
 			var res = MyRandom.Random128();
 
 			(res >= 0).Should().BeTrue();
+		}
+
+		[TestMethod()]
+		public void RandomListTest()
+		{
+			var res = MyRandom.RandomList(0, 100, 100);
+			res.Count.Should().Be(100);
+
+			var res2 = MyRandom.RandomList(0, 100, 10);
+			res2.Count.Should().Be(10);
 		}
 	}
 }
