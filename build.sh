@@ -1,4 +1,4 @@
 cd src/BazarServer.Api
-dotnet build
+dotnet build --configuration Release
 mkdir -p ~/run/BazarServer
-cp bin/Debug/net6.0/* ~/run/BazarServer/ -r
+cp bin/Release/net6.0/* ~/run/BazarServer/ -r
