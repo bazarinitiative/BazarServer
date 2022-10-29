@@ -31,6 +31,12 @@ namespace BazarServer.Entity.Storage
 		public string commandType { get; set; } = "";
 
 		/// <summary>
+		/// Added since v0.2. empty means "v0.1". 
+		/// </summary>
+		[StringLength(10)]
+		public string version { get; set; } = "";
+
+		/// <summary>
 		/// origin user request body string
 		/// </summary>
 		[StringLength(50 * 1024)]

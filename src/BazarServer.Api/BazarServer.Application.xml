@@ -59,6 +59,11 @@
             Post, Following, Repost, Like, Delete, etc...
             </summary>
         </member>
+        <member name="P:BazarServer.Application.Commands.UserCommandRequestModel.version">
+            <summary>
+            added since v0.2
+            </summary>
+        </member>
         <member name="P:BazarServer.Application.Commands.UserCommandRequestModel.commandContent">
             <summary>
             a json string of this command detail content

@@ -23,5 +23,11 @@ namespace BazarServer.Entity.Commands
 		/// in milli seconds. user declare commandTime may not be true
 		/// </summary>
 		public long commandTime { get; set; }
+
+		/// <summary>
+		/// added since v0.2
+		/// </summary>
+		public string commandType { get; set; }
+
 	}
 }

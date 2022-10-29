@@ -30,6 +30,12 @@ namespace BazarServer.Application.Commands
 		public string commandType { get; set; } = "";
 
 		/// <summary>
+		/// added since v0.2
+		/// </summary>
+		[StringLength(10)]
+		public string version { get; set; } = "";
+
+		/// <summary>
 		/// a json string of this command detail content
 		/// </summary>
 		[StringLength(50 * 1024)]

@@ -11,6 +11,7 @@ namespace BazarServer.Entity.Commands
 
 		public string commandID { get; set; } = "";
 		public long commandTime { get; set; }
+		public string commandType { get; set; } = "";
 
 		/// <summary>
 		/// base64 encoded user picture. string length 50KB at most.

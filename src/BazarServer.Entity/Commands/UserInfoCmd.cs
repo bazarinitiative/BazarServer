@@ -15,6 +15,8 @@ namespace BazarServer.Entity.Commands
 
 		public long commandTime { get; set; }
 
+		public string commandType { get; set; } = "";
+
 		/// <summary>
 		/// publicKey that everyone can see
 		/// </summary>

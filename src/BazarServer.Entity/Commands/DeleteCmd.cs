@@ -11,6 +11,7 @@ namespace BazarServer.Entity.Commands
 		public string userID { get; set; } = "";
 		public string commandID { get; set; } = "";
 		public long commandTime { get; set; }
+		public string commandType { get; set; } = "";
 
 		/// <summary>
 		/// Post, Repost, Like, Following, etc
