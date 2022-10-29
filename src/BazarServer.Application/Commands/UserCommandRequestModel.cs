@@ -57,6 +57,7 @@ namespace BazarServer.Application.Commands
 				commandTime = req.commandTime,
 				userID = req.userID,
 				commandType = req.commandType,
+				version = req.version,
 				commandContent = req.commandContent,
 				signature = req.signature,
 				receiveTime = DateHelper.CurrentTimeMillis()
