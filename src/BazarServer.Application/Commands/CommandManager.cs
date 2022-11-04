@@ -22,7 +22,23 @@ namespace BazarServer.Application.Commands
 			this.mediator = mediator;
 		}
 
+		static SemaphoreSlim sem = new SemaphoreSlim(1, 1);
+
 		public async Task<MdtResp> SaveAndDispatch(UserCommand cmdOrig, string commandFrom)
+		{
+			await sem.WaitAsync();
+			try
+			{
+				return await SaveAndDispatch_Internal(cmdOrig, commandFrom);
+			}
+			finally
+			{
+				sem.Release();
+			}
+
+		}
+
+		private async Task<MdtResp> SaveAndDispatch_Internal(UserCommand cmdOrig, string commandFrom)
 		{
 			var cmd = new UserCommand();
 			FastCopy.Copy(cmdOrig, cmd);
@@ -61,48 +77,7 @@ namespace BazarServer.Application.Commands
 
 			try
 			{
-				MdtResp resp;
-				switch (cmd.commandType)
-				{
-					case "UserInfo":
-						resp = await ProcessCommand<UserInfoCmd>(cmd, commandFrom);
-						break;
-					case "UserPic":
-						resp = await ProcessCommand<UserPicCmd>(cmd, commandFrom);
-						break;
-					case "Following":
-						resp = await ProcessCommand<FollowingCmd>(cmd, commandFrom);
-						break;
-					case "Channel":
-						resp = await ProcessCommand<ChannelCmd>(cmd, commandFrom);
-						break;
-					case "ChannelMember":
-						resp = await ProcessCommand<ChannelMemberCmd>(cmd, commandFrom);
-						break;
-					case "Post":
-						resp = await ProcessCommand<PostCmd>(cmd, commandFrom);
-						break;
-					case "Like":
-						resp = await ProcessCommand<LikeCmd>(cmd, commandFrom);
-						break;
-					case "Bookmark":
-						resp = await ProcessCommand<BookmarkCmd>(cmd, commandFrom);
-						break;
-					case "Delete":
-						resp = await ProcessCommand<DeleteCmd>(cmd, commandFrom);
-						break;
-					default:
-						//ignore unknow command
-						var msg = $"ignore unkow userCommandType: {cmd.commandType}";
-						logger.LogInformation(msg);
-						resp = new MdtResp(false, msg);
-						break;
-				}
-
-				if (!resp.success)
-				{
-					await SaveFailure(cmd, resp.msg);
-				}
+				MdtResp resp = await Dispatch(commandFrom, cmd);
 
 				return resp;
 			}
@@ -113,6 +88,54 @@ namespace BazarServer.Application.Commands
 				logger.LogError(ex, $"cmd={cmd.ToJsonString()}");
 				return new MdtResp(false, ex.Message);
 			}
+		}
+
+		private async Task<MdtResp> Dispatch(string commandFrom, UserCommand cmd)
+		{
+			MdtResp resp;
+			switch (cmd.commandType)
+			{
+				case "UserInfo":
+					resp = await ProcessCommand<UserInfoCmd>(cmd, commandFrom);
+					break;
+				case "UserPic":
+					resp = await ProcessCommand<UserPicCmd>(cmd, commandFrom);
+					break;
+				case "Following":
+					resp = await ProcessCommand<FollowingCmd>(cmd, commandFrom);
+					break;
+				case "Channel":
+					resp = await ProcessCommand<ChannelCmd>(cmd, commandFrom);
+					break;
+				case "ChannelMember":
+					resp = await ProcessCommand<ChannelMemberCmd>(cmd, commandFrom);
+					break;
+				case "Post":
+					resp = await ProcessCommand<PostCmd>(cmd, commandFrom);
+					break;
+				case "Like":
+					resp = await ProcessCommand<LikeCmd>(cmd, commandFrom);
+					break;
+				case "Bookmark":
+					resp = await ProcessCommand<BookmarkCmd>(cmd, commandFrom);
+					break;
+				case "Delete":
+					resp = await ProcessCommand<DeleteCmd>(cmd, commandFrom);
+					break;
+				default:
+					//ignore unknow command
+					var msg = $"ignore unkow userCommandType: {cmd.commandType}";
+					logger.LogInformation(msg);
+					resp = new MdtResp(false, msg);
+					break;
+			}
+
+			if (!resp.success)
+			{
+				await SaveFailure(cmd, resp.msg);
+			}
+
+			return resp;
 		}
 
 		private async Task SaveFailure(UserCommand cmd, string errMsg)
