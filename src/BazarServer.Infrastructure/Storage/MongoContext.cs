@@ -58,6 +58,7 @@ namespace BazarServer.Infrastructure.Storage
 			BuildIndex<Post>(nameof(Post.threadID));
 			BuildIndex<Post>(nameof(Post.replyTo));
 			BuildIndex<Post>(nameof(Post.commandTime));
+			BuildIndex<Post>("userID", "commandTime");
 
 			BuildIndex<PostStatistic>(nameof(PostStatistic.postID));
 
@@ -109,6 +110,28 @@ namespace BazarServer.Infrastructure.Storage
 			try
 			{
 				var keys = Builders<T>.IndexKeys.Ascending(field);
+				var pp = new CreateIndexModel<T>(keys);
+				var ss = db.GetCollection<T>(tblName).Indexes.CreateOne(pp);
+
+				return;
+			}
+			catch (Exception ex)
+			{
+				MailHelper.ReportMail($"fail to BuildIndex: {tblName}", ex);
+			}
+		}
+
+		public void BuildIndex<T>(params string[] fields)
+		{
+			var tblName = typeof(T).Name;
+			try
+			{
+				IndexKeysDefinition<T>[] aa = new IndexKeysDefinition<T>[fields.Length];
+				for (int i = 0; i < fields.Length; i++)
+				{
+					aa[i] = Builders<T>.IndexKeys.Descending(fields[i]);
+				}
+				var keys = Builders<T>.IndexKeys.Combine(aa);
 				var pp = new CreateIndexModel<T>(keys);
 				var ss = db.GetCollection<T>(tblName).Indexes.CreateOne(pp);
 
