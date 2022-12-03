@@ -19,6 +19,8 @@ namespace BazarServer.Application.PeerServers
 		ICommandManager commandManager;
 
 		string selfBaseUrl;
+		Thread? thread;
+		bool isRun = true;
 
 		/// <summary>
 		/// server baseUrl as key
@@ -39,15 +41,31 @@ namespace BazarServer.Application.PeerServers
 				throw new Exception("selfBaseUrl must start with https");
 			}
 
+			this.commandManager = commandManager;
+		}
+
+		public Task Start()
+		{
 			LoadPeers();
 
-			new Thread(new ParameterizedThreadStart(async (x) => await ThreadTimerProc(x)))
+			thread = new Thread(new ParameterizedThreadStart(async (x) => await ThreadTimerProc(x)))
 			{
 				IsBackground = true,
 				Name = "PeerTimer"
+			};
+			thread.Start(this);
+			return Task.CompletedTask;
+		}
+
+		public Task Stop()
+		{
+			isRun = false;
+			if (thread != null)
+			{
+				thread.Join();
+				thread = null;
 			}
-			.Start(this);
-			this.commandManager = commandManager;
+			return Task.CompletedTask;
 		}
 
 		private static string RegulateUrl(string url)
@@ -62,15 +80,19 @@ namespace BazarServer.Application.PeerServers
 
 		private async Task ThreadTimerProc(object? obj)
 		{
-			while (true)
+			while (isRun)
 			{
 				try
 				{
-					foreach (var stat in dicServerStats.Values)
+					ParallelOptions po = new ParallelOptions
+					{
+						MaxDegreeOfParallelism = 20
+					};
+					await Parallel.ForEachAsync(dicServerStats.Values, po, async (stat, ct) =>
 					{
 						var url = stat.server.BaseUrl;
-						await TimerOne(stat);
-					}
+						await Fetch(stat);
+					});
 				}
 				catch (Exception ex)
 				{
@@ -82,7 +104,12 @@ namespace BazarServer.Application.PeerServers
 
 		ConcurrentDictionary<string, long> counters = new ConcurrentDictionary<string, long>();
 
-		private async Task TimerOne(PeerServerStat stat)
+		/// <summary>
+		/// fetch data from one peer server
+		/// </summary>
+		/// <param name="stat"></param>
+		/// <returns></returns>
+		private async Task Fetch(PeerServerStat stat)
 		{
 			try
 			{
@@ -91,7 +118,7 @@ namespace BazarServer.Application.PeerServers
 					return;
 				}
 
-				var ret = await RefreshCommandAsync(stat);
+				var ret = await FetchCommandsAsync(stat);
 				if (ret.success)
 				{
 					var ss = stat.server.BaseUrl;
@@ -110,22 +137,17 @@ namespace BazarServer.Application.PeerServers
 				}
 				else
 				{
-					//for every OK-msg will postpone 100 milli, refers to 10 effective msg per seconds.
-					stat.server.nextRetrieveTime = DateTime.Now + TimeSpan.FromSeconds(ret.okCount * 0.1);
-				}
-
-				if (ret.okCount > 0)
-				{
-					//faster fetch for whitelist. currently every peer is in whitelist.
+					// fast fetch if has effective data
 					stat.server.nextRetrieveTime = DateTime.Now;
 				}
 
+				//get peerlist from remote, occasionally.
 				var count = counters.GetOrAdd(stat.server.BaseUrl, 0);
 				if (count % 12 == 0)
 				{
-					await peerServerRepository.SaveAsync(stat.server);
+					await peerServerRepository.UpsertAsync(stat.server);
 
-					await RefreshServerListAsync(stat);
+					await FetchServerListAsync(stat);
 				}
 				counters[stat.server.BaseUrl] += 1;
 			}
@@ -136,7 +158,12 @@ namespace BazarServer.Application.PeerServers
 			return;
 		}
 
-		private async Task RefreshServerListAsync(PeerServerStat stat)
+		/// <summary>
+		/// get peerlist from remote. try register self to the remote.
+		/// </summary>
+		/// <param name="stat"></param>
+		/// <returns></returns>
+		private async Task FetchServerListAsync(PeerServerStat stat)
 		{
 			var ret = await GetPeerListAsync(stat.server);
 			if (ret.success && ret.data != null)
@@ -176,7 +203,7 @@ namespace BazarServer.Application.PeerServers
 		/// </summary>
 		/// <param name="pss"></param>
 		/// <returns></returns>
-		public async Task<(bool success, int total, int okCount)> RefreshCommandAsync(PeerServerStat pss)
+		public async Task<(bool success, int total, int okCount)> FetchCommandsAsync(PeerServerStat pss)
 		{
 			int total = 0;
 			int okCount = 0;
@@ -366,7 +393,7 @@ namespace BazarServer.Application.PeerServers
 		private async Task<PeerServerStat> AddNewServer(string baseUrl)
 		{
 			var server = new PeerServer() { BaseUrl = baseUrl };
-			await peerServerRepository.SaveAsync(server);
+			await peerServerRepository.UpsertAsync(server);
 			var pss = new PeerServerStat(this, server, logger);
 			dicServerStats.TryAdd(baseUrl, pss);
 			return pss;
@@ -387,7 +414,7 @@ namespace BazarServer.Application.PeerServers
 		/// <param name="stat"></param>
 		/// <param name="cmdRemote"></param>
 		/// <returns></returns>
-		public async Task<MsgResult> Peer_OnMessage(PeerServerStat stat, UserCommand cmdRemote)
+		private async Task<MsgResult> Peer_OnMessage(PeerServerStat stat, UserCommand cmdRemote)
 		{
 			await sem.WaitAsync();
 			try

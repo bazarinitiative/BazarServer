@@ -55,6 +55,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:BazarServer.Infrastructure.Repository.IPeerServerRepository.UpsertAsync(BazarServer.Entity.Storage.PeerServer)">
+            <summary>
+            insert or update
+            </summary>
+            <param name="server"></param>
+            <returns></returns>
+        </member>
         <member name="M:BazarServer.Infrastructure.Repository.IPostRepository.GetPostsByUserAsync(System.String,System.Boolean,System.Int32,System.Int32)">
             <summary>
             get posts of one user. latest at top.

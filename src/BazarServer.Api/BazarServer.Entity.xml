@@ -305,7 +305,7 @@
         </member>
         <member name="P:BazarServer.Entity.Storage.PeerServer.nextRetrieveTime">
             <summary>
-            Time of next retrieve. Every OK-msg will postpon this time, to prevent too much effective msg.
+            Time of next retrieve.
             </summary>
         </member>
         <member name="P:BazarServer.Entity.Storage.Bookmark.postID">

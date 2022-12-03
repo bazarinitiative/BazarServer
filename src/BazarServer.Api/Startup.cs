@@ -31,6 +31,7 @@ public class Startup
 
 		services.AddHostedService<UserQueryService>();
 		services.AddHostedService<PostLangDetectService>();
+		services.AddHostedService<PeerService>();
 
 		services.AddControllers();
 

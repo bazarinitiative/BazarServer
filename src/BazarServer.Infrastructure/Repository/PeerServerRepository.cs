@@ -24,7 +24,7 @@ namespace BazarServer.Infrastructure.Repository
 			return _conn.GetQueryable().ToList();
 		}
 
-		public async Task SaveAsync(PeerServer server)
+		public async Task UpsertAsync(PeerServer server)
 		{
 			await _conn.UpsertAsync(x => x.BaseUrl == server.BaseUrl, server);
 		}

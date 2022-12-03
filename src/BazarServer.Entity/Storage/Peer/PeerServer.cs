@@ -39,7 +39,7 @@ namespace BazarServer.Entity.Storage
 		public long lastReceiveOffset { get; set; }
 
 		/// <summary>
-		/// Time of next retrieve. Every OK-msg will postpon this time, to prevent too much effective msg.
+		/// Time of next retrieve.
 		/// </summary>
 		public DateTime nextRetrieveTime { get; set; }
 

@@ -26,5 +26,13 @@ namespace BazarServer.Application.PeerServers
 		/// <param name="baseUrl"></param>
 		/// <returns></returns>
 		Task<(bool success, string msg)> RegisterAsync(string baseUrl);
+
+		/// <summary>
+		/// start a timer thread to sync data with peers
+		/// </summary>
+		/// <returns></returns>
+		Task Start();
+
+		Task Stop();
 	}
 }

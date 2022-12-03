@@ -125,12 +125,32 @@
             <param name="baseUrl"></param>
             <returns></returns>
         </member>
+        <member name="M:BazarServer.Application.PeerServers.IPeerManager.Start">
+            <summary>
+            start a timer thread to sync data with peers
+            </summary>
+            <returns></returns>
+        </member>
         <member name="F:BazarServer.Application.PeerServers.PeerManager.dicServerStats">
             <summary>
             server baseUrl as key
             </summary>
         </member>
-        <member name="M:BazarServer.Application.PeerServers.PeerManager.RefreshCommandAsync(BazarServer.Application.PeerServers.PeerServerStat)">
+        <member name="M:BazarServer.Application.PeerServers.PeerManager.Fetch(BazarServer.Application.PeerServers.PeerServerStat)">
+            <summary>
+            fetch data from one peer server
+            </summary>
+            <param name="stat"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Application.PeerServers.PeerManager.FetchServerListAsync(BazarServer.Application.PeerServers.PeerServerStat)">
+            <summary>
+            get peerlist from remote. try register self to the remote.
+            </summary>
+            <param name="stat"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BazarServer.Application.PeerServers.PeerManager.FetchCommandsAsync(BazarServer.Application.PeerServers.PeerServerStat)">
             <summary>
             retrieve commands from remote and update local
             </summary>
