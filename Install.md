@@ -148,7 +148,7 @@ For example
 
 ```shell
 upstream bazarapi {
-        server 127.0.0.1:5001;
+        server 127.0.0.1:5000;
 
 }
 server {
@@ -162,7 +162,7 @@ server {
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
         proxy_set_header X_Nginx_Proxy true;
-        proxy_pass https://bazarapi;
+        proxy_pass http://bazarapi;
         proxy_redirect off;
         }
 }
