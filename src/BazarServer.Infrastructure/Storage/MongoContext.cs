@@ -100,7 +100,7 @@ namespace BazarServer.Infrastructure.Storage
 			}
 			catch (Exception ex)
 			{
-				MailHelper.ReportMail($"fail to BuildFullTextIndex: {tblName}", ex);
+				LogFacade.LogError(ex, $"fail to BuildFullTextIndex: {tblName}");
 			}
 		}
 
@@ -117,7 +117,7 @@ namespace BazarServer.Infrastructure.Storage
 			}
 			catch (Exception ex)
 			{
-				MailHelper.ReportMail($"fail to BuildIndex: {tblName}", ex);
+				LogFacade.LogError(ex, $"fail to BuildIndex: {tblName}");
 			}
 		}
 
@@ -139,7 +139,7 @@ namespace BazarServer.Infrastructure.Storage
 			}
 			catch (Exception ex)
 			{
-				MailHelper.ReportMail($"fail to BuildIndex: {tblName}", ex);
+				LogFacade.LogError(ex, $"fail to BuildIndex: {tblName}");
 			}
 		}
 

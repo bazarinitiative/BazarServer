@@ -30,14 +30,13 @@ public class Program
 
 			var title = "app start fail";
 
-			MailHelper.ReportMail(title, ex);
+			LogFacade.LogError(ex, title);
 		}
 	}
 
 	private static (bool success, string msg) CheckEnv()
 	{
 		string[] ay = {
-			"BazarMail",
 			"BazarMongodb",
 			"BazarBaseUrl"
 		};

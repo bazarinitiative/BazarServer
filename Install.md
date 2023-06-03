@@ -117,8 +117,6 @@ vi .bashrc
 Then add following content to the end of file:
 
 ```shell
-# for example "aaa@bbb.com_pwdpwd_smtp.bbb.com_25_false"
-export BazarMail="emailAddr_password_mailServerAddr_mailServerPort_enableSsl"
 export BazarBaseUrl="https://api.bazar.social/"
 export BazarMongodb="mongodb://localhost:27017/"
 # we use google API to detect PostConent language. see also <https://cloud.google.com/docs/authentication/api-keys>
@@ -126,8 +124,6 @@ export BazarTranslateKey="yourApiKey"
 ```
 
 and replace the variables to proper value.
-
-Beware: Port 25 may be blocked in some case <https://www.vultr.com/docs/what-ports-are-blocked> . If you are using godaddy mail servvice, you can use port 80 instead of port 25.
 
 ## Start BazarServer
 

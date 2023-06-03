@@ -39,7 +39,6 @@ A server for decentralized micro-blog
 
 - BazarBaseUrl = 'which domain-path is this server deployed'. eg: <https://api.yourdomain.com/bazar/> or <https://bzea.azurewebsites.net/>
 - BazarMongodb = 'mongodb connectionString'
-- BazarMail = 'emailAddr_password_mailServerAddr_mailServerPort_enableSsl'. eg: aaa@bbb.com_pwdpwd_smtp.bbb.com_25_false
 
 ## Mongodb changestream
 

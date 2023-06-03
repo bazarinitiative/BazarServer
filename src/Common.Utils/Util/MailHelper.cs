@@ -40,35 +40,5 @@ namespace Common.Utils
 			await client.SendMailAsync(message);
 		}
 
-		/// <summary>
-		/// report a mail to preconfigured 'BazarMail'
-		/// </summary>
-		/// <param name="title"></param>
-		/// <param name="content"></param>
-		public static void ReportMail(string title, string content)
-		{
-			var mail = ConfigHelper.GetConfigValue(null, "BazarMail");
-			if (!string.IsNullOrEmpty(mail))
-			{
-				var ay = mail.Split('_', StringSplitOptions.RemoveEmptyEntries);
-				var mailAcccount = ay[0];
-				var mailPassword = ay[1];
-				var mailHost = ay[2];
-				var mailPort = Convert.ToInt32(ay[3]);
-				var enableSsl = bool.Parse(ay[4]);
-
-				MailHelper.mailHost = mailHost;
-				MailHelper.mailPort = mailPort;
-				MailHelper.mailAcccount = mailAcccount;
-				MailHelper.mailPassword = mailPassword;
-				SendMail(mailAcccount, mailAcccount, title, content, true, null, enableSsl, "Bazar").Wait();
-			}
-		}
-
-		public static void ReportMail(string title, Exception ex)
-		{
-			var content = $"<html><body><textarea>{ex.ToString().Replace("\r", "").Replace("\n", "<br/>")}</textarea></body><html>";
-			ReportMail(title, content);
-		}
 	}
 }

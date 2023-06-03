@@ -15,7 +15,7 @@ namespace Common.Utils.Tests
 		[TestMethod()]
 		public void GetConfigValueTest()
 		{
-			var ss = ConfigHelper.GetConfigValue(null, "BazarMail");
+			var ss = ConfigHelper.GetConfigValue(null, "BazarMongodb");
 		}
 	}
 }

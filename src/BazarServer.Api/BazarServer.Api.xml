@@ -67,34 +67,6 @@
             <param name="count">max 100</param>
             <returns></returns>
         </member>
-        <member name="T:BazarServer.Controllers.EmailController">
-            <summary>
-            Send email for verification, backup, etc.
-            </summary>
-        </member>
-        <member name="M:BazarServer.Controllers.EmailController.SendInternal(System.String,System.String,System.String)">
-            <summary>
-            send email with antiSpam, rateLimit
-            </summary>
-            <param name="targetEmailAddr"></param>
-            <param name="title"></param>
-            <param name="content"></param>
-            <returns></returns>
-        </member>
-        <member name="M:BazarServer.Controllers.EmailController.SendCode(BazarServer.Controllers.EmailController.SendCodeReq)">
-            <summary>
-            send a verification code through email
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:BazarServer.Controllers.EmailController.BackupAccount(BazarServer.Controllers.EmailController.BackupAccountReq)">
-            <summary>
-            backup user account data through email.
-            
-            see also https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-certificate-in-code
-            </summary>
-            <returns></returns>
-        </member>
         <member name="T:BazarServer.Controllers.PeerController">
             <summary>
             sync data with peer servers.
